@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
+
+    <View
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <View
+        android:id="@+id/v1"
+        android:layout_alignParentLeft="true"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"/>
+    <TextView
+        android:layout_toRightOf="@+id/v1"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="分组名"
+        android:id="@+id/tv_goodGroupName"
+        android:textSize="25sp"
+        android:gravity="center" />
+</RelativeLayout>

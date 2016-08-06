@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipRefresh_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                app:contentScrim="@color/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:titleEnabled="false">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@mipmap/apple"
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="parallax"
+                    app:layout_collapseParallaxMultiplier="0.7">
+
+                    <ImageView
+                        android:id="@+id/iv_loginUserIcon"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="80dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/touxiang" />
+
+                    <EditText
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/et_loginAccount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/iv_loginUserIcon"
+                        android:background="@drawable/abc_textfield_search_material"
+                        android:ems="10"
+                        android:hint="输入帐号..."
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@android:color/white" />
+
+                    <EditText
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/et_loginPasword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_below="@+id/et_loginAccount"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/abc_textfield_search_material"
+                        android:ems="10"
+                        android:hint="输入密码..."
+                        android:inputType="textPassword"
+                        android:textColor="@android:color/white"
+                        android:textColorHint="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/tv_clickToLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/et_loginPasword"
+                        android:layout_alignStart="@+id/et_loginPasword"
+                        android:layout_below="@+id/et_loginPasword"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/abc_textfield_search_material"
+                        android:text="点击登录"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp" />
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/tb_homeToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    app:navigationIcon="@null">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/et_toolbarSearch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:drawableLeft="@android:drawable/ic_menu_search"
+                            android:gravity="center"
+                            android:text="搜索..."
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp" />
+
+                        <TextView
+                            android:id="@+id/tv_toolbarUserLocation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:drawableRight="@drawable/position"
+                            android:gravity="center"
+                            android:text="广州"
+                            android:textColor="@android:color/white"
+                            android:textSize="18sp" />
+                    </RelativeLayout>
+                </android.support.v7.widget.Toolbar>
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_goodsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    </android.support.design.widget.CoordinatorLayout>
+</android.support.v4.widget.SwipeRefreshLayout>
