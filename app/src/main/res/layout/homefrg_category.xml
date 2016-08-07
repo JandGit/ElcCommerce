@@ -86,11 +86,5 @@
             android:text="零食糖果" />
 
     </TableRow>
-    <android.support.v4.view.ViewPager
-        android:layout_marginTop="10dp"
-        android:id="@+id/vp_advertisement"
-        android:background="@mipmap/background"
-        android:layout_height="150dp"
-        android:layout_width="match_parent"/>
 
 </TableLayout>

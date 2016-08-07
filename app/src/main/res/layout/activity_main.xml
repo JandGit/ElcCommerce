@@ -19,7 +19,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:background="@android:color/white">
 
         <RelativeLayout
@@ -32,16 +32,20 @@
 
             <ImageView
                 android:id="@+id/iv_tagHome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/home" />
+                android:layout_marginTop="1dp"
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/home"
+                android:scaleType="fitXY" />
 
             <TextView
                 android:id="@+id/tv_tagHome"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="18dp"
                 android:layout_below="@id/iv_tagHome"
-                android:text="首页" />
+                android:text="首页"
+                android:gravity="center" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -54,21 +58,25 @@
 
             <ImageView
                 android:id="@+id/iv_tagShop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:layout_marginTop="1dp"
+                android:layout_alignParentTop="true"
+                android:layout_width="28dp"
+                android:layout_height="20dp"
                 android:src="@drawable/shop" />
 
             <TextView
                 android:id="@+id/tv_tagShop"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="18dp"
                 android:layout_below="@id/iv_tagShop"
+                android:gravity="center"
                 android:text="店铺" />
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/tag_cart"
-            android:layout_width="0dp"
+            android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -76,15 +84,19 @@
 
             <ImageView
                 android:id="@+id/iv_tagCart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:layout_marginTop="1dp"
+                android:layout_alignParentTop="true"
+                android:layout_width="28dp"
+                android:layout_height="20dp"
                 android:src="@drawable/cart" />
 
             <TextView
                 android:id="@+id/tv_tagCart"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="18dp"
                 android:layout_below="@id/iv_tagCart"
+                android:gravity="center"
                 android:text="购物车" />
         </RelativeLayout>
 
@@ -98,15 +110,19 @@
 
             <ImageView
                 android:id="@+id/iv_tagMy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:layout_marginTop="1dp"
+                android:layout_width="28dp"
+                android:layout_alignParentTop="true"
+                android:layout_height="20dp"
                 android:src="@drawable/my" />
 
             <TextView
                 android:id="@+id/tv_tagMy"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="18dp"
                 android:layout_below="@id/iv_tagMy"
+                android:gravity="center"
                 android:text="我的" />
 
         </RelativeLayout>

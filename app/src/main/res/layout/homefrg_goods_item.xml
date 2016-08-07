@@ -20,7 +20,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:text="商品名"
         android:id="@+id/tv_goodsName"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
@@ -42,13 +42,14 @@
 
     <RatingBar
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:id="@+id/rb_goodsRate"
-        style="@style/Base.Widget.AppCompat.RatingBar.Indicator"
+        style="@style/Base.Widget.AppCompat.RatingBar.Small"
         android:numStars="5"
         android:rating="5"
         android:layout_below="@+id/tv_goodsName"
-        android:layout_alignLeft="@+id/tv_goodsName" />
+        android:layout_alignLeft="@+id/tv_goodsName"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -60,5 +61,5 @@
         android:layout_toRightOf="@+id/rb_goodsRate"
         android:gravity="center"
         android:textColor="#e9973e"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 </RelativeLayout>
