@@ -11,6 +11,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:background="?attr/selectableItemBackground"
             android:id="@+id/tv_item1"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
@@ -20,6 +21,7 @@
             android:text="台湾美食" />
 
         <TextView
+            android:background="?attr/selectableItemBackground"
             android:id="@+id/tv_item2"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
@@ -29,6 +31,7 @@
             android:text="粮油干货" />
 
         <TextView
+            android:background="?attr/selectableItemBackground"
             android:id="@+id/tv_item3"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
@@ -37,6 +40,7 @@
             android:drawableTop="@drawable/headitem3"
             android:text="营养品保健品" />
         <TextView
+            android:background="?attr/selectableItemBackground"
             android:id="@+id/tv_item4"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
@@ -51,6 +55,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:background="?attr/selectableItemBackground"
             android:id="@+id/tv_item5"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
@@ -60,6 +65,7 @@
             android:text="进口生鲜美食" />
 
         <TextView
+            android:background="?attr/selectableItemBackground"
             android:id="@+id/tv_item6"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
@@ -69,6 +75,7 @@
             android:text="进口饼干糕点" />
 
         <TextView
+            android:background="?attr/selectableItemBackground"
             android:id="@+id/tv_item7"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
@@ -77,6 +84,7 @@
             android:drawableTop="@drawable/headitem7"
             android:text="酒水饮料" />
         <TextView
+            android:background="?attr/selectableItemBackground"
             android:id="@+id/tv_item8"
             android:layout_width="wrap_content"
             android:layout_height="100dp"

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isFirstOpen = true;
 
     FragmentManager mFM;
+    Fragment frgHome, frgShop, frgCart, frgMe;
 
     TextView tv_tagHome, tv_tagShop, tv_tagCart, tv_tagMy;
     ImageView iv_tagHome, iv_tagShop, iv_tagCart, iv_tagMy;
@@ -47,32 +49,53 @@ public class MainActivity extends AppCompatActivity {
         iv_tagShop = (ImageView) findViewById(R.id.iv_tagShop);
         iv_tagCart = (ImageView) findViewById(R.id.iv_tagCart);
         iv_tagMy = (ImageView) findViewById(R.id.iv_tagMy);
+
+        frgHome = new HomeFragment();
+        frgShop = new ShopFragment();
+        frgCart = new CartFragment();
+        frgMe = new MeFragment();
         findViewById(R.id.tag_home).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tagClick("Home");
                 if(null == mFM.findFragmentByTag("Home")){
-                    mFM.beginTransaction().replace(R.id.frm_whatPage, new HomeFragment(), "Home")
+                    mFM.beginTransaction().add(R.id.frm_whatPage, frgHome, "Home")
                             .commit();
                 }
+                mFM.beginTransaction().hide(frgShop).hide(frgCart).hide(frgMe).show(frgHome).commit();
             }
         });
         findViewById(R.id.tag_shop).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tagClick("Shop");
+                if(null == mFM.findFragmentByTag("Shop")){
+                    mFM.beginTransaction().add(R.id.frm_whatPage, frgShop, "Shop")
+                            .commit();
+                }
+                mFM.beginTransaction().hide(frgHome).hide(frgCart).hide(frgMe).show(frgShop).commit();
             }
         });
         findViewById(R.id.tag_cart).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tagClick("Cart");
+                if(null == mFM.findFragmentByTag("Cart")){
+                    mFM.beginTransaction().add(R.id.frm_whatPage, frgCart, "Cart")
+                            .commit();
+                }
+                mFM.beginTransaction().hide(frgHome).hide(frgShop).hide(frgMe).show(frgCart).commit();
             }
         });
         findViewById(R.id.tag_my).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 tagClick("My");
+                if(null == mFM.findFragmentByTag("My")){
+                    mFM.beginTransaction().add(R.id.frm_whatPage, frgMe, "My")
+                            .commit();
+                }
+                mFM.beginTransaction().hide(frgHome).hide(frgShop).hide(frgCart).show(frgMe).commit();
             }
         });
     }
