@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -20,7 +21,10 @@ import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity {
-    String lastTag = null;
+    boolean isFirstOpen = true;
+
+    FragmentManager mFM;
+
     TextView tv_tagHome, tv_tagShop, tv_tagCart, tv_tagMy;
     ImageView iv_tagHome, iv_tagShop, iv_tagCart, iv_tagMy;
 
@@ -31,10 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
 
-        //添加页面
-        if(savedInstanceState == null){
-            getSupportFragmentManager().beginTransaction().replace(R.id.frm_whatPage, new HomeFragment()).commit();
-        }
+        mFM = getSupportFragmentManager();
     }
 
     private void initView(){
@@ -50,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tagClick("Home");
+                if(null == mFM.findFragmentByTag("Home")){
+                    mFM.beginTransaction().replace(R.id.frm_whatPage, new HomeFragment(), "Home")
+                            .commit();
+                }
             }
         });
         findViewById(R.id.tag_shop).setOnClickListener(new View.OnClickListener() {
@@ -70,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 tagClick("My");
             }
         });
-
     }
 
     public void tagClick(String tag){
@@ -117,4 +121,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if (isFirstOpen && hasFocus) {
+            findViewById(R.id.tag_home).performClick();
+            isFirstOpen = false;
+        }
+        super.onWindowFocusChanged(hasFocus);
+    }
 }

@@ -32,10 +32,10 @@ public class ElcModel implements HomeFrgPresenter.CallbackOfModel{
                 itemData.data = new HashMap<>(1);
                 itemData.type = RvItemBean.TYPE_AD;
                 Bitmap[] img = new Bitmap[4];
-                Bitmap temp = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.apple);
-                for(int j = 0; j < 4; j++){
-                    img[j] = temp;
-                }
+                img[0] = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.advertise1);
+                img[1] = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.advertise2);
+                img[2] = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.advertise3);
+                img[3] = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.advertise4);
                 itemData.data.put("advertisement", img);
             }
             else if(1 == i){
@@ -44,7 +44,26 @@ public class ElcModel implements HomeFrgPresenter.CallbackOfModel{
             else if(from + 2 == i){
                 itemData.data = new HashMap<>(1);
                 itemData.type = RvItemBean.TYPE_GROUPTITLE;
-                itemData.data.put("groupName", "分组名字");
+                itemData.data.put("groupName", "小图标商品列表");
+            }
+            else if(30 == i){
+                itemData.data = new HashMap<>(1);
+                itemData.type = RvItemBean.TYPE_GROUPTITLE;
+                itemData.data.put("groupName", "大图标商品列表");
+            }
+            else if(i > 30 && i <= 600){
+                itemData.data = new HashMap<>(8);
+                itemData.type = RvItemBean.TYPE_ITEM2;
+                itemData.data.put("goodsIcon1", ImageTools.zoomBitmap(BitmapFactory.decodeResource(
+                        mContext.getResources(), R.mipmap.background), 200, 200));
+                itemData.data.put("goodsIcon2", ImageTools.zoomBitmap(BitmapFactory.decodeResource(
+                        mContext.getResources(), R.mipmap.apple), 200, 200));
+                itemData.data.put("goodsName1", "水果1");
+                itemData.data.put("goodsName2", "水果2");
+                itemData.data.put("rating1", 4.0f);
+                itemData.data.put("rating2", 4.8f);
+                itemData.data.put("sale1", "2000");
+                itemData.data.put("sale2", "1000");
             }
             else {
                 itemData.data = new HashMap<>(4);

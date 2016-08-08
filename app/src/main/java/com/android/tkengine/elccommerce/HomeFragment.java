@@ -3,8 +3,6 @@ package com.android.tkengine.elccommerce;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.tkengine.elccommerce.beans.RvItemBean;
@@ -45,8 +44,8 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     HomeFrgPresenter mPresenter;
     //
     Toast mToast;
-
-    //
+    //提示首页加载状态的页面
+    TextView tv_tips;
 
 
     @Override
@@ -81,14 +80,18 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
 
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if(RecyclerView.SCROLL_STATE_IDLE == newState && mRvAdapter.getItemCount() - 1 == lastVisibleItem){
+                if(RecyclerView.SCROLL_STATE_IDLE == newState && mRvAdapter.getItemCount() - 1 == lastVisibleItem
+                        && !mSwipeRefreshLayout.isRefreshing()){
                     mPresenter.loadMoreOnHomePage(lastVisibleItem + 1);
                 }
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
 
+        tv_tips = (TextView) mView.findViewById(R.id.tv_frghome_tips);
+
         mAppBarLayout = (AppBarLayout) mView.findViewById(R.id.app_bar);
+        mAppBarLayout.setExpanded(false);
 
         iv_loginUserIcon = (ImageView) mView.findViewById(R.id.iv_loginUserIcon);
         iv_loginUserIcon.setImageBitmap(ImageTools.toRoundBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.touxiang)));
@@ -109,6 +112,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mPresenter.initHomePage();
             }
         });
 
@@ -116,12 +120,6 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
 
         mPresenter = new HomeFrgPresenter(this, getContext());
         mPresenter.initHomePage();
-    }
-
-    @Override
-    public void showToast(String text){
-        mToast.setText(text);
-        mToast.show();
     }
 
     @Override
@@ -137,30 +135,29 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
 
     @Override
     public void showLoadingHomePage() {
-        mToast.setText("正在加载首页");
-        mToast.show();
+        mSwipeRefreshLayout.setRefreshing(true);
+        tv_tips.setText("正在努力加载......");
     }
 
     @Override
     public void showLoadingfailed() {
-        mToast.setText("加载首页失败");
-        mToast.show();
+        mSwipeRefreshLayout.setRefreshing(false);
+        tv_tips.setText("首页加载失败，点击重试");
     }
 
     @Override
     public void showLoadingMore() {
-        mToast.setText("正在加载更多数据");
-        mToast.show();
+        mSwipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
-    public void stopShowingLoadmore() {
-        mToast.cancel();
+    public void showLoadingHomeCompleted() {
+        mSwipeRefreshLayout.setRefreshing(false);
+        tv_tips.setVisibility(View.GONE);
     }
 
     @Override
-    public void showNomoreData() {
-        mToast.setText("没有更多数据可以加载");
-        mToast.show();
+    public void showLoadingMoreCompleted() {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 }

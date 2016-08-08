@@ -49,11 +49,10 @@ public class HomeFrgPresenter {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
-                case MSG_RVREFRESH_COMPELETE:
-                    break;
                 case MSG_SETADAPTER:
                     HomepageAdapter adapter = (HomepageAdapter) msg.obj;
                     mView.setRvAdapter(adapter);
+                    mView.showLoadingHomeCompleted();
                     break;
                 case MSG_SHOW_LOADING_FAILED:
                     mView.showLoadingfailed();
@@ -61,12 +60,8 @@ public class HomeFrgPresenter {
                 case MSG_ADD_MORE_DATA:
                     List<RvItemBean> data = (List<RvItemBean>) msg.obj;
                     mView.addViewInRv(data);
-                    mView.stopShowingLoadmore();
+                    mView.showLoadingMoreCompleted();
                     break;
-                case MSG_SHOW_NOMORE_DATA:
-                    mView.showNomoreData();
-                    break;
-
             }
 
             super.handleMessage(msg);
@@ -79,9 +74,8 @@ public class HomeFrgPresenter {
         void showLoadingHomePage();
         void showLoadingfailed();
         void showLoadingMore();
-        void stopShowingLoadmore();
-        void showNomoreData();
-        void showToast(String text);
+        void showLoadingHomeCompleted();
+        void showLoadingMoreCompleted();
     }
 
     public interface CallbackOfModel{
@@ -102,8 +96,8 @@ public class HomeFrgPresenter {
         new Thread(){
             @Override
             public void run() {
-                Log.i("presenter", "开始加载数据");
-                final List<RvItemBean> data = mModel.getHomePageData(0, 20);
+                Log.i("presenter", "开始加载首页数据");
+                final List<RvItemBean> data = mModel.getHomePageData(0, 60);
                 Log.i("presenter", "加载成功，现在添加Adapter");
                 if(null == data){
                     mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);
@@ -123,12 +117,9 @@ public class HomeFrgPresenter {
         new Thread(){
             @Override
             public void run() {
-                Log.i("presenter", "开始加载数据");
-                List<RvItemBean> data = mModel.getHomePageData(from, from + 20);
-                if(null == data){
-                    mHandler.sendEmptyMessage(mHandler.MSG_SHOW_NOMORE_DATA);
-                }
-                else{
+                Log.i("presenter", "开始加载首页更多数据");
+                List<RvItemBean> data = mModel.getHomePageData(from, from + 40);
+                if(null != data){
                     Message msg = mHandler.obtainMessage(mHandler.MSG_ADD_MORE_DATA);
                     msg.obj = data;
                     mHandler.sendMessage(msg);
@@ -185,6 +176,7 @@ public class HomeFrgPresenter {
                     holder = new MyViewHolder(mInflater.inflate(R.layout.homefrg_goods_item, parent, false));
                     break;
                 case RvItemBean.TYPE_ITEM2:
+                    holder = new MyViewHolder(mInflater.inflate(R.layout.homefrg_bigitem, parent, false));
                     break;
                 case RvItemBean.TYPE_ITEM3:
                     break;
@@ -273,6 +265,25 @@ public class HomeFrgPresenter {
                     rb_goodsRate.setRating((Float) data.data.get("rating"));
                     break;
                 case RvItemBean.TYPE_ITEM2:
+                    ImageView iv_goodsIcon1 = (ImageView) holder.getView(R.id.iv_goodIcon1);
+                    TextView tv_goodsName1 = (TextView) holder.getView(R.id.tv_goodname1);
+                    RatingBar rb1 = (RatingBar) holder.getView(R.id.rb_goodRate1);
+                    TextView tv_sale1 = (TextView) holder.getView(R.id.tv_goodSales1);
+
+                    ImageView iv_goodsIcon2 = (ImageView) holder.getView(R.id.iv_goodIcon2);
+                    TextView tv_goodsName2 = (TextView) holder.getView(R.id.tv_goodname2);
+                    RatingBar rb2 = (RatingBar) holder.getView(R.id.rb_goodRate2);
+                    TextView tv_sale2 = (TextView) holder.getView(R.id.tv_goodSales2);
+
+                    iv_goodsIcon1.setImageBitmap((Bitmap) data.data.get("goodsIcon1"));
+                    tv_goodsName1.setText((String)data.data.get("goodsName1"));
+                    rb1.setRating((Float) data.data.get("rating1"));
+                    tv_sale1.setText((String)data.data.get("sale1"));
+
+                    iv_goodsIcon2.setImageBitmap((Bitmap) data.data.get("goodsIcon2"));
+                    tv_goodsName2.setText((String)data.data.get("goodsName2"));
+                    rb2.setRating((Float) data.data.get("rating2"));
+                    tv_sale2.setText((String)data.data.get("sale2"));
                     break;
                 case RvItemBean.TYPE_ITEM3:
                     break;
