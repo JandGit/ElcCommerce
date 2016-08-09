@@ -52,12 +52,6 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        //沉浸式
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            final Window window = getActivity().getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-
         initView();
 
         return mView;
