@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.RvItemBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -193,18 +194,15 @@ public class HomeFrgPresenter {
             switch (holder.getItemViewType()){
                 case RvItemBean.TYPE_AD:
                     ViewPager vp = (ViewPager) holder.getView(R.id.vp_homefrg_ad);
-                    final Bitmap[] imgs = (Bitmap[]) data.data.get("advertisement");
+                    final int[] imgsId = (int[]) data.data.get("advertisement");
                     vp.setAdapter(new PagerAdapter() {
-
-                        Bitmap[] data = imgs;
 
                         @Override
                         public Object instantiateItem(ViewGroup container, int position) {
                             ImageView iv = new ImageView(mContext);
                             iv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                                     ViewGroup.LayoutParams.MATCH_PARENT));
-                            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                            iv.setImageBitmap(data[position]);
+                            Picasso.with(mContext).load(imgsId[position]).fit().into(iv);
                             container.addView(iv);
                             return iv;
                         }
@@ -216,7 +214,7 @@ public class HomeFrgPresenter {
 
                         @Override
                         public int getCount() {
-                            return data.length;
+                            return imgsId.length;
                         }
 
                         @Override
@@ -259,7 +257,7 @@ public class HomeFrgPresenter {
                     TextView tv_goodsName = (TextView) holder.getView(R.id.tv_goodsName);
                     TextView tv_shopOfGoods = (TextView) holder.getView(R.id.tv_shopOfGoods);
                     RatingBar rb_goodsRate = (RatingBar) holder.getView(R.id.rb_goodsRate);
-                    iv_goodsIcon.setImageBitmap((Bitmap) data.data.get("goodsIcon"));
+                    Picasso.with(mContext).load((Integer) data.data.get("goodsIconId")).fit().into(iv_goodsIcon);
                     tv_goodsName.setText((String) data.data.get("goodsName"));
                     tv_shopOfGoods.setText((String)data.data.get("shopName"));
                     rb_goodsRate.setRating((Float) data.data.get("rating"));
@@ -275,12 +273,12 @@ public class HomeFrgPresenter {
                     RatingBar rb2 = (RatingBar) holder.getView(R.id.rb_goodRate2);
                     TextView tv_sale2 = (TextView) holder.getView(R.id.tv_goodSales2);
 
-                    iv_goodsIcon1.setImageBitmap((Bitmap) data.data.get("goodsIcon1"));
+                    Picasso.with(mContext).load((Integer) data.data.get("goodsIconId1")).fit().into(iv_goodsIcon1);
                     tv_goodsName1.setText((String)data.data.get("goodsName1"));
                     rb1.setRating((Float) data.data.get("rating1"));
                     tv_sale1.setText((String)data.data.get("sale1"));
 
-                    iv_goodsIcon2.setImageBitmap((Bitmap) data.data.get("goodsIcon2"));
+                    Picasso.with(mContext).load((Integer) data.data.get("goodsIconId2")).fit().into(iv_goodsIcon2);
                     tv_goodsName2.setText((String)data.data.get("goodsName2"));
                     rb2.setRating((Float) data.data.get("rating2"));
                     tv_sale2.setText((String)data.data.get("sale2"));
