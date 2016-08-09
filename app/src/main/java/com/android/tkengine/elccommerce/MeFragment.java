@@ -21,10 +21,10 @@ public class MeFragment extends Fragment{
         mView = inflater.inflate(R.layout.fragment_me, container, false);
 
         //沉浸式
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             final Window window = getActivity().getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+        }*/
 
         return mView;
     }
