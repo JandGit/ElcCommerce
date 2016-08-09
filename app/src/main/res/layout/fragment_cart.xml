@@ -12,4 +12,6 @@
         android:id="@+id/textView7"
         android:layout_gravity="center_horizontal"
         android:gravity="center" />
+
+
 </LinearLayout>
