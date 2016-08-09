@@ -90,25 +90,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
 
         tv_tips = (TextView) mView.findViewById(R.id.tv_frghome_tips);
 
-//        mAppBarLayout = (AppBarLayout) mView.findViewById(R.id.app_bar);
-//        mAppBarLayout.setExpanded(false);
-//
-//        iv_loginUserIcon = (ImageView) mView.findViewById(R.id.iv_loginUserIcon);
-//        iv_loginUserIcon.setImageBitmap(ImageTools.toRoundBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.touxiang)));
-
         mSwipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipRefresh_main);
-//        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-//            @Override
-//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-//                if (verticalOffset >= 0) {
-//                    mSwipeRefreshLayout.setEnabled(true);
-//                    mToolbar.setVisibility(View.INVISIBLE);
-//                } else{
-//                    mSwipeRefreshLayout.setEnabled(false);
-//                    mToolbar.setVisibility(View.VISIBLE);
-//                }
-//            }
-//        });
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
