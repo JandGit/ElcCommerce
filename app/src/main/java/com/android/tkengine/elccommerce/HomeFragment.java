@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.frgment_home, container, false);
+        mView = inflater.inflate(R.layout.fragment_home, container, false);
 
         //沉浸式
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
