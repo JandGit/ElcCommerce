@@ -14,4 +14,8 @@ public class CartFragment extends Fragment {
         mView = inflater.inflate(R.layout.fragment_cart, container, false);
         return mView;
     }
+
+
+
+
 }

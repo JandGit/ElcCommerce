@@ -51,7 +51,6 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_home, container, false);
-
         initView();
 
         return mView;

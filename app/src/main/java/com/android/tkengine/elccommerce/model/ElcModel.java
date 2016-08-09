@@ -31,31 +31,31 @@ public class ElcModel implements HomeFrgPresenter.CallbackOfModel{
             if(0 == i){
                 itemData.data = new HashMap<>(1);
                 itemData.type = RvItemBean.TYPE_AD;
-                int[] imgsId = new int[4];
-                imgsId[0] =  R.mipmap.advertise1;
-                imgsId[1] = R.mipmap.advertise2;
-                imgsId[2] = R.mipmap.advertise3;
-                imgsId[3] = R.mipmap.advertise4;
-                itemData.data.put("advertisement", imgsId);
+                int[] img = new int[4];
+                img[0] = R.mipmap.advertise1;
+                img[1] = R.mipmap.advertise2;
+                img[2] = R.mipmap.advertise3;
+                img[3] = R.mipmap.advertise4;
+                itemData.data.put("advertisement", img);
             }
             else if(1 == i){
                 itemData.type = RvItemBean.TYPE_CATEGORY;
             }
-            else if(2 == i){
+            else if(from + 2 == i){
                 itemData.data = new HashMap<>(1);
                 itemData.type = RvItemBean.TYPE_GROUPTITLE;
                 itemData.data.put("groupName", "小图标商品列表");
             }
-            else if(20 == i){
+            else if(30 == i){
                 itemData.data = new HashMap<>(1);
                 itemData.type = RvItemBean.TYPE_GROUPTITLE;
                 itemData.data.put("groupName", "大图标商品列表");
             }
-            else if(i > 20 && i <= 300){
+            else if(i > 30 && i <= 600){
                 itemData.data = new HashMap<>(8);
                 itemData.type = RvItemBean.TYPE_ITEM2;
                 itemData.data.put("goodsIconId1", R.mipmap.background);
-                itemData.data.put("goodsIconId2", R.mipmap.apple);
+                itemData.data.put("goodsIconId2",  R.mipmap.apple);
                 itemData.data.put("goodsName1", "水果1");
                 itemData.data.put("goodsName2", "水果2");
                 itemData.data.put("rating1", 4.0f);
