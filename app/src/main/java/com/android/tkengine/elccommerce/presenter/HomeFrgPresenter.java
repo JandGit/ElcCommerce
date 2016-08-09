@@ -98,7 +98,7 @@ public class HomeFrgPresenter {
             @Override
             public void run() {
                 Log.i("presenter", "开始加载首页数据");
-                final List<RvItemBean> data = mModel.getHomePageData(0, 60);
+                final List<RvItemBean> data = mModel.getHomePageData(0, 10);
                 Log.i("presenter", "加载成功，现在添加Adapter");
                 if(null == data){
                     mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);
@@ -119,7 +119,7 @@ public class HomeFrgPresenter {
             @Override
             public void run() {
                 Log.i("presenter", "开始加载首页更多数据");
-                List<RvItemBean> data = mModel.getHomePageData(from, from + 40);
+                List<RvItemBean> data = mModel.getHomePageData(from, from + 10);
                 if(null != data){
                     Message msg = mHandler.obtainMessage(mHandler.MSG_ADD_MORE_DATA);
                     msg.obj = data;
