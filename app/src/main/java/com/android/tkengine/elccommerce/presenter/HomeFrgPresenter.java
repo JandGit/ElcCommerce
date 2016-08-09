@@ -1,6 +1,7 @@
 package com.android.tkengine.elccommerce.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +19,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.tkengine.elccommerce.DisplayActivity;
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.RvItemBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
@@ -195,6 +197,7 @@ public class HomeFrgPresenter {
                 case RvItemBean.TYPE_AD:
                     ViewPager vp = (ViewPager) holder.getView(R.id.vp_homefrg_ad);
                     final int[] imgsId = (int[]) data.data.get("advertisement");
+
                     vp.setAdapter(new PagerAdapter() {
 
                         @Override
@@ -261,6 +264,13 @@ public class HomeFrgPresenter {
                     tv_goodsName.setText((String) data.data.get("goodsName"));
                     tv_shopOfGoods.setText((String)data.data.get("shopName"));
                     rb_goodsRate.setRating((Float) data.data.get("rating"));
+                    iv_goodsIcon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(mContext, DisplayActivity.class);
+                            mContext.startActivity(intent);
+                        }
+                    });
                     break;
                 case RvItemBean.TYPE_ITEM2:
                     ImageView iv_goodsIcon1 = (ImageView) holder.getView(R.id.iv_goodIcon1);
