@@ -91,15 +91,13 @@ public class UserLoginActivity extends AppCompatActivity {
         final String password = et_password.getText().toString();
 
         JSONObject user_login = new JSONObject();
-        JSONObject js = new JSONObject();
         try {
             user_login.put("user_phone", userName);
             user_login.put("user_password", password);
-            js.put("user_login", user_login);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        final String json = js.toString();
+        final String json = user_login.toString();
         Log.i("Login", "json串为:" + json);
         new AsyncTask<Void, Void, Boolean>() {
             @Override

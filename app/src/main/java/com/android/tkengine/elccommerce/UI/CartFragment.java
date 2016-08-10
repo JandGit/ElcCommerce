@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.tkengine.elccommerce.PayActivity;
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.presenter.CartFrgPresenter;
