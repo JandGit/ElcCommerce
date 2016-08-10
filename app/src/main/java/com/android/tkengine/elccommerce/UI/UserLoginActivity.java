@@ -40,31 +40,6 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
     ImageView iv_userIcon;
 
     private UserLoginActPresenter mPresenter;
-    private MyHandler myHandler;
-
-    private static class MyHandler extends Handler {
-        final int MSG_LOGINOK = 0;
-        final int MSG_LOGINFAILED = 1;
-
-        UserLoginActivity mAtivity;
-
-        public MyHandler(UserLoginActivity mAtivity) {
-            this.mAtivity = mAtivity;
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_LOGINOK:
-                    mAtivity.showToast("登录成功");
-                    break;
-                case MSG_LOGINFAILED:
-                    mAtivity.showToast("登录失败");
-                    break;
-            }
-            super.handleMessage(msg);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +51,6 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
-        myHandler = new MyHandler(this);
         mPresenter = new UserLoginActPresenter(this, this);
         mToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
         et_userName = (TextView) findViewById(R.id.et_userName);

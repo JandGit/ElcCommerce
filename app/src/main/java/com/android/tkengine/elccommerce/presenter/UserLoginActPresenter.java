@@ -3,12 +3,49 @@ package com.android.tkengine.elccommerce.presenter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import com.android.tkengine.elccommerce.model.ElcModel;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class UserLoginActPresenter {
 
     CallbackOfView mView;
     CallbackOfModel mModel;
     Context mContext;
+
+    private MyHandler mHandler;
+    private static class MyHandler extends Handler {
+        final int MSG_LOGINOK = 0;
+        final int MSG_LOGINFAILED = 1;
+        final int MSG_NETWORKERROR = 2;
+
+        private CallbackOfView mView;
+
+        public MyHandler(CallbackOfView mView) {
+            this.mView = mView;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MSG_LOGINOK:
+                    mView.showToast("登录成功");
+                    break;
+                case MSG_LOGINFAILED:
+                    mView.showToast("登录失败");
+                    break;
+                case MSG_NETWORKERROR:
+                    mView.showToast("网络连接错误");
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    }
 
     //由UserLoginAcitivity实现的接口
     public interface CallbackOfView{
@@ -25,15 +62,18 @@ public class UserLoginActPresenter {
         void setUserIcon(Bitmap icon);
     }
     public interface CallbackOfModel{
-
+        //用户登录，登录成功返回true,该操作不开启新线程访问网络,注意调用时在子线程调用
+        boolean login(String userName, String password) throws Exception;
     }
 
     public UserLoginActPresenter(CallbackOfView mView, Context context) {
         this.mView = mView;
         this.mContext = context;
+        this.mModel = new ElcModel(mContext);
+        this.mHandler = new MyHandler(mView);
     }
 
-    public void login(String userName, String password){
+    public void login(final String userName, final String password){
         if(null == userName || null == password || userName.isEmpty() || password.isEmpty()){
             mView.showToast("用户名或密码不能为空");
             return;
@@ -42,7 +82,22 @@ public class UserLoginActPresenter {
             mView.showToast("手机号码格式不正确");
             return;
         }
-
+        new Thread(){
+            @Override
+            public void run() {
+                try {
+                    if (mModel.login(userName, password)) {
+                        mHandler.sendEmptyMessage(mHandler.MSG_LOGINOK);
+                    }
+                    else {
+                        mHandler.sendEmptyMessage(mHandler.MSG_LOGINFAILED);
+                    }
+                } catch (Exception e) {
+                    mHandler.sendEmptyMessage(mHandler.MSG_NETWORKERROR);
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     public void loadUserIcon(String userName){
