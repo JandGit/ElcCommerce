@@ -222,7 +222,20 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return goodsSelectedList;
     }
 
-
+    public boolean allGoodsSelected(){
+        int index = 0;
+        for(GoodsBean cartGoodsItem:cartGoodsList){
+            if( !cartGoodsItem.getGoodsSelected()){
+                break;
+            }
+            index ++;
+        }
+        if(index == cartGoodsList.size()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 
 
