@@ -9,8 +9,11 @@
     <string name="price">¥</string>
     <string name="share">分享</string>
     <string name="evaluation">商品评价</string>
+    <string name="goods_message">商品信息</string>
     <string name="more_evaluation">查看全部评价</string>
     <string name="store_evaluation">等级评价</string>
     <string name="nametext">日本原装三菱UM-100 0.5mm 中性笔 UM100 三菱水笔10支盒装包邮</string>
     <string name="all_goods">进店逛逛</string>
+    <string name="add_cart">加入购物车</string>
+    <string name="purchase_imm">立即购买</string>
 </resources>

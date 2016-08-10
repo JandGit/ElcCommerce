@@ -1,4 +1,4 @@
-package com.android.tkengine.elccommerce;
+package com.android.tkengine.elccommerce.UI;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.presenter.CartFrgPresenter;
 import com.android.tkengine.elccommerce.utils.DividerItemDecoration;

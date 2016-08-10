@@ -2,12 +2,10 @@ package com.android.tkengine.elccommerce.presenter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
@@ -19,7 +17,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.tkengine.elccommerce.DisplayActivity;
+import com.android.tkengine.elccommerce.UI.DisplayActivity;
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.RvItemBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
