@@ -14,4 +14,6 @@
     <string name="nametext">日本原装三菱UM-100 0.5mm 中性笔 UM100 三菱水笔10支盒装包邮</string>
     <string name="all_goods">进店逛逛</string>
     <string name="frgme_title">我的Elc</string>
+    <string name="userloginAct_et">邮箱/手机号码</string>
+    <string name="userloginAct_pass">密码</string>
 </resources>

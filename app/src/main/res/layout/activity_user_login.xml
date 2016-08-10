@@ -10,7 +10,7 @@
         android:id="@+id/tb_loginAct"
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="42dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -20,11 +20,12 @@
                 android:clickable="true"
                 android:background="?attr/selectableItemBackground"
                 android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:scaleType="centerInside"
                 android:src="@drawable/backarrow"
-                android:layout_width="30dp"
-                android:layout_height="30dp" />
+                android:layout_width="25dp"
+                android:layout_height="25dp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -36,5 +37,75 @@
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
+
+    <ImageView
+        android:layout_below="@+id/tb_loginAct"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/frgme_user_unlogin"
+        android:id="@+id/imageView" />
+
+    <EditText
+        android:id="@+id/et_userName"
+        android:layout_marginTop="30dp"
+        android:ems="12"
+        android:textSize="20sp"
+        android:hint="@string/userloginAct_et"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="12"
+        android:hint="@string/userloginAct_pass"
+        android:textSize="20sp"
+        android:inputType="textPassword"
+        android:layout_below="@+id/et_userName"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/btn_signUp"
+        android:onClick="onLoginBtnClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="登录"
+        android:textColor="@color/colorWhite"
+        android:layout_below="@+id/et_password"
+        android:layout_marginTop="30dp"
+        android:layout_alignLeft="@+id/et_password"
+        android:layout_alignStart="@+id/et_password"
+        android:layout_alignRight="@+id/et_password"
+        android:layout_alignEnd="@+id/et_password"
+        android:background="@drawable/loginbutton_background" />
+
+    <TextView
+        android:id="@+id/tv_forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="忘记密码？"
+        android:layout_below="@+id/btn_signUp"
+        android:layout_alignLeft="@+id/btn_signUp"
+        android:layout_alignStart="@+id/btn_signUp"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        android:background="@drawable/userlogin_textbackground" />
+
+    <TextView
+        android:id="@+id/tv_signIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="注册新帐号"
+        android:clickable="true"
+        android:background="@drawable/userlogin_textbackground"
+        android:layout_alignTop="@+id/tv_forgotPassword"
+        android:layout_alignEnd="@+id/btn_signUp"
+        android:layout_alignRight="@+id/btn_signUp" />
+
 
 </RelativeLayout>
