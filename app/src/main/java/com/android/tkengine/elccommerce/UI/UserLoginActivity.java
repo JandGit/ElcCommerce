@@ -30,6 +30,7 @@ import java.net.URL;
 
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.presenter.UserLoginActPresenter;
+import com.squareup.picasso.Picasso;
 
 public class UserLoginActivity extends AppCompatActivity implements UserLoginActPresenter.CallbackOfView{
 
@@ -95,5 +96,9 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
 
     public void setUserIcon(Bitmap icon){
         iv_userIcon.setImageBitmap(icon);
+    }
+
+    public void setUserIcon(String url){
+        Picasso.with(this).load(url).fit().into(iv_userIcon);
     }
 }

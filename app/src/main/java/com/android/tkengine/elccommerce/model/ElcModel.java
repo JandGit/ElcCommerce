@@ -9,6 +9,7 @@ import android.util.Log;
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.RvItemBean;
+import com.android.tkengine.elccommerce.beans.UserInfoBean;
 import com.android.tkengine.elccommerce.presenter.HomeFrgPresenter;
 import com.android.tkengine.elccommerce.presenter.UserLoginActPresenter;
 import com.android.tkengine.elccommerce.utils.HttpCallbackListener;
@@ -80,19 +81,36 @@ public class ElcModel implements HomeFrgPresenter.CallbackOfModel, UserLoginActP
         return allData;
     }
 
-    public boolean login(String userName, String password) throws Exception {
+    public UserInfoBean login(String userName, String password) throws Exception {
 
-        boolean loginResult;
         JSONObject jsonObject = new JSONObject();
         String params;
+        String userId = null;
         jsonObject.put("user_phone", userName);
         jsonObject.put("user_password", password);
         params = jsonObject.toString();
         String result;
         result = HttpUtil.sentHttpPost(Constants.SERVER_ADDRESS_LOGIN, params);
         jsonObject = new JSONObject(result);
-        loginResult = jsonObject.getBoolean("result");
+        userId = jsonObject.getString("user_id");
 
-        return loginResult;
+        if (null == userId || userId.isEmpty()) {
+            return null;
+        }
+        UserInfoBean info = new UserInfoBean();
+        info.setUserId(userId);
+        jsonObject = new JSONObject();
+        jsonObject.put("user_id", userId);
+        params = jsonObject.toString();
+        result = HttpUtil.sentHttpPost(Constants.SERVER_GETUSERINFO, params);
+        Log.i("model:result", result);
+        jsonObject = new JSONObject(result);
+        info.setUser_name(jsonObject.getString("user_name"));
+        info.setUser_phone(jsonObject.getString("user_phone"));
+        info.setUser_sex(jsonObject.getString("user_sex"));
+        info.setUser_picture_url(jsonObject.getString("user_picture_url"));
+        info.setUser_money(jsonObject.getDouble("user_money"));
+
+        return info;
     }
 }
