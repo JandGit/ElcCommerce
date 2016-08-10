@@ -159,6 +159,73 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
         });
     }
 
+    public void addItem(final List<GoodsBean> newGoodsList){
+        //先遍历原数据中是否有相同的店铺名
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int index = 0;
+                GoodsBean newStore = newGoodsList.get(0);  //List中第一个是店铺名信息
+                String storeName = newStore.getGoodsName();
+                while(index <= cartGoodsList.size() - 1 && !cartGoodsList.get(index).getGoodsName().equals(storeName)){
+                    index ++;
+                }
+                if(index == cartGoodsList.size()){   //没有相同店铺名，插入到原数据第一个位置
+                    cartGoodsList.addAll(0,newGoodsList);
+                }else{          //相同店铺名，合并在一起
+                    newGoodsList.remove(0);
+                    cartGoodsList.addAll(index,newGoodsList);
+                }
+            }
+        }).start();
+        notifyDataSetChanged();
+    }
+
+    public void deleteItem( List<GoodsBean> selectedGoodsList){
+      /* new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(selectedGoodsList != null){
+                    for(GoodsBean selectedGoodsItem:selectedGoodsList){
+                        cartGoodsList.remove(selectedGoodsItem);
+                    }
+                }
+                notifyDataSetChanged();
+            }
+        }).start();*/
+        if(selectedGoodsList != null){
+            for(GoodsBean selectedGoodsItem:selectedGoodsList){
+                cartGoodsList.remove(selectedGoodsItem);
+            }
+        }
+        notifyDataSetChanged();
+
+    }
+
+    public List<GoodsBean> getSelectedItem(){
+        final List<GoodsBean> goodsSelectedList = new ArrayList<GoodsBean>();
+       /* new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(GoodsBean cartGoodsItem:cartGoodsList){
+                    if(cartGoodsItem.getGoodsSelected()){
+                        goodsSelectedList.add(cartGoodsItem);
+                    }
+                }
+            }
+        }).start();*/
+        for(GoodsBean cartGoodsItem:cartGoodsList){
+            if(cartGoodsItem.getGoodsSelected()){
+                goodsSelectedList.add(cartGoodsItem);
+            }
+        }
+        return goodsSelectedList;
+    }
+
+
+
+
+
 
     public static class GoodsViewHolder extends RecyclerView.ViewHolder {
         public View goodsContext;
