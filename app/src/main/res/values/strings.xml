@@ -18,4 +18,5 @@
     <string name="frgme_title">我的Elc</string>
     <string name="userloginAct_et">邮箱/手机号码</string>
     <string name="userloginAct_pass">密码</string>
+    <string name="goods_message">商品信息</string>
 </resources>

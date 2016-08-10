@@ -16,7 +16,7 @@ import com.android.tkengine.elccommerce.presenter.CartFrgPresenter;
  */
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     private int mOrientation = LinearLayoutManager.VERTICAL;   //RecyclerView纵向布局
-    private int mItemSize = 2; //Item间分割线大小
+    private int mItemSize = 1; //Item间分割线大小
     private Paint mPaint;  //分割线画笔
 
     public DividerItemDecoration(Context context, int orientation){
@@ -24,7 +24,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         //将单位(sp/dp/dip/px)转换
         mItemSize = (int) TypedValue.applyDimension(mItemSize, TypedValue.COMPLEX_UNIT_DIP,context.getResources().getDisplayMetrics());
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG) ;  //用于绘制时抗锯齿
-        mPaint.setColor(0xFFC4C4C4);
+        mPaint.setColor(0xEEEEEEEE);
         mPaint.setStyle(Paint.Style.FILL); //设置填充
 
     }
