@@ -1,5 +1,6 @@
 package com.android.tkengine.elccommerce.UI;
 
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +36,8 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
     Toast mToast;
     //登录界面的两个输入框
     TextView et_userName, et_password;
+    //用户头像
+    ImageView iv_userIcon;
 
     private UserLoginActPresenter mPresenter;
     private MyHandler myHandler;
@@ -63,21 +67,6 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
     }
 
     @Override
-    public void onLoginSuccess() {
-
-    }
-
-    @Override
-    public void onLoginFailed() {
-
-    }
-
-    public void showToast(String text) {
-        mToast.setText(text);
-        mToast.show();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
@@ -92,6 +81,7 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
         mToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
         et_userName = (TextView) findViewById(R.id.et_userName);
         et_password = (TextView) findViewById(R.id.et_password);
+        iv_userIcon = (ImageView) findViewById(R.id.iv_userIcon);
 
         findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +95,31 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
     public void onLoginBtnClick(View view) {
         String userName = et_userName.getText().toString();
         String password = et_password.getText().toString();
+        mPresenter.login(userName, password);
+    }
 
+    //回调接口,用户输入密码时根据用户名加载用户头像
+    public void onPasswordInput(View view){
+        String userName = et_userName.getText().toString();
+        mPresenter.loadUserIcon(userName);
+    }
 
+    @Override
+    public void onLoginSuccess() {
+
+    }
+
+    @Override
+    public void onLoginFailed() {
+
+    }
+
+    public void showToast(String text) {
+        mToast.setText(text);
+        mToast.show();
+    }
+
+    public void setUserIcon(Bitmap icon){
+        iv_userIcon.setImageBitmap(icon);
     }
 }
