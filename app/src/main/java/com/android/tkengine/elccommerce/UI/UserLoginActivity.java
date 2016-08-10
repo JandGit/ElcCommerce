@@ -1,12 +1,14 @@
 package com.android.tkengine.elccommerce.UI;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,13 +27,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.presenter.UserLoginActPresenter;
 
-public class UserLoginActivity extends AppCompatActivity {
+public class UserLoginActivity extends AppCompatActivity implements UserLoginActPresenter.CallbackOfView{
 
     Toast mToast;
     //登录界面的两个输入框
     TextView et_userName, et_password;
 
+    private UserLoginActPresenter mPresenter;
     private MyHandler myHandler;
 
     private static class MyHandler extends Handler {
@@ -58,6 +62,16 @@ public class UserLoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onLoginSuccess() {
+
+    }
+
+    @Override
+    public void onLoginFailed() {
+
+    }
+
     public void showToast(String text) {
         mToast.setText(text);
         mToast.show();
@@ -68,7 +82,13 @@ public class UserLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
 
+        //实现沉浸式状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
         myHandler = new MyHandler(this);
+        mPresenter = new UserLoginActPresenter(this, this);
         mToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
         et_userName = (TextView) findViewById(R.id.et_userName);
         et_password = (TextView) findViewById(R.id.et_password);
@@ -83,87 +103,9 @@ public class UserLoginActivity extends AppCompatActivity {
 
     //登录按钮按下回调事件
     public void onLoginBtnClick(View view) {
-        if (null == et_userName || null == et_password) {
-            mToast.setText("用户名或密码不能为空");
-            mToast.show();
-        }
-        final String userName = et_userName.getText().toString();
-        final String password = et_password.getText().toString();
+        String userName = et_userName.getText().toString();
+        String password = et_password.getText().toString();
 
-        JSONObject user_login = new JSONObject();
-        JSONObject js = new JSONObject();
-        try {
-            user_login.put("user_phone", userName);
-            user_login.put("user_password", password);
-            js.put("user_login", user_login);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        final String json = js.toString();
-        Log.i("Login", "json串为:" + json);
-        new AsyncTask<Void, Void, Boolean>() {
-            @Override
-            protected Boolean doInBackground(Void... voids) {
-                boolean result = false;
 
-                URL url;
-                HttpURLConnection conn;
-                OutputStream os = null;
-                InputStream is = null;
-                try {
-                    Log.i("Login", "开始连接服务器");
-                    url = new URL(Constants.SERVER_ADDRESS_LOGIN);
-                    conn = (HttpURLConnection) url.openConnection();
-                    conn.setConnectTimeout(8000);
-                    conn.setDoInput(true);
-                    conn.setDoOutput(true);
-                    conn.setRequestMethod("POST");
-                    conn.setUseCaches(false);
-                    conn.connect();
-                    os = conn.getOutputStream();
-                    Log.i("Login", "服务器连接成功");
-                    if (os != null) {
-                        os.write(json.getBytes("utf-8"));
-                        os.flush();
-                    }
-                    is = conn.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-                    String json = reader.readLine();
-                    try {
-                        Log.i("Login", "开始解析Json:" + json);
-                        JSONObject jsonObject = new JSONObject(json);
-                        result = (boolean) jsonObject.get("result");
-                        Log.i("Login", "Json解析成功,值为" + result);
-                    } catch (JSONException e) {
-                        Log.i("Login", "服务器连接失败");
-                        e.printStackTrace();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }finally {
-                    try {
-                        if(is != null){
-                            is.close();
-                        }
-                        if(os != null){
-                            os.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                return result;
-            }
-
-            @Override
-            protected void onPostExecute(Boolean result) {
-                if (result) {
-                    myHandler.sendEmptyMessage(myHandler.MSG_LOGINOK);
-                } else {
-                    myHandler.sendEmptyMessage(myHandler.MSG_LOGINFAILED);
-                }
-            }
-        }.execute();
     }
 }
