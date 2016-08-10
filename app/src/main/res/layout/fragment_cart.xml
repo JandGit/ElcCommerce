@@ -14,20 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:background="@color/colorPrimary"
             android:textColor="@color/colorWhite"
             android:text="购物车"/>
-
-        <ImageView
-            android:layout_marginRight="13dp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="12dp"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/message"
-            android:layout_width="25dp"
-            android:layout_height="25dp"/>
 
         <TextView
             android:id="@+id/tv_cart_status"
@@ -37,7 +27,7 @@
             android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"
             android:textColor="@color/colorWhite"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:text="编辑"/>
     </RelativeLayout>
 
@@ -133,7 +123,7 @@
                     android:layout_alignParentRight="true"
                     android:background="@color/colorPrimary"
                     android:textColor="@color/colorWhite"
-                    android:text="删除"/>
+                    android:text="@string/deldete"/>
             </RelativeLayout>
 
 
@@ -146,10 +136,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/cart_title"
         android:layout_above="@id/cart_footer">
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/srf_cart_goodsList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_cart_goodsList"
                 android:layout_width="match_parent"
@@ -157,7 +144,6 @@
 
             </android.support.v7.widget.RecyclerView>
 
-        </android.support.v4.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
 
