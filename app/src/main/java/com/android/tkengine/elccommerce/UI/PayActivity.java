@@ -1,8 +1,10 @@
-package com.android.tkengine.elccommerce;
+package com.android.tkengine.elccommerce.UI;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import com.android.tkengine.elccommerce.R;
 
 /**
  * Created by 陈嘉shuo on 2016/8/10.

@@ -20,6 +20,8 @@
         </activity>
 
         <activity android:name=".UI.DisplayActivity"/>
+        <activity android:name=".UI.PayActivity"/>
+
     </application>
 
 </manifest>
