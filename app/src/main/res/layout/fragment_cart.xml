@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/cart_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentTop="true">
 
         <TextView
@@ -21,12 +21,24 @@
 
         <ImageView
             android:layout_marginRight="13dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dp"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
             android:src="@drawable/message"
             android:layout_width="25dp"
             android:layout_height="25dp"/>
+
+        <TextView
+            android:id="@+id/tv_cart_status"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:text="编辑"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -35,62 +47,97 @@
         android:layout_height="45dp"
         android:layout_alignParentBottom="true">
 
-        <View
-            android:id="@+id/divider"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="1.0px"
-            android:layout_alignParentTop="true"
-            android:background="@android:color/darker_gray" />
+            android:layout_height="match_parent">
 
-        <CheckBox
-            android:gravity="center"
-            android:id="@+id/chk_cart_selectAll"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/divider"/>
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1.0px"
+                android:layout_alignParentTop="true"
+                android:background="@android:color/darker_gray" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toRightOf="@+id/chk_cart_selectAll"
-            android:textColor="@color/colorGray"
-            android:gravity="center"
-            android:text="全选"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/divider">
+                <CheckBox
+                    android:gravity="center"
+                    android:id="@+id/chk_cart_selectAll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
 
-        <TextView
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_toLeftOf="@+id/tv_money_mark"
-            android:textSize="20sp"
-            android:text="合计："/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/chk_cart_selectAll"
+                    android:textColor="@color/colorGray"
+                    android:gravity="center"
+                    android:text="全选"/>
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/tv_money_mark"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="20sp"
-            android:layout_toLeftOf="@+id/tv_cart_goodsSum"
-            android:text="￥"/>
+            <RelativeLayout
+                android:id="@+id/layout_pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider">
+                <Button
+                    android:id="@+id/btn_cart_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/colorWhite"
+                    android:text="结算"/>
 
-        <TextView
-            android:id="@+id/tv_cart_goodsSum"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_toLeftOf="@+id/btn_cart_pay"
-            android:text="0.00"
-            android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/tv_cart_goodsSum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_toLeftOf="@+id/btn_cart_pay"
+                    android:layout_marginRight="5dp"
+                    android:text="0.00"
+                    android:textSize="20sp"/>
 
-        <Button
-            android:id="@+id/btn_cart_pay"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/colorWhite"
-            android:text="结算"/>
+                <TextView
+                    android:id="@+id/tv_money_mark"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="20sp"
+                    android:layout_toLeftOf="@+id/tv_cart_goodsSum"
+                    android:text="￥"/>
+
+                <TextView
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/tv_money_mark"
+                    android:textSize="20sp"
+                    android:text="合计："/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_delete"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/btn_cart_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/colorWhite"
+                    android:text="删除"/>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

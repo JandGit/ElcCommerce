@@ -1,4 +1,4 @@
-package com.android.tkengine.elccommerce;
+package com.android.tkengine.elccommerce.UI;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -16,9 +16,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.presenter.CartFrgPresenter;
 import com.android.tkengine.elccommerce.utils.DividerItemDecoration;
@@ -44,6 +46,14 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     Button cartPay;
     //结算支付商品数量
     int goodsNumber;
+    //购物车状态（编辑/完成）
+    TextView cartStatus;
+    //不同购物车状态下页面底部对应的布局（结算/删除）
+    RelativeLayout payLayout;
+    RelativeLayout deleteLayout;
+    //删除
+    Button cartDelete;
+
 
     CartFrgPresenter cartFrgPresenter;
 
@@ -56,6 +66,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     }
 
     protected void initCartView(){
+        payLayout = (RelativeLayout)cartView.findViewById(R.id.layout_pay);
+        deleteLayout = (RelativeLayout)cartView.findViewById(R.id.layout_delete);
         cartSelectAll = (CheckBox)cartView.findViewById(R.id.chk_cart_selectAll);
         cartGoodsSum = (TextView)cartView.findViewById(R.id.tv_cart_goodsSum);
         //初始化下拉刷新控件
@@ -125,6 +137,41 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
                     Intent intent = new Intent(cartView.getContext(),PayActivity.class);
                     startActivity(intent);
                 }
+            }
+        });
+
+        //切换购物车状态
+        cartStatus = (TextView)cartView.findViewById(R.id.tv_cart_status);
+        cartStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String status = cartStatus.getText().toString();
+                if(status.equals("编辑")){
+                    cartStatus.setText("完成");
+                    payLayout.setVisibility(View.GONE);
+                    deleteLayout.setVisibility(View.VISIBLE);
+                }else if(status.equals("完成")){
+                    cartStatus.setText("编辑");
+                    payLayout.setVisibility(View.VISIBLE);
+                    deleteLayout.setVisibility(View.GONE);
+                    for(GoodsBean cartGoodsItem:cartFrgPresenter.cartGoodsList){
+                        cartGoodsItem.setGoodsSelected(false);
+                    }
+                    cartSum = 0;
+                    cartFrgPresenter.notifyDataSetChanged();
+                    cartGoodsSum.setText(String.valueOf(decimalFormat.format(cartSum)));
+                    goodsNumber = 0;
+                    cartPay.setText("结算（"+String.valueOf(goodsNumber) +"）");
+                }
+            }
+        });
+
+        //删除
+        cartDelete = (Button)cartView.findViewById(R.id.btn_cart_delete);
+        cartDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               cartFrgPresenter.deleteItem(cartFrgPresenter.getSelectedItem());
             }
         });
 
@@ -241,10 +288,10 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             while(start <= cartFrgPresenter.cartGoodsList.size() - 1 && cartFrgPresenter.cartGoodsList.get(start).getGoodsPrice() != 0 ){
                 Log.d("position",String.valueOf(start));
                 GoodsBean cartGoodsItem = cartFrgPresenter.cartGoodsList.get(start);
-                goodsNumber = goodsNumber + cartGoodsItem.getGoodsNum();
                 if( !cartGoodsItem.getGoodsSelected()){  //设组内没被选中的商品为被选中状态
                     cartGoodsItem.setGoodsSelected(true);
                     cartSum = cartSum + cartGoodsItem.getGoodsPrice() * cartGoodsItem.getGoodsNum();
+                    goodsNumber = goodsNumber + cartGoodsItem.getGoodsNum();
                 }
                 start ++;
             }

@@ -1,4 +1,4 @@
-package com.android.tkengine.elccommerce;
+package com.android.tkengine.elccommerce.UI;
 
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -23,6 +23,8 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import com.android.tkengine.elccommerce.R;
 
 public class UserLoginActivity extends AppCompatActivity {
 

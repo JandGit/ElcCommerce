@@ -1,4 +1,4 @@
-package com.android.tkengine.elccommerce;
+package com.android.tkengine.elccommerce.UI;
 
 import android.content.Intent;
 import android.os.Bundle;

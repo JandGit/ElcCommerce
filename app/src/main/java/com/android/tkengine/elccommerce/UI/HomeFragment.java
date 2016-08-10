@@ -1,4 +1,4 @@
-package com.android.tkengine.elccommerce;
+package com.android.tkengine.elccommerce.UI;
 
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.RvItemBean;
 import com.android.tkengine.elccommerce.presenter.HomeFrgPresenter;
 import com.android.tkengine.elccommerce.utils.ImageTools;
