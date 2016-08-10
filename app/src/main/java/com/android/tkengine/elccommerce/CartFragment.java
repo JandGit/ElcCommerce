@@ -13,9 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.presenter.CartFrgPresenter;
@@ -38,6 +40,10 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     DecimalFormat decimalFormat = new DecimalFormat("0.00");
     //购物车结算总金额
     double cartSum;
+    //结算
+    Button cartPay;
+    //结算支付商品数量
+    int goodsNumber;
 
     CartFrgPresenter cartFrgPresenter;
 
@@ -83,13 +89,17 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(cartSelectAll.isChecked()){
+                    goodsNumber = 0;
                    cartSum = 0;
                     for(GoodsBean cartGoodsItem:cartFrgPresenter.cartGoodsList){
                         cartGoodsItem.setGoodsSelected(true);
                         cartSum = cartSum + cartGoodsItem.getGoodsPrice() *cartGoodsItem.getGoodsNum();
+                        goodsNumber = goodsNumber + cartGoodsItem.getGoodsNum();
+
                     }
                     cartFrgPresenter.notifyDataSetChanged();
                     cartGoodsSum.setText(String.valueOf(decimalFormat.format(cartSum)));
+                    cartPay.setText("结算（"+String.valueOf(goodsNumber) +"）");
 
                 }else if(!cartSelectAll.isChecked()){
                     for(GoodsBean cartGoodsItem:cartFrgPresenter.cartGoodsList){
@@ -98,6 +108,22 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
                     cartSum = 0;
                     cartFrgPresenter.notifyDataSetChanged();
                     cartGoodsSum.setText(String.valueOf(decimalFormat.format(cartSum)));
+                    goodsNumber = 0;
+                    cartPay.setText("结算（"+String.valueOf(goodsNumber) +"）");
+                }
+            }
+        });
+
+        //购物车支付操作
+        cartPay = (Button)cartView.findViewById(R.id.btn_cart_pay);
+        cartPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(goodsNumber == 0){
+                    Toast.makeText(cartView.getContext(),"你还没有选择商品哦",Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(cartView.getContext(),PayActivity.class);
+                    startActivity(intent);
                 }
             }
         });
@@ -143,6 +169,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             cartSum = cartSum + Double.parseDouble(holder.goodsPrice.getText().toString()) * Integer.parseInt(holder.goodsNumber.getText().toString());
             cartGoodsSum.setText(String.valueOf(decimalFormat.format(cartSum)));
             cartFrgPresenter.cartGoodsList.get(holder.getPosition()).setGoodsSelected(true);
+            goodsNumber = goodsNumber + Integer.parseInt(holder.goodsNumber.getText().toString());
+            cartPay.setText("结算（"+String.valueOf(goodsNumber) +"）");
 
             //判断组内所有选项都被选中
             int startPosition;
@@ -180,6 +208,9 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             cartSum =cartSum - Double.parseDouble(holder.goodsPrice.getText().toString()) * Integer.parseInt(holder.goodsNumber.getText().toString());
             cartGoodsSum.setText(String.valueOf(decimalFormat.format(cartSum)));
             cartFrgPresenter.cartGoodsList.get(holder.getPosition()).setGoodsSelected(false);
+            goodsNumber = goodsNumber - Integer.parseInt(holder.goodsNumber.getText().toString());
+            cartPay.setText("结算（"+String.valueOf(goodsNumber) +"）");
+
             int position = holder.getPosition() - 1;
             while (cartFrgPresenter.cartGoodsList.get(position).getGoodsPrice() != 0){
                 position -- ;
@@ -198,12 +229,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
 
     //点击各商品进入商品详情
     public void onItemViewClick(){
-        /*ShopFragment shopFragment = new ShopFragment();
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add()
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();*/
+        Intent intent = new Intent(cartView.getContext(),DisplayActivity.class);
+        startActivity(intent);
     }
 
     //点击选择一组商品
@@ -214,6 +241,7 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             while(start <= cartFrgPresenter.cartGoodsList.size() - 1 && cartFrgPresenter.cartGoodsList.get(start).getGoodsPrice() != 0 ){
                 Log.d("position",String.valueOf(start));
                 GoodsBean cartGoodsItem = cartFrgPresenter.cartGoodsList.get(start);
+                goodsNumber = goodsNumber + cartGoodsItem.getGoodsNum();
                 if( !cartGoodsItem.getGoodsSelected()){  //设组内没被选中的商品为被选中状态
                     cartGoodsItem.setGoodsSelected(true);
                     cartSum = cartSum + cartGoodsItem.getGoodsPrice() * cartGoodsItem.getGoodsNum();
@@ -222,6 +250,7 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             }
             cartFrgPresenter.notifyDataSetChanged();
             cartGoodsSum.setText(String.valueOf(decimalFormat.format(cartSum)));
+            cartPay.setText("结算（"+String.valueOf(goodsNumber) +"）");
 
             //判断购物车所有选项都被选中
           /*  cartSelectAll.setChecked(true);
@@ -241,12 +270,14 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             while(start <= cartFrgPresenter.cartGoodsList.size() - 1 && cartFrgPresenter.cartGoodsList.get(start).getGoodsPrice() != 0 ){
                 Log.d("position",String.valueOf(start));
                 GoodsBean cartGoodsItem = cartFrgPresenter.cartGoodsList.get(start);
+                goodsNumber = goodsNumber - cartGoodsItem.getGoodsNum();
                 cartGoodsItem.setGoodsSelected(false);
                 cartSum = cartSum - cartGoodsItem.getGoodsPrice() * cartGoodsItem.getGoodsNum();
                 start ++;
             }
             cartFrgPresenter.notifyDataSetChanged();
             cartGoodsSum.setText(String.valueOf(decimalFormat.format(cartSum)));
+            cartPay.setText("结算（"+String.valueOf(goodsNumber) +"）");
 
             //购物车没有全选
           /*  cartSelectAll.setChecked(false);*/
