@@ -37,33 +37,37 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <ImageView
+    <com.android.tkengine.elccommerce.utils.CircleImageView
         android:layout_below="@+id/tb_loginAct"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:src="@drawable/frgme_user_unlogin"
-        android:id="@+id/imageView" />
+        android:id="@+id/iv_userIcon" />
 
     <EditText
         android:id="@+id/et_userName"
         android:layout_marginTop="30dp"
         android:ems="12"
+        android:maxEms="14"
         android:textSize="20sp"
         android:hint="@string/userloginAct_et"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
+        android:layout_below="@+id/iv_userIcon"
         android:layout_centerHorizontal="true"
         android:maxLines="1"
         android:inputType="number" />
 
     <EditText
         android:id="@+id/et_password"
+        android:onClick="onPasswordInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="12"
+        android:maxEms="12"
+        android:maxLines="1"
         android:hint="@string/userloginAct_pass"
         android:textSize="20sp"
         android:inputType="textPassword"
