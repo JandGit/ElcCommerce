@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,7 +38,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             View view= LayoutInflater.from(context).inflate(R.layout.cartfrg_goods_item,parent,false);
             return new GoodsViewHolder(view);
         }else if(viewType == TYPE_STORE){
-            View view = LayoutInflater.from(context).inflate(R.layout.cartfrg_sotre,parent,false);
+            View view = LayoutInflater.from(context).inflate(R.layout.cartfrg_store,parent,false);
             return new StoreViewHolder(view);
         }
     return null;
@@ -92,7 +91,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             cartShopList.add(cartGoodsItem1);
             for(int i =0 ;i <4 ;i ++) {
                 GoodsBean cartGoodsItem = new GoodsBean();
-                cartGoodsItem.setGoodsName("水果");
+                cartGoodsItem.setGoodsName("水果wk9fiewpokfeofkw0 oeifwfeeewc oiwjoidwjoijw");
                 cartGoodsItem.setGoodsPrice(10.02);
                 cartGoodsItem.setGoodsNum(1);
                 cartShopList.add(cartGoodsItem);
