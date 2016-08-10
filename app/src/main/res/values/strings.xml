@@ -19,4 +19,5 @@
     <string name="userloginAct_et">你的手机号码</string>
     <string name="userloginAct_pass">密码</string>
     <string name="goods_message">商品信息</string>
+    <string name="deldete">删除</string>
 </resources>

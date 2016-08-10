@@ -30,8 +30,6 @@ import java.text.DecimalFormat;
 
 public class CartFragment extends Fragment implements OnRecyclerViewItemClickListener{
     View cartView;
-    //购物车页面下拉刷新
-    SwipeRefreshLayout cartSwipeRefreshLayout;
     //购物车列表
     RecyclerView cartRecyclerView;
     //总金额
@@ -70,23 +68,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
         deleteLayout = (RelativeLayout)cartView.findViewById(R.id.layout_delete);
         cartSelectAll = (CheckBox)cartView.findViewById(R.id.chk_cart_selectAll);
         cartGoodsSum = (TextView)cartView.findViewById(R.id.tv_cart_goodsSum);
-        //初始化下拉刷新控件
-        cartSwipeRefreshLayout = (SwipeRefreshLayout)cartView.findViewById(R.id.srf_cart_goodsList);
         cartRecyclerView = (RecyclerView)cartView.findViewById(R.id.rv_cart_goodsList);
-        cartSwipeRefreshLayout.setProgressBackgroundColorSchemeResource(android.R.color.white);
-        cartSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        cartSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                cartSwipeRefreshLayout.setRefreshing(true);
-                (new Handler()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        cartSwipeRefreshLayout.setRefreshing(false);
-                    }
-                },3000);
-            }
-        });
+
 
         //初始化购物列表控件
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(cartView.getContext());
