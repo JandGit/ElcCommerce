@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
@@ -10,7 +10,7 @@
         android:background="@color/colorPrimary"
         android:id="@+id/tb_meFrgToolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="42dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -21,23 +21,25 @@
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:text="我的Elc"
+                android:text="@string/frgme_title"
                 android:textColor="@color/colorWhite"
                 android:textSize="20sp" />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_centerVertical="true"
-                android:src="@drawable/frgme_msg" />
+                android:src="@drawable/message" />
 
             <ImageView
                 android:id="@+id/iv_frgMeConfig"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/frgme_config" />
         </RelativeLayout>
@@ -52,8 +54,8 @@
 
         <com.android.tkengine.elccommerce.utils.CircleImageView
             android:id="@+id/iv_frgMeUserIcon1"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
@@ -68,7 +70,8 @@
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="点击登录"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:layout_marginBottom="5dp" />
 
     </RelativeLayout>
 
@@ -78,32 +81,32 @@
         android:background="#eaeaea" />
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:clickable="true">
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="5dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
             android:text="我的订单"
             android:textSize="20sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
+            android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
             android:drawableRight="@drawable/frgme_more"
-            android:gravity="center"
+            android:layout_centerVertical="true"
             android:text="查看所有订单"
             android:textColor="@color/colorGray"
             android:textSize="12sp" />
@@ -112,72 +115,88 @@
             android:id="@+id/view1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/textView1"
+            android:layout_alignParentBottom="true"
             android:background="#eaeaea" />
 
-        <ImageView
-            android:clickable="true"
-            android:id="@+id/iv_frgMeUnpaid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/view1"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/frgme_unpaid" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/iv_frgMeUnpaid"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:text="待付款" />
-
-        <ImageView
-            android:clickable="true"
-            android:id="@+id/iv_frgMeUnsent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/view1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/frgme_unsent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/iv_frgMeUnsent"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:text="待发货" />
-
-        <ImageView
-            android:clickable="true"
-            android:id="@+id/iv_frgMeUnrecieved"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/view1"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/frgme_unrecieved" />
-
-        <TextView
-            android:id="@+id/text2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/iv_frgMeUnpaid"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:text="待收货" />
-
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="0dp"
+            android:layout_height="70dp">
+
+            <ImageView
+                android:id="@+id/iv_frgMeUnpaid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/frgme_unpaid" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="待付款" />
+        </LinearLayout>
+        <LinearLayout
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="0dp"
+            android:layout_height="70dp">
+
+            <ImageView
+                android:id="@+id/iv_frgMeUnsent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/frgme_unsent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="待发货" />
+        </LinearLayout>
+        <LinearLayout
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_width="0dp"
+            android:layout_height="70dp">
+
+            <ImageView
+                android:id="@+id/iv_frgMeUnrecieved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/frgme_unrecieved" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:text="待收货" />
+        </LinearLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -230,14 +249,14 @@
                 android:layout_height="50dp"
                 android:layout_gravity="center"
                 android:scaleType="centerInside"
-                android:src="@drawable/frgme_shopcollection" />
+                android:src="@drawable/frgme_comment" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:text="店铺收藏" />
+                android:text="我的评论" />
         </LinearLayout>
 
         <View
@@ -293,7 +312,7 @@
                 android:layout_height="20dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:text="朋友" />
+                android:text="个人信息" />
         </LinearLayout>
 
     </LinearLayout>
@@ -302,125 +321,4 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#eaeaea" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorWhite">
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:scaleType="centerInside"
-                android:src="@drawable/frgme_wallet" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:text="我的钱包" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="80dp"
-            android:background="#eaeaea" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:scaleType="centerInside"
-                android:src="@drawable/frgme_shopcollection" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:text="店铺收藏" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="80dp"
-            android:background="#eaeaea" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:scaleType="centerInside"
-                android:src="@drawable/frgme_mylocation" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:text="收货地址管理" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="80dp"
-            android:background="#eaeaea" />
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:scaleType="centerInside"
-                android:src="@drawable/frgme_friend" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:text="朋友" />
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#eaeaea" />
-
-
 </LinearLayout>

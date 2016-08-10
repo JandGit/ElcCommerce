@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.utils.BadgeView;
 
 
 public class MeFragment extends Fragment{
@@ -27,7 +28,6 @@ public class MeFragment extends Fragment{
                 }
             }
         });
-
 
         return mView;
     }
