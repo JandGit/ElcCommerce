@@ -11,9 +11,11 @@
         android:layout_alignParentTop="true">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:gravity="center"
             android:textSize="20sp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
             android:text="购物车"/>
     </RelativeLayout>
 
@@ -22,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true">
+
         <CheckBox
             android:gravity="center"
             android:id="@+id/chk_cart_selectAll"
@@ -32,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/chk_cart_selectAll"
+            android:textColor="@color/colorGray"
             android:gravity="center"
             android:text="全选"/>
 
@@ -39,22 +43,26 @@
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="170dp"
+            android:layout_toLeftOf="@+id/tv_money_mark"
             android:textSize="20sp"
             android:text="合计："/>
 
         <TextView
+            android:id="@+id/tv_money_mark"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:textSize="20sp"
-            android:layout_marginLeft="230dp"
+            android:layout_toLeftOf="@+id/tv_cart_goodsSum"
             android:text="￥"/>
 
         <TextView
-            android:id="@+id/cart_goodsSum"
+            android:id="@+id/tv_cart_goodsSum"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_toLeftOf="@+id/btn_cart_pay"
+            android:text="0.00"
             android:textSize="20sp"/>
 
         <Button
@@ -62,6 +70,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
             android:text="结算"/>
 
     </RelativeLayout>
@@ -76,6 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_cart_goodsList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
