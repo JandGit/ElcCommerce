@@ -71,6 +71,10 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
                 finish();
             }
         });
+
+        if(isUserLogined()){
+            showUserInfo();
+        }
     }
 
     //检查用户是否已经登录
@@ -83,6 +87,8 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
     private void showUserInfo() {
         SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
         tv_userName.setText(sp.getString("UserName", "null"));
+        et_userName.setText(sp.getString("UserPhone", " "));
+        et_userName.setVisibility(View.INVISIBLE);
         Log.i("presenter", "设置头像" + (Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)));
         Picasso.with(this).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit().into(iv_userIcon);
     }
