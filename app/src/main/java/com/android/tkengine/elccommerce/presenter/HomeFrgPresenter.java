@@ -164,10 +164,8 @@ public class HomeFrgPresenter {
             MyViewHolder holder = null;
             switch (viewType){
                 case RvItemBean.TYPE_AD:
-                    holder = new MyViewHolder(mInflater.inflate(R.layout.homefrg_ad, parent, false));
                     break;
                 case RvItemBean.TYPE_CATEGORY:
-                    holder = new MyViewHolder(mInflater.inflate(R.layout.homefrg_category, parent, false));
                     break;
                 case RvItemBean.TYPE_GROUPTITLE:
                     holder = new MyViewHolder(mInflater.inflate(R.layout.homefrg_goods_group, parent, false));
@@ -191,107 +189,6 @@ public class HomeFrgPresenter {
         public void onBindViewHolder(MyViewHolder holder, int position) {
             RvItemBean data = mData.get(position);
             switch (holder.getItemViewType()){
-                case RvItemBean.TYPE_AD:
-                    ViewPager vp = (ViewPager) holder.getView(R.id.vp_homefrg_ad);
-                    final int[] imgsId = (int[]) data.data.get("advertisement");
-
-                    vp.setAdapter(new PagerAdapter() {
-
-                        @Override
-                        public Object instantiateItem(ViewGroup container, int position) {
-                            ImageView iv = new ImageView(mContext);
-                            iv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                                    ViewGroup.LayoutParams.MATCH_PARENT));
-                            Picasso.with(mContext).load(imgsId[position]).fit().into(iv);
-                            container.addView(iv);
-                            return iv;
-                        }
-
-                        @Override
-                        public void destroyItem(ViewGroup container, int position, Object object) {
-                            container.removeView((View)object);
-                        }
-
-                        @Override
-                        public int getCount() {
-                            return imgsId.length;
-                        }
-
-                        @Override
-                        public boolean isViewFromObject(View view, Object object) {
-                            return view == object;
-                        }
-                    });
-                    break;
-                case RvItemBean.TYPE_CATEGORY:
-                    View item1, item2, item3, item4, item5, item6, item7, item8;
-                    item1 = holder.getView(R.id.tv_item1);
-                    item2 = holder.getView(R.id.tv_item2);
-                    item3 = holder.getView(R.id.tv_item3);
-                    item4 = holder.getView(R.id.tv_item4);
-                    item5 = holder.getView(R.id.tv_item5);
-                    item6 = holder.getView(R.id.tv_item6);
-                    item7 = holder.getView(R.id.tv_item7);
-                    item8 = holder.getView(R.id.tv_item8);
-                    View.OnClickListener listener = new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Toast.makeText(mContext, "选中item", Toast.LENGTH_SHORT).show();
-                        }
-                    };
-                    item1.setOnClickListener(listener);
-                    item2.setOnClickListener(listener);
-                    item3.setOnClickListener(listener);
-                    item4.setOnClickListener(listener);
-                    item5.setOnClickListener(listener);
-                    item6.setOnClickListener(listener);
-                    item7.setOnClickListener(listener);
-                    item8.setOnClickListener(listener);
-                    break;
-                case RvItemBean.TYPE_GROUPTITLE:
-                    TextView tv = (TextView) holder.getView(R.id.tv_goodGroupName);
-                    tv.setText((String) data.data.get("groupName"));
-                    break;
-                case RvItemBean.TYPE_ITEM1:
-                    ImageView iv_goodsIcon = (ImageView) holder.getView(R.id.iv_goodsIcon);
-                    TextView tv_goodsName = (TextView) holder.getView(R.id.tv_goodsName);
-                    TextView tv_shopOfGoods = (TextView) holder.getView(R.id.tv_shopOfGoods);
-                    RatingBar rb_goodsRate = (RatingBar) holder.getView(R.id.rb_goodsRate);
-                    Picasso.with(mContext).load((Integer) data.data.get("goodsIconId")).fit().into(iv_goodsIcon);
-                    tv_goodsName.setText((String) data.data.get("goodsName"));
-                    tv_shopOfGoods.setText((String)data.data.get("shopName"));
-                    rb_goodsRate.setRating((Float) data.data.get("rating"));
-                    iv_goodsIcon.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(mContext, DisplayActivity.class);
-                            mContext.startActivity(intent);
-                        }
-                    });
-                    break;
-                case RvItemBean.TYPE_ITEM2:
-                    ImageView iv_goodsIcon1 = (ImageView) holder.getView(R.id.iv_goodIcon1);
-                    TextView tv_goodsName1 = (TextView) holder.getView(R.id.tv_goodname1);
-                    RatingBar rb1 = (RatingBar) holder.getView(R.id.rb_goodRate1);
-                    TextView tv_sale1 = (TextView) holder.getView(R.id.tv_goodSales1);
-
-                    ImageView iv_goodsIcon2 = (ImageView) holder.getView(R.id.iv_goodIcon2);
-                    TextView tv_goodsName2 = (TextView) holder.getView(R.id.tv_goodname2);
-                    RatingBar rb2 = (RatingBar) holder.getView(R.id.rb_goodRate2);
-                    TextView tv_sale2 = (TextView) holder.getView(R.id.tv_goodSales2);
-
-                    Picasso.with(mContext).load((Integer) data.data.get("goodsIconId1")).fit().into(iv_goodsIcon1);
-                    tv_goodsName1.setText((String)data.data.get("goodsName1"));
-                    rb1.setRating((Float) data.data.get("rating1"));
-                    tv_sale1.setText((String)data.data.get("sale1"));
-
-                    Picasso.with(mContext).load((Integer) data.data.get("goodsIconId2")).fit().into(iv_goodsIcon2);
-                    tv_goodsName2.setText((String)data.data.get("goodsName2"));
-                    rb2.setRating((Float) data.data.get("rating2"));
-                    tv_sale2.setText((String)data.data.get("sale2"));
-                    break;
-                case RvItemBean.TYPE_ITEM3:
-                    break;
             }
         }
 
