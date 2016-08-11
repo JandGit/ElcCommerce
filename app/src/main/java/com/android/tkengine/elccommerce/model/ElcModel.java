@@ -34,6 +34,8 @@ public class ElcModel {
         this.mContext = mContext;
     }
 
+
+
     public List<RvItemBean> getHomePageData(int from, int to) {
         RvItemBean itemData;
         ArrayList<RvItemBean> allData = new ArrayList<>(to - from + 1);
@@ -83,6 +85,13 @@ public class ElcModel {
         return allData;
     }
 
+    /**
+     *
+     * @param userName 登录的用户名
+     * @param password 登录密码
+     * @return 用户信息，如果登录用户名或密码错误返回null
+     * @throws Exception 网络连接错误
+     */
     public UserInfoBean login(String userName, String password) throws Exception {
 
         JSONObject jsonObject = new JSONObject();

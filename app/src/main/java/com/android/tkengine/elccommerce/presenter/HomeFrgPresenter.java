@@ -70,12 +70,19 @@ public class HomeFrgPresenter {
     }
 
     public interface CallbackOfHomefrg{
+        //设置HomeFragment的RecyclerView的Adapter
         void setRvAdapter(RecyclerView.Adapter adapter);
+        //将data内的数据加入到RecyclerView的末尾
         void addViewInRv(List<RvItemBean> data);
+        //提示首页正在加载
         void showLoadingHomePage();
+        //提示首页加载失败
         void showLoadingfailed();
+        //提示正在加载更多数据
         void showLoadingMore();
+        //提示首页加载成功
         void showLoadingHomeCompleted();
+        //提示更多数据加载成功
         void showLoadingMoreCompleted();
     }
 

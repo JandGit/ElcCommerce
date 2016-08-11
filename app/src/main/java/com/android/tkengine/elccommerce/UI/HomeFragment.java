@@ -36,12 +36,8 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     HomeFrgPresenter.HomepageAdapter mRvAdapter;
     //标题栏toolbar
     Toolbar mToolbar;
-    //下拉登录框头像
-    ImageView iv_loginUserIcon;
     //下拉刷新
     SwipeRefreshLayout mSwipeRefreshLayout;
-    //
-    AppBarLayout mAppBarLayout;
     //Presenter
     HomeFrgPresenter mPresenter;
     //
