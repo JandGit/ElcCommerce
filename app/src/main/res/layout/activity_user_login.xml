@@ -24,8 +24,8 @@
                 android:layout_alignParentLeft="true"
                 android:scaleType="centerInside"
                 android:src="@mipmap/title_back"
-                android:layout_width="25dp"
-                android:layout_height="25dp" />
+                android:layout_width="40dp"
+                android:layout_height="match_parent" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -46,9 +46,20 @@
         android:src="@drawable/frgme_userunlogin"
         android:id="@+id/iv_userIcon" />
 
+    <TextView
+        android:id="@+id/tv_localUserName"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/iv_userIcon"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="本地用户名"
+        android:textSize="20sp"/>
+
     <EditText
         android:id="@+id/et_userName"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:ems="12"
         android:maxEms="14"
         android:textSize="20sp"
@@ -74,12 +85,22 @@
         android:layout_below="@+id/et_userName"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:id="@+id/tv_nowLogining"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_password"
+        android:layout_alignLeft="@+id/et_password"
+        android:layout_alignStart="@+id/et_password"
+        android:text="@string/now_logining" />
+
     <Button
         android:id="@+id/btn_signUp"
         android:onClick="onLoginBtnClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="登录"
+        android:text="@string/login"
         android:textColor="@color/colorWhite"
         android:layout_below="@+id/et_password"
         android:layout_marginTop="30dp"
@@ -93,7 +114,7 @@
         android:id="@+id/tv_forgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="忘记密码？"
+        android:text="@string/forgotpassword"
         android:layout_below="@+id/btn_signUp"
         android:layout_alignLeft="@+id/btn_signUp"
         android:layout_alignStart="@+id/btn_signUp"
@@ -105,7 +126,7 @@
         android:id="@+id/tv_signIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="注册新帐号"
+        android:text="@string/signin"
         android:clickable="true"
         android:background="@drawable/userlogin_textbackground"
         android:layout_alignTop="@+id/tv_forgotPassword"

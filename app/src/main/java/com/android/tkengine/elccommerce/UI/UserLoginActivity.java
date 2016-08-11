@@ -1,5 +1,6 @@
 package com.android.tkengine.elccommerce.UI;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -29,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.beans.UserInfoBean;
 import com.android.tkengine.elccommerce.presenter.UserLoginActPresenter;
 import com.squareup.picasso.Picasso;
 
@@ -80,13 +82,11 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
     }
 
     @Override
-    public void onLoginSuccess() {
-
-    }
-
-    @Override
-    public void onLoginFailed() {
-
+    public void onLoginSuccess(UserInfoBean info) {
+        Intent intent = new Intent();
+        intent.putExtra("info", info);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     public void showToast(String text) {
@@ -98,7 +98,16 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
         iv_userIcon.setImageBitmap(icon);
     }
 
-    public void setUserIcon(String url){
-        Picasso.with(this).load(url).fit().into(iv_userIcon);
+    @Override
+    public void showLogining(){
+        findViewById(R.id.tv_nowLogining).setVisibility(View.VISIBLE);
+        findViewById(R.id.btn_signUp).setEnabled(false);
     }
+
+    @Override
+    public void showLoginFailed(){
+        findViewById(R.id.tv_nowLogining).setVisibility(View.INVISIBLE);
+        findViewById(R.id.btn_signUp).setEnabled(true);
+    }
+
 }

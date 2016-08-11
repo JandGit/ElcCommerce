@@ -19,7 +19,7 @@ import java.io.InputStream;
 public class UserLoginActPresenter {
 
     CallbackOfView mView;
-    CallbackOfModel mModel;
+    ElcModel mModel;
     Context mContext;
 
     private MyHandler mHandler;
@@ -41,11 +41,10 @@ public class UserLoginActPresenter {
                 case MSG_LOGINOK:
                     mView.showToast("登录成功");
                     UserInfoBean info = (UserInfoBean) msg.obj;
-                    mView.setUserIcon(Constants.SERVER_ADDRESS + info.getUser_picture_url());
-                    Log.i("presenter:loginOk:", "USER:" + info.toString());
+                    mView.onLoginSuccess(info);
                     break;
                 case MSG_LOGINFAILED:
-                    mView.showToast("登录失败");
+                    mView.showToast("用户名或密码错误");
                     break;
                 case MSG_NETWORKERROR:
                     mView.showToast("网络连接错误");
@@ -58,10 +57,7 @@ public class UserLoginActPresenter {
     //由UserLoginAcitivity实现的接口
     public interface CallbackOfView {
         //登录成功后的操作
-        void onLoginSuccess();
-
-        //登录失败后的操作
-        void onLoginFailed();
+        void onLoginSuccess(UserInfoBean info);
 
         //在Acitivity展示消息
         void showToast(String text);
@@ -69,7 +65,10 @@ public class UserLoginActPresenter {
         //在页面显示用户头像
         void setUserIcon(Bitmap icon);
 
-        void setUserIcon(String url);
+        //显示正在登录
+        void showLogining();
+        //显示登录错误
+        void showLoginFailed();
     }
 
     //ElcModel接口,接口操作不开启新线程访问网络,注意调用时在子线程调用
@@ -94,25 +93,26 @@ public class UserLoginActPresenter {
             mView.showToast("手机号码格式不正确");
             return;
         }
-        new Thread() {
+        mView.showLogining();
+        new Thread(){
             @Override
             public void run() {
-                UserInfoBean info = null;
                 try {
-                    info = mModel.login(userName, password);
-                    if (info != null) {
+                    UserInfoBean info = mModel.login(userName, password);
+                    if(info != null){
                         Message msg = mHandler.obtainMessage(mHandler.MSG_LOGINOK);
-                        msg.obj = info;
+                        msg .obj = info;
                         mHandler.sendMessage(msg);
-                    } else {
+                    }
+                    else{
                         mHandler.sendEmptyMessage(mHandler.MSG_LOGINFAILED);
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
                     mHandler.sendEmptyMessage(mHandler.MSG_NETWORKERROR);
                 }
             }
         }.start();
+
     }
 
     public void loadUserIcon(String userName) {
