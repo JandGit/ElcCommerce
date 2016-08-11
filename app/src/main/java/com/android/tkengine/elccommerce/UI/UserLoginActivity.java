@@ -87,10 +87,13 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
     private void showUserInfo() {
         SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
         tv_userName.setText(sp.getString("UserName", "null"));
+        tv_userName.setVisibility(View.VISIBLE);
         et_userName.setText(sp.getString("UserPhone", " "));
         et_userName.setVisibility(View.INVISIBLE);
         Log.i("presenter", "设置头像" + (Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)));
-        Picasso.with(this).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit().into(iv_userIcon);
+        Picasso.with(this).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit()
+                .error(R.drawable.frgme_userunlogin)
+                .into(iv_userIcon);
     }
 
     //登录按钮按下回调事件

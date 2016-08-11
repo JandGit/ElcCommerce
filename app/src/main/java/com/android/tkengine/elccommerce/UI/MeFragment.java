@@ -64,7 +64,9 @@ public class MeFragment extends Fragment {
         SharedPreferences sp = getActivity().getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
         tv_userName.setText(sp.getString("UserName", "null"));
         Log.i("presenter", "设置头像" + (Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)));
-        Picasso.with(getContext()).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit().into(iv_userIcon);
+        Picasso.with(getContext()).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit()
+                .error(R.drawable.frgme_userunlogin)
+                .into(iv_userIcon);
     }
 
     //用户登录后返回，若用户登录成功，则把登录信息记录到本地

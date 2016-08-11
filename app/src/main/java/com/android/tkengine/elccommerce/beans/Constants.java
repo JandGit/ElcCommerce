@@ -7,7 +7,7 @@ public class Constants {
     /**
      * 后台服务器地址
      */
-    public static final String SERVER_ADDRESS = "http://192.168.1.104:8080/TKBaas/";
+    public static final String SERVER_ADDRESS = "http://192.168.1.108:8080/TKBaas/";
     /**
      * 后台用户登录接口
      */
