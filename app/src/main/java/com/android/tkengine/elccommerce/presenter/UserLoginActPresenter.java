@@ -45,9 +45,11 @@ public class UserLoginActPresenter {
                     break;
                 case MSG_LOGINFAILED:
                     mView.showToast("用户名或密码错误");
+                    mView.onLoginFailed();
                     break;
                 case MSG_NETWORKERROR:
                     mView.showToast("网络连接错误");
+                    mView.onLoginFailed();
                     break;
             }
             super.handleMessage(msg);
@@ -67,8 +69,8 @@ public class UserLoginActPresenter {
 
         //显示正在登录
         void showLogining();
-
-
+        //登录错误
+        void onLoginFailed();
     }
 
     //ElcModel接口,接口操作不开启新线程访问网络,注意调用时在子线程调用
@@ -93,6 +95,7 @@ public class UserLoginActPresenter {
             mView.showToast("手机号码格式不正确");
             return;
         }
+        mView.showLogining();
         new Thread(){
             @Override
             public void run() {

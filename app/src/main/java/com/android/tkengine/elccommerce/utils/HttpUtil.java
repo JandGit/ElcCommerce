@@ -3,8 +3,11 @@ package com.android.tkengine.elccommerce.utils;
 
 import android.util.Log;
 
+import com.android.tkengine.elccommerce.beans.Constants;
+
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -131,7 +134,7 @@ public class HttpUtil {
         os.flush();
         os.close();
 
-        reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+        reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
         String strRead = null;
         while ((strRead = reader.readLine()) != null) {
             result += strRead;
@@ -158,7 +161,7 @@ public class HttpUtil {
         connection.setRequestMethod("GET");
         connection.connect();
 
-        reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+        reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
         String strRead = null;
         while ((strRead = reader.readLine()) != null) {
             result += strRead;

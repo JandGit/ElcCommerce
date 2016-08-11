@@ -1,6 +1,8 @@
 package com.android.tkengine.elccommerce.UI;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -41,6 +43,8 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
     TextView et_userName, et_password;
     //用户头像
     ImageView iv_userIcon;
+    //用户名
+    TextView tv_userName;
 
     private UserLoginActPresenter mPresenter;
 
@@ -59,6 +63,7 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
         et_userName = (TextView) findViewById(R.id.et_userName);
         et_password = (TextView) findViewById(R.id.et_password);
         iv_userIcon = (ImageView) findViewById(R.id.iv_userIcon);
+        tv_userName = (TextView) findViewById(R.id.tv_localUserName);
 
         findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +71,29 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
                 finish();
             }
         });
+
+        if(isUserLogined()){
+            showUserInfo();
+        }
+    }
+
+    //检查用户是否已经登录
+    private boolean isUserLogined() {
+        SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
+        return sp.getBoolean("isLogin", false);
+    }
+
+    //设置上方的用户头像及用户名
+    private void showUserInfo() {
+        SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
+        tv_userName.setText(sp.getString("UserName", "null"));
+        tv_userName.setVisibility(View.VISIBLE);
+        et_userName.setText(sp.getString("UserPhone", " "));
+        et_userName.setVisibility(View.INVISIBLE);
+        Log.i("presenter", "设置头像" + (Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)));
+        Picasso.with(this).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit()
+                .error(R.drawable.frgme_userunlogin)
+                .into(iv_userIcon);
     }
 
     //登录按钮按下回调事件
@@ -100,7 +128,14 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
 
     @Override
     public void showLogining(){
+        findViewById(R.id.tv_nowLogining).setVisibility(View.VISIBLE);
+        findViewById(R.id.btn_signUp).setEnabled(false);
+    }
 
+    @Override
+    public void onLoginFailed(){
+        findViewById(R.id.tv_nowLogining).setVisibility(View.INVISIBLE);
+        findViewById(R.id.btn_signUp).setEnabled(true);
     }
 
 }

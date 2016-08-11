@@ -20,4 +20,8 @@
     <string name="userloginAct_pass">密码</string>
     <string name="goods_message">商品信息</string>
     <string name="deldete">删除</string>
+    <string name="now_logining">正在登录......</string>
+    <string name="login">登录</string>
+    <string name="forgotpassword">忘记密码？</string>
+    <string name="signin">注册新帐号</string>
 </resources>
