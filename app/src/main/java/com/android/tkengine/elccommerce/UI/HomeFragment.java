@@ -101,8 +101,8 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
 
         mToast = Toast.makeText(getContext(), null, Toast.LENGTH_SHORT);
 
-        mPresenter = new HomeFrgPresenter(this, getContext());
-        mPresenter.initHomePage();
+       // mPresenter = new HomeFrgPresenter(this, getContext());
+       // mPresenter.initHomePage();
     }
 
     @Override
