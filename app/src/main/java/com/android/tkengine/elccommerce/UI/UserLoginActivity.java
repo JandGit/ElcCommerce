@@ -103,6 +103,7 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
                 setPageUnLogin();
             }
         });
+        iv_userIcon.setImageResource(R.drawable.frgme_userunlogin);
         Picasso.with(this).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit()
                 .error(R.drawable.frgme_userunlogin)
                 .into(iv_userIcon);
