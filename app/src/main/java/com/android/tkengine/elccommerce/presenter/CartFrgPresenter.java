@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
+import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.utils.HttpCallbackListener;
 import com.android.tkengine.elccommerce.utils.HttpUtil;
 import com.android.tkengine.elccommerce.utils.OnRecyclerViewItemClickListener;
@@ -37,15 +38,20 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context context;
     private static final int TYPE_STORE = 1;
     private static final int TYPE_GOODS = 2;
+    private static final int GET_SUCCESS = 3;
+    private static final int POST_SUCCESS = 4;
+    private static final int POST_FAIL = 5;
 
     private Handler handler = new Handler(){
 
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
-                case 1:
+                case GET_SUCCESS:
                     notifyDataSetChanged();
                     break;
+                case POST_SUCCESS:
+                    Log.d("ok","ok");
                 default:
                     break;
             }
@@ -54,7 +60,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public CartFrgPresenter(Context context) {
         this.context = context;
-        cartGoodsList = initCartGoodsList();
+        initCartGoodsList();
     }
 
 
@@ -107,89 +113,20 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
     //初始化购物车数据
-    private List<GoodsBean> initCartGoodsList() {
-      /*  try{
-            List<GoodsBean> cartShopList = new ArrayList<GoodsBean>();
-            GoodsBean cartGoodsItem1 = new GoodsBean();
-            cartGoodsItem1.setGoodsName("商店");
-            cartGoodsItem1.setGoodsPrice(0);
-            cartGoodsItem1.setGoodsNum(0);
-            cartShopList.add(cartGoodsItem1);
-            for(int i =0 ;i <4 ;i ++) {
-                GoodsBean cartGoodsItem = new GoodsBean();
-                cartGoodsItem.setGoodsName("水果wk9fiewpokfeofkw0 oeifwfeeewc oiwjoidwjoijw");
-                cartGoodsItem.setGoodsPrice(10.02);
-                cartGoodsItem.setGoodsNum(1);
-                cartShopList.add(cartGoodsItem);
-            }
-            GoodsBean cartGoodsItem2 = new GoodsBean();
-            cartGoodsItem2.setGoodsName("商店");
-            cartGoodsItem2.setGoodsPrice(0);
-            cartGoodsItem2.setGoodsNum(0);
-            cartShopList.add(cartGoodsItem2);
-
-            for(int j =0 ;j <4 ;j ++) {
-                GoodsBean cartGoodsItem = new GoodsBean();
-                cartGoodsItem.setGoodsName("水果");
-                cartGoodsItem.setGoodsPrice(10.02);
-                cartGoodsItem.setGoodsNum(1);
-                cartShopList.add(cartGoodsItem);
-            }
-            return cartShopList;
-        }catch (Exception e){
-            return null;
-        }*/
-        final List<GoodsBean> cartShopList = new ArrayList<GoodsBean>();
-        String userId = null;
-        try {
-            JSONObject user= new JSONObject();
-            user.put("userId","2");
-            userId = user.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        HttpUtil.sentHttpPost("http://192.168.1.107:8080/TKBaas/cart/app/getUserProduct",userId, new HttpCallbackListener() {
+    private void initCartGoodsList() {
+        new Thread(new Runnable() {
             @Override
-            public void onFinish(String result) {
-                try {
-                    Log.d("json",result);
-                    JSONObject cartJson = new JSONObject(result);
-                    JSONArray storeArray = (JSONArray)cartJson.get("sellerItem");
-                    for (int i = 0; i < storeArray.length(); i++) {
-                        JSONObject storeItem = (JSONObject) storeArray.get(i);
-                        GoodsBean shopItem = new GoodsBean();
-                        shopItem.setGoodsName(storeItem.getString("shopName"));
-                        shopItem.setGoodsPrice(0);
-                        cartShopList.add(shopItem);
-                        JSONArray goodsArray = (JSONArray) storeItem.get("proItem");
-                        for (int j = 0; j < goodsArray.length(); j++) {
-                            JSONObject goods = (JSONObject) goodsArray.get(j);
-                            GoodsBean goodsItem = new GoodsBean();
-                            JSONObject product = (JSONObject) goods.get("product");
-                            goodsItem.setGoodsName(product.getString("name"));
-                            goodsItem.setGoodsPrice(product.getDouble("price"));
-                            goodsItem.setGoodsIcon(product.getString("picture"));
-                            goodsItem.setGoodsNum(Integer.parseInt(goods.getString("num")));
-                            cartShopList.add(goodsItem);
-
-                        }
-
-                    }
-                    Log.d("ok","ok");
+            public void run() {
+                try{
+                    cartGoodsList = new ElcModel(context).getCartGoodsList();
                     Message message = new Message();
-                    message.what = 1;
+                    message.what = GET_SUCCESS;
                     handler.sendMessage(message);
-                } catch (Exception e) {
+                }catch (Exception e){
                     e.printStackTrace();
                 }
             }
-            @Override
-            public void onError(Exception e) {
-                Log.d("error","error");
-            }
-
-        });
-    return cartShopList;
+        }).start();
     }
 
 
@@ -270,6 +207,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 notifyDataSetChanged();
             }
         }).start();*/
+        postCartGoodsList(selectedGoodsList,"http://192.168.1.105:8080/TKBaas/cart/app/delIncart");
         if(selectedGoodsList != null){
             for(GoodsBean selectedGoodsItem:selectedGoodsList){
                 cartGoodsList.remove(selectedGoodsItem);
@@ -315,6 +253,25 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
+
+    //提交购物车信息到服务器
+    public  void postCartGoodsList(final List<GoodsBean>goodsList, final String postUrl) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    boolean result = new ElcModel(context).postCartInfo(goodsList,postUrl);
+                    if(result){
+                        Message message = new Message();
+                        message.what = POST_SUCCESS;
+                        handler.sendMessage(message);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
 
 

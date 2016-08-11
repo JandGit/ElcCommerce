@@ -22,12 +22,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ElcModel{
+public class ElcModel {
 
     Context mContext;
 
@@ -84,23 +83,16 @@ public class ElcModel{
         return allData;
     }
 
-    /**
-     * 在非UI线程调用该接口
-     * 调用后台接口登录用户
-     * 登录成功返回用户信息，失败返回null
-     */
     public UserInfoBean login(String userName, String password) throws Exception {
 
         JSONObject jsonObject = new JSONObject();
         String params;
-        String userId;
+        String userId = null;
         jsonObject.put("user_phone", userName);
         jsonObject.put("user_password", password);
         params = jsonObject.toString();
         String result;
-        Log.i("model:", "写入服务器：" + params);
         result = HttpUtil.sentHttpPost(Constants.SERVER_ADDRESS_LOGIN, params);
-        Log.i("model:", "服务器返回：" + result);
         jsonObject = new JSONObject(result);
         userId = jsonObject.getString("user_id");
 
@@ -112,32 +104,17 @@ public class ElcModel{
         jsonObject = new JSONObject();
         jsonObject.put("user_id", userId);
         params = jsonObject.toString();
-        Log.i("model:", "写入服务器：" + params);
         result = HttpUtil.sentHttpPost(Constants.SERVER_GETUSERINFO, params);
-        Log.i("model:", "服务器返回：" + result);
         jsonObject = new JSONObject(result);
-
         if (jsonObject.has("user_name")) {
             info.setUser_name(jsonObject.getString("user_name"));
         }
-        else {
-            info.setUser_name("null");
-        }
-
         if (jsonObject.has("user_phone")) {
             info.setUser_phone(jsonObject.getString("user_phone"));
         }
-        else {
-            info.setUser_phone("null");
-        }
-
         if (jsonObject.has("user_sex")) {
             info.setUser_sex(jsonObject.getString("user_sex"));
         }
-        else{
-            info.setUser_sex("null");
-        }
-
         if (jsonObject.has("user_picture_url")) {
             info.setUser_picture_url(jsonObject.getString("user_picture_url"));
         }
@@ -152,20 +129,23 @@ public class ElcModel{
      * 得到购物车列表，注意在非UI线程调用此接口
      * 发生网络错误时抛出异常
      */
-    public List<GoodsBean> getCartGoodsList() throws Exception{
+    public List<GoodsBean> getCartGoodsList() throws Exception {
         final List<GoodsBean> cartShopList = new ArrayList<>();
 
-        String userId;
+        String userId = null;
         JSONObject user = new JSONObject();
         user.put("userId", "2");
         userId = user.toString();
 
-        String result = HttpUtil.sentHttpPost(Constants.SERVER_GETCART, userId);
+        String result = HttpUtil.sentHttpPost("http://192.168.1.105:8080/TKBaas/cart/app/getUserProduct"
+        , userId);
+        Log.d("cartGet",result);
         JSONObject cartJson = new JSONObject(result);
         JSONArray storeArray = (JSONArray) cartJson.get("sellerItem");
         for (int i = 0; i < storeArray.length(); i++) {
             JSONObject storeItem = (JSONObject) storeArray.get(i);
             GoodsBean shopItem = new GoodsBean();
+            shopItem.setGoodsId(storeItem.getString("id"));
             shopItem.setGoodsName(storeItem.getString("shopName"));
             shopItem.setGoodsPrice(0);
             cartShopList.add(shopItem);
@@ -174,6 +154,7 @@ public class ElcModel{
                 JSONObject goods = (JSONObject) goodsArray.get(j);
                 GoodsBean goodsItem = new GoodsBean();
                 JSONObject product = (JSONObject) goods.get("product");
+                goodsItem.setGoodsId(product.getString("id"));
                 goodsItem.setGoodsName(product.getString("name"));
                 goodsItem.setGoodsPrice(product.getDouble("price"));
                 goodsItem.setGoodsIcon(product.getString("picture"));
@@ -185,5 +166,42 @@ public class ElcModel{
 
         return cartShopList;
     }
+
+    /**
+     * 提交购物车信息（用户id,商品id以及对应的数量），在非UI线程调用此接口
+     * 发生网络错误时抛出异常
+     */
+    public boolean postCartInfo(List<GoodsBean> cartGoodsList,String postUrl) throws Exception {
+        JSONObject cartInfo = new JSONObject();
+        //用户ID
+        cartInfo.put("userId","2");
+        //各商品ID
+        JSONArray productId = new JSONArray();
+        for(GoodsBean cartGoodsItem:cartGoodsList){
+            if(cartGoodsItem.getGoodsPrice() != 0){
+                productId.put(cartGoodsItem.getGoodsId());
+                Log.d("productID",cartGoodsItem.getGoodsId());
+            }
+        }
+        cartInfo.put("productId", productId);
+        //各商品对应的数量
+        JSONArray num = new JSONArray();
+        for(GoodsBean cartGoodsItem:cartGoodsList){
+            if(cartGoodsItem.getGoodsPrice() != 0){
+                num.put(cartGoodsItem.getGoodsNum());
+                Log.d(" num",String.valueOf(cartGoodsItem.getGoodsNum()));
+            }
+        }
+        cartInfo.put("num", num);
+        //发送到服务器
+        String result = HttpUtil.sentHttpPost(postUrl, cartInfo.toString());
+        JSONObject cartJson = new JSONObject(result);
+        boolean postResult = cartJson.getBoolean("result");
+        return postResult;
+
+    }
+
+
+
 
 }
