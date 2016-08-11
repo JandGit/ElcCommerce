@@ -1,7 +1,10 @@
 package com.android.tkengine.elccommerce.presenter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +14,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
+import com.android.tkengine.elccommerce.utils.HttpCallbackListener;
+import com.android.tkengine.elccommerce.utils.HttpUtil;
 import com.android.tkengine.elccommerce.utils.OnRecyclerViewItemClickListener;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,46 +31,61 @@ import java.util.List;
 /**
  * Created by 陈嘉shuo on 2016/8/9.
  */
-public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     protected static OnRecyclerViewItemClickListener onRecyclerViewItemClickListener;
-    public List<GoodsBean> cartGoodsList= new ArrayList<GoodsBean>();
+    public List<GoodsBean> cartGoodsList = new ArrayList<GoodsBean>();
     private Context context;
     private static final int TYPE_STORE = 1;
     private static final int TYPE_GOODS = 2;
 
-    public CartFrgPresenter(Context context){
+    private Handler handler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    notifyDataSetChanged();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    public CartFrgPresenter(Context context) {
         this.context = context;
         cartGoodsList = initCartGoodsList();
     }
 
 
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType == TYPE_GOODS){
-            View view= LayoutInflater.from(context).inflate(R.layout.cartfrg_goods_item,parent,false);
+        if (viewType == TYPE_GOODS) {
+            View view = LayoutInflater.from(context).inflate(R.layout.cartfrg_goods_item, parent, false);
             return new GoodsViewHolder(view);
-        }else if(viewType == TYPE_STORE){
-            View view = LayoutInflater.from(context).inflate(R.layout.cartfrg_store,parent,false);
+        } else if (viewType == TYPE_STORE) {
+            View view = LayoutInflater.from(context).inflate(R.layout.cartfrg_store, parent, false);
             return new StoreViewHolder(view);
         }
-    return null;
+        return null;
     }
 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof GoodsViewHolder) {
+        if (holder instanceof GoodsViewHolder) {
             GoodsBean cartGoodsItem = cartGoodsList.get(position);
-            ((GoodsViewHolder)holder).goodsName.setText(cartGoodsItem.getGoodsName());
+            ((GoodsViewHolder) holder).goodsName.setText(cartGoodsItem.getGoodsName());
+            Picasso.with(context).load(cartGoodsItem.getGoodsIcon()).fit().into(((GoodsViewHolder) holder).goodsIcon);
            /* ((GoodsViewHolder)holder).goodsIcon.setImageBitmap(cartGoodsItem.getGoodsIcon());*/
-            ((GoodsViewHolder)holder).goodsIcon.setImageResource(R.mipmap.ic_launcher);
-            ((GoodsViewHolder)holder).goodsPrice.setText(String.valueOf(cartGoodsItem.getGoodsPrice()));
-            ((GoodsViewHolder)holder).goodsNumber.setText(String.valueOf(cartGoodsItem.getGoodsNum()));
-            ((GoodsViewHolder)holder).goodsSelected.setChecked(cartGoodsItem.getGoodsSelected());
-            setOnListtener((GoodsViewHolder)holder);
+           /* ((GoodsViewHolder) holder).goodsIcon.setImageResource(R.mipmap.ic_launcher);*/
+            ((GoodsViewHolder) holder).goodsPrice.setText(String.valueOf(cartGoodsItem.getGoodsPrice()));
+            ((GoodsViewHolder) holder).goodsNumber.setText(String.valueOf(cartGoodsItem.getGoodsNum()));
+            ((GoodsViewHolder) holder).goodsSelected.setChecked(cartGoodsItem.getGoodsSelected());
+            setOnListtener((GoodsViewHolder) holder);
             holder.itemView.setTag(position);
-        }else if(holder instanceof StoreViewHolder){
+        } else if (holder instanceof StoreViewHolder) {
             GoodsBean cartGoodsItem = cartGoodsList.get(position);
-            ((StoreViewHolder)holder).storeName.setText(cartGoodsItem.getGoodsName());
-            ((StoreViewHolder)holder).storeSelected.setChecked(cartGoodsItem.getGoodsSelected());
-            setOnGroupListner((StoreViewHolder)holder);
+            ((StoreViewHolder) holder).storeName.setText(cartGoodsItem.getGoodsName());
+            ((StoreViewHolder) holder).storeSelected.setChecked(cartGoodsItem.getGoodsSelected());
+            setOnGroupListner((StoreViewHolder) holder);
         }
 
 
@@ -67,22 +93,22 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        if (cartGoodsList.get(position).getGoodsPrice() == 0){
+        if (cartGoodsList.get(position).getGoodsPrice() == 0) {
             return TYPE_STORE;
-        }else{
+        } else {
             return TYPE_GOODS;
         }
     }
 
     @Override
-     public int getItemCount() {
+    public int getItemCount() {
         return cartGoodsList.size();
     }
 
 
     //初始化购物车数据
-    private List<GoodsBean> initCartGoodsList(){
-        try{
+    private List<GoodsBean> initCartGoodsList() {
+      /*  try{
             List<GoodsBean> cartShopList = new ArrayList<GoodsBean>();
             GoodsBean cartGoodsItem1 = new GoodsBean();
             cartGoodsItem1.setGoodsName("商店");
@@ -112,8 +138,60 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             return cartShopList;
         }catch (Exception e){
             return null;
+        }*/
+        final List<GoodsBean> cartShopList = new ArrayList<GoodsBean>();
+        String userId = null;
+        try {
+            JSONObject user= new JSONObject();
+            user.put("userId","2");
+            userId = user.toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        HttpUtil.sentHttpPost("http://192.168.1.107:8080/TKBaas/cart/app/getUserProduct",userId, new HttpCallbackListener() {
+            @Override
+            public void onFinish(String result) {
+                try {
+                    Log.d("json",result);
+                    JSONObject cartJson = new JSONObject(result);
+                    JSONArray storeArray = (JSONArray)cartJson.get("sellerItem");
+                    for (int i = 0; i < storeArray.length(); i++) {
+                        JSONObject storeItem = (JSONObject) storeArray.get(i);
+                        GoodsBean shopItem = new GoodsBean();
+                        shopItem.setGoodsName(storeItem.getString("shopName"));
+                        shopItem.setGoodsPrice(0);
+                        cartShopList.add(shopItem);
+                        JSONArray goodsArray = (JSONArray) storeItem.get("proItem");
+                        for (int j = 0; j < goodsArray.length(); j++) {
+                            JSONObject goods = (JSONObject) goodsArray.get(j);
+                            GoodsBean goodsItem = new GoodsBean();
+                            JSONObject product = (JSONObject) goods.get("product");
+                            goodsItem.setGoodsName(product.getString("name"));
+                            goodsItem.setGoodsPrice(product.getDouble("price"));
+                            goodsItem.setGoodsIcon(product.getString("picture"));
+                            goodsItem.setGoodsNum(Integer.parseInt(goods.getString("num")));
+                            cartShopList.add(goodsItem);
+
+                        }
+
+                    }
+                    Log.d("ok","ok");
+                    Message message = new Message();
+                    message.what = 1;
+                    handler.sendMessage(message);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onError(Exception e) {
+                Log.d("error","error");
+            }
+
+        });
+    return cartShopList;
     }
+
 
     public void setOnItemClickListener(OnRecyclerViewItemClickListener onRecyclerViewItemClickListener){
         this.onRecyclerViewItemClickListener = onRecyclerViewItemClickListener;
@@ -221,6 +299,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return goodsSelectedList;
     }
 
+    //判断是否全选
     public boolean allGoodsSelected(){
         int index = 0;
         for(GoodsBean cartGoodsItem:cartGoodsList){
@@ -235,6 +314,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             return false;
         }
     }
+
 
 
 
