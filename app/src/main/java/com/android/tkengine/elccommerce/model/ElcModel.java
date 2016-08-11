@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ElcModel implements HomeFrgPresenter.CallbackOfModel, UserLoginActPresenter.CallbackOfModel {
+public class ElcModel {
 
     Context mContext;
 
@@ -34,7 +34,6 @@ public class ElcModel implements HomeFrgPresenter.CallbackOfModel, UserLoginActP
         this.mContext = mContext;
     }
 
-    @Override
     public List<RvItemBean> getHomePageData(int from, int to) {
         RvItemBean itemData;
         ArrayList<RvItemBean> allData = new ArrayList<>(to - from + 1);
