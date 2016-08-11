@@ -64,6 +64,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
 
     }
 
+
+
     protected void initCartView(){
         payLayout = (RelativeLayout)cartView.findViewById(R.id.layout_pay);
         deleteLayout = (RelativeLayout)cartView.findViewById(R.id.layout_delete);
@@ -311,7 +313,11 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
         }
     }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+        cartFrgPresenter.postCartGoodsList(cartFrgPresenter.cartGoodsList,"http://192.168.1.105:8080/TKBaas/cart/app/updateCart");
+    }
 
 
 

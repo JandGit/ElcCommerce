@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="100dp"
     android:orientation="horizontal">
 
     <CheckBox
@@ -26,72 +26,73 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="50dp">
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:gravity="center_vertical"
-            android:text="@string/add_cart"
-            android:textColor="@color/colorBlack"
-            android:maxLines="2"
-            android:textSize="13sp"
-            android:id="@+id/tv_cart_goodsName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorBlack"
+                android:maxLines="2"
+                android:textSize="13sp"
+                android:id="@+id/tv_cart_goodsName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="50dp">
             <TextView
-                android:paddingTop="11dp"
+                android:id="@+id/goods_mark"
+                android:gravity="center_vertical"
                 android:textColor="@color/colorPrimary"
                 android:textSize="12sp"
                 android:text="@string/price"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"/>
             <TextView
-                android:paddingTop="10dp"
-                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp"
                 android:text="20"
                 android:id="@+id/tv_cart_goodsPrice"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/goods_mark"
+                android:layout_marginLeft="5dp"/>
 
-            <LinearLayout
+
+            <TextView
+                android:layout_marginLeft="110dp"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:id="@+id/tv_cart_goodsReduce"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/et_cart_goodsNum"
+                android:text="-"/>
+
+            <EditText
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:textSize="13sp"
+                android:id="@+id/et_cart_goodsNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/tv_cart_goodsAdd"
+                android:text="1"/>
+
+            <TextView
+                android:gravity="center_vertical"
+                android:padding="10dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:layout_alignParentBottom="true"
-                android:orientation="horizontal">
+                android:id="@+id/tv_cart_goodsAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"/>
 
-                <TextView
-                    android:padding="10dp"
-                    android:id="@+id/tv_cart_goodsReduce"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="-"/>
-
-                <EditText
-                    android:padding="10dp"
-                    android:gravity="center"
-                    android:textSize="13sp"
-                    android:id="@+id/et_cart_goodsNum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1"/>
-
-                <TextView
-                    android:padding="10dp"
-                    android:id="@+id/tv_cart_goodsAdd"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+"/>
-                
-            </LinearLayout>
 
         </RelativeLayout>
 

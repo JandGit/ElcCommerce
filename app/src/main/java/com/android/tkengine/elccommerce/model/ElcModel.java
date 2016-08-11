@@ -138,12 +138,15 @@ public class ElcModel implements HomeFrgPresenter.CallbackOfModel, UserLoginActP
         user.put("userId", "2");
         userId = user.toString();
 
-        String result = HttpUtil.sentHttpPost(Constants.SERVER_GETCART, userId);
+        String result = HttpUtil.sentHttpPost("http://192.168.1.105:8080/TKBaas/cart/app/getUserProduct"
+        , userId);
+        Log.d("cartGet",result);
         JSONObject cartJson = new JSONObject(result);
         JSONArray storeArray = (JSONArray) cartJson.get("sellerItem");
         for (int i = 0; i < storeArray.length(); i++) {
             JSONObject storeItem = (JSONObject) storeArray.get(i);
             GoodsBean shopItem = new GoodsBean();
+            shopItem.setGoodsId(storeItem.getString("id"));
             shopItem.setGoodsName(storeItem.getString("shopName"));
             shopItem.setGoodsPrice(0);
             cartShopList.add(shopItem);
@@ -152,6 +155,7 @@ public class ElcModel implements HomeFrgPresenter.CallbackOfModel, UserLoginActP
                 JSONObject goods = (JSONObject) goodsArray.get(j);
                 GoodsBean goodsItem = new GoodsBean();
                 JSONObject product = (JSONObject) goods.get("product");
+                goodsItem.setGoodsId(product.getString("id"));
                 goodsItem.setGoodsName(product.getString("name"));
                 goodsItem.setGoodsPrice(product.getDouble("price"));
                 goodsItem.setGoodsIcon(product.getString("picture"));
@@ -163,4 +167,42 @@ public class ElcModel implements HomeFrgPresenter.CallbackOfModel, UserLoginActP
 
         return cartShopList;
     }
+
+    /**
+     * 提交购物车信息（用户id,商品id以及对应的数量），在非UI线程调用此接口
+     * 发生网络错误时抛出异常
+     */
+    public boolean postCartInfo(List<GoodsBean> cartGoodsList,String postUrl) throws Exception {
+        JSONObject cartInfo = new JSONObject();
+        //用户ID
+        cartInfo.put("userId","2");
+        //各商品ID
+        JSONArray productId = new JSONArray();
+        for(GoodsBean cartGoodsItem:cartGoodsList){
+            if(cartGoodsItem.getGoodsPrice() != 0){
+                productId.put(cartGoodsItem.getGoodsId());
+                Log.d("productID",cartGoodsItem.getGoodsId());
+            }
+        }
+        cartInfo.put("productId", productId);
+        //各商品对应的数量
+        JSONArray num = new JSONArray();
+        for(GoodsBean cartGoodsItem:cartGoodsList){
+            if(cartGoodsItem.getGoodsPrice() != 0){
+                num.put(cartGoodsItem.getGoodsNum());
+                Log.d(" num",String.valueOf(cartGoodsItem.getGoodsNum()));
+            }
+        }
+        cartInfo.put("num", num);
+        //发送到服务器
+        String result = HttpUtil.sentHttpPost(postUrl, cartInfo.toString());
+        JSONObject cartJson = new JSONObject(result);
+        boolean postResult = cartJson.getBoolean("result");
+        return postResult;
+
+    }
+
+
+
+
 }
