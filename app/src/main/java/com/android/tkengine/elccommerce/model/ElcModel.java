@@ -28,9 +28,74 @@ public class ElcModel {
 
 
 
-    public List<HomePageItemBean> getHomePageData(int from, int to) {
+    public List<HomePageItemBean> getHomePageData() {
         HomePageItemBean itemData;
-        ArrayList<HomePageItemBean> allData = new ArrayList<>(to - from + 1);
+        ArrayList<HomePageItemBean> allData = new ArrayList<>();
+
+        HomePageItemBean headitem = new HomePageItemBean();
+        headitem.type = HomePageItemBean.TYPE_HEAD;
+        headitem.data = new HashMap<>(1);
+        allData.add(headitem);
+
+
+        return allData;
+    }
+
+    /**
+     * 获取首页商品列表
+     * @param type 商品类型，0为热销，1为推荐，2为北果，3为南果，4为西果
+     * @return
+     */
+    public List<HomePageItemBean> getGoods(int type){
+        ArrayList<HomePageItemBean> allData = new ArrayList<>();
+        switch (type){
+            case 0: {
+                HomePageItemBean group = new HomePageItemBean();
+                group.type = HomePageItemBean.TYPE_GROUP;
+                group.data = new HashMap<>(2);
+                group.data.put("groupIcon", "分组图片URL");
+                group.data.put("groupName", "热销商品");
+                allData.add(group);
+                for (int i = 0; i < 10; i++) {
+                    HomePageItemBean item = new HomePageItemBean();
+                    item.type = HomePageItemBean.TYPE_GOODS;
+                    item.data = new HashMap<>(8);
+                    item.data.put("icon1", "商品图片1");
+                    item.data.put("name1", "商品名字1");
+                    item.data.put("rate1", 4.5f);
+                    item.data.put("sales1", "3000");
+                    item.data.put("icon2", "商品图片2");
+                    item.data.put("name2", "商品名字2");
+                    item.data.put("rate2", 4.5f);
+                    item.data.put("sales2", "3000");
+                    allData.add(item);
+                }
+                break;
+            }
+            case 1: {
+                HomePageItemBean group = new HomePageItemBean();
+                group.type = HomePageItemBean.TYPE_GROUP;
+                group.data = new HashMap<>(2);
+                group.data.put("groupIcon", "分组图片URL");
+                group.data.put("groupName", "推荐商品");
+                allData.add(group);
+                for (int i = 0; i < 10; i++) {
+                    HomePageItemBean item = new HomePageItemBean();
+                    item.type = HomePageItemBean.TYPE_GOODS;
+                    item.data = new HashMap<>(8);
+                    item.data.put("icon1", "商品图片1");
+                    item.data.put("name1", "商品名字1");
+                    item.data.put("rate1", 4.5f);
+                    item.data.put("sales1", "3000");
+                    item.data.put("icon2", "商品图片2");
+                    item.data.put("name2", "商品名字2");
+                    item.data.put("rate2", 4.5f);
+                    item.data.put("sales2", "3000");
+                    allData.add(item);
+                }
+                break;
+            }
+        }
 
         return allData;
     }

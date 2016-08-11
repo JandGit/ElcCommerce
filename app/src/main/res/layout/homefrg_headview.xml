@@ -1,77 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_marginBottom="20dp"
     android:layout_height="wrap_content">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/tb_homeToolbar"
-        android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
-        android:layout_height="42dp">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_marginLeft="3dp"
-                android:id="@+id/tv_toolbarUserLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/guangzhou"
-                android:gravity="center"
-                android:textColor="@color/colorWhite"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:layout_marginTop="2dp"
-                android:layout_marginLeft="3dp"
-                android:src="@drawable/next"
-                android:layout_width="18dp"
-                android:layout_height="18dp"/>
-
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/et_toolbarSearch"
-                android:layout_marginLeft="15dp"
-                android:background="@drawable/text_shape"
-                android:text="@string/search"
-                android:textColor="@color/colorGray"
-                android:paddingLeft="20dp"
-                android:textSize="14sp"
-                android:gravity="center_vertical"
-                android:layout_width="210dp"
-                android:layout_height="27dp"/>
-
-            <ImageView
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20dp"
-                android:src="@drawable/search"
-                android:layout_width="18dp"
-                android:layout_height="18dp"/>
-        </RelativeLayout>
-
-        <ImageView
-            android:layout_marginLeft="40dp"
-            android:src="@drawable/message"
-            android:layout_width="22dp"
-            android:layout_height="22dp"/>
-
-    </android.support.v7.widget.Toolbar>
     <android.support.v4.view.ViewPager
         android:background="@mipmap/background"
         android:id="@+id/vp_homeAD"
         android:layout_width="match_parent"
         android:layout_height="150dp"/>
     <RelativeLayout
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -98,8 +36,6 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="100dp">
@@ -161,8 +97,6 @@
 
     </LinearLayout>
     <LinearLayout
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="100dp">
@@ -223,11 +157,6 @@
         </RelativeLayout>
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/dividerColor"/>
 
 
 </LinearLayout>
