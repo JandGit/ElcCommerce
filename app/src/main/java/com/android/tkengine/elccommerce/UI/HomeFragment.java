@@ -123,6 +123,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     @Override
     public void showLoadingHomePage() {
         mSwipeRefreshLayout.setRefreshing(true);
+        rv_mainView.setVisibility(View.INVISIBLE);
         tv_tips.setText("正在努力加载......");
     }
 
@@ -141,6 +142,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     public void showLoadingHomeCompleted() {
         mSwipeRefreshLayout.setRefreshing(false);
         tv_tips.setVisibility(View.GONE);
+        rv_mainView.setVisibility(View.VISIBLE);
     }
 
     @Override

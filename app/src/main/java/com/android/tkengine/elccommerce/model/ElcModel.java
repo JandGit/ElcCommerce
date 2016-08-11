@@ -22,11 +22,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ElcModel implements HomeFrgPresenter.CallbackOfModel, UserLoginActPresenter.CallbackOfModel {
+public class ElcModel{
 
     Context mContext;
 
@@ -34,7 +35,6 @@ public class ElcModel implements HomeFrgPresenter.CallbackOfModel, UserLoginActP
         this.mContext = mContext;
     }
 
-    @Override
     public List<RvItemBean> getHomePageData(int from, int to) {
         RvItemBean itemData;
         ArrayList<RvItemBean> allData = new ArrayList<>(to - from + 1);
@@ -130,7 +130,7 @@ public class ElcModel implements HomeFrgPresenter.CallbackOfModel, UserLoginActP
      * 得到购物车列表，注意在非UI线程调用此接口
      * 发生网络错误时抛出异常
      */
-    public List<GoodsBean> getCartGoodsList() throws Exception {
+    public List<GoodsBean> getCartGoodsList() throws Exception{
         final List<GoodsBean> cartShopList = new ArrayList<>();
 
         String userId = null;
