@@ -14,7 +14,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:id="@+id/iv_goodIcon1"
             android:layout_gravity="center_horizontal" />
 
@@ -87,7 +87,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:id="@+id/iv_goodIcon2"
             android:layout_gravity="center_horizontal" />
 

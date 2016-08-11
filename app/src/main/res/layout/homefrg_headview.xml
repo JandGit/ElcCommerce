@@ -3,12 +3,72 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_homeToolbar"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="42dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginLeft="3dp"
+                android:id="@+id/tv_toolbarUserLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/guangzhou"
+                android:gravity="center"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="3dp"
+                android:src="@drawable/next"
+                android:layout_width="18dp"
+                android:layout_height="18dp"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/et_toolbarSearch"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/text_shape"
+                android:text="@string/search"
+                android:textColor="@color/colorGray"
+                android:paddingLeft="20dp"
+                android:textSize="14sp"
+                android:gravity="center_vertical"
+                android:layout_width="210dp"
+                android:layout_height="27dp"/>
+
+            <ImageView
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/search"
+                android:layout_width="18dp"
+                android:layout_height="18dp"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_marginLeft="40dp"
+            android:src="@drawable/message"
+            android:layout_width="22dp"
+            android:layout_height="22dp"/>
+
+    </android.support.v7.widget.Toolbar>
     <android.support.v4.view.ViewPager
         android:background="@mipmap/background"
         android:id="@+id/vp_homeAD"
         android:layout_width="match_parent"
         android:layout_height="150dp"/>
-
     <RelativeLayout
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -47,7 +107,7 @@
         <RelativeLayout
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
-            android:background="@drawable/headitem_northfruit_background"
+            android:background="@drawable/headitem_hotsale_background"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent">
@@ -60,13 +120,13 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/headitem_northfruit"/>
+                android:src="@drawable/headitem_northfruit" />
             <TextView
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/iv1"
                 android:text="北方水果"
                 android:textColor="@color/colorWhite"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -80,128 +140,94 @@
             android:layout_width="0dp"
             android:layout_height="match_parent">
 
-        </RelativeLayout>
-
-    </LinearLayout>
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        
-        <LinearLayout
-            android:id="@+id/tag_headItem_hotsale"
-            android:clickable="true"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="80dp">
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/headitem_hotsale"/>
-            <TextView
-                android:text="正在热销"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/tag_headItem_advice"
-            android:clickable="true"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="80dp">
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/headitem_advice"/>
-            <TextView
-                android:text="推荐商品"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/tag_headItem_westfruit"
-            android:clickable="true"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="80dp">
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/headitem_westfruit"/>
-            <TextView
-                android:text="西方水果"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:id="@+id/tag_headItem_northfruit"
-            android:clickable="true"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="80dp">
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/headitem_northfruit"/>
-            <TextView
-                android:text="北方水果"
-                android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/tag_headItem_southfruit"
-            android:clickable="true"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="80dp">
-            <ImageView
+                android:id="@+id/iv2"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/headitem_southfruit"/>
             <TextView
+                android:layout_below="@id/iv2"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/colorWhite"
                 android:text="南方水果"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <RelativeLayout
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/headitem_hotsale_background"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv3"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/headitem_westfruit"/>
+            <TextView
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/iv3"
+                android:text="西方水果"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/headitem_hotsale_background"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv4"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/headitem_advice"/>
+            <TextView
+                android:layout_below="@id/iv4"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/colorWhite"
+                android:text="推荐商品"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/dividerColor"/>
+
+
 </LinearLayout>
