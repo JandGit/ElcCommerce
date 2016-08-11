@@ -4,10 +4,12 @@ package com.android.tkengine.elccommerce.model;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Message;
 import android.util.Log;
 
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
+import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.beans.RvItemBean;
 import com.android.tkengine.elccommerce.beans.UserInfoBean;
 import com.android.tkengine.elccommerce.presenter.HomeFrgPresenter;
@@ -16,14 +18,16 @@ import com.android.tkengine.elccommerce.utils.HttpCallbackListener;
 import com.android.tkengine.elccommerce.utils.HttpUtil;
 import com.android.tkengine.elccommerce.utils.ImageTools;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ElcModel implements HomeFrgPresenter.CallbackOfModel, UserLoginActPresenter.CallbackOfModel {
+public class ElcModel{
 
     Context mContext;
 
@@ -31,7 +35,6 @@ public class ElcModel implements HomeFrgPresenter.CallbackOfModel, UserLoginActP
         this.mContext = mContext;
     }
 
-    @Override
     public List<RvItemBean> getHomePageData(int from, int to) {
         RvItemBean itemData;
         ArrayList<RvItemBean> allData = new ArrayList<>(to - from + 1);
@@ -103,14 +106,61 @@ public class ElcModel implements HomeFrgPresenter.CallbackOfModel, UserLoginActP
         jsonObject.put("user_id", userId);
         params = jsonObject.toString();
         result = HttpUtil.sentHttpPost(Constants.SERVER_GETUSERINFO, params);
-        Log.i("model:result", result);
         jsonObject = new JSONObject(result);
-        info.setUser_name(jsonObject.getString("user_name"));
-        info.setUser_phone(jsonObject.getString("user_phone"));
-        info.setUser_sex(jsonObject.getString("user_sex"));
-        info.setUser_picture_url(jsonObject.getString("user_picture_url"));
-        info.setUser_money(jsonObject.getDouble("user_money"));
+        if (jsonObject.has("user_name")) {
+            info.setUser_name(jsonObject.getString("user_name"));
+        }
+        if (jsonObject.has("user_phone")) {
+            info.setUser_phone(jsonObject.getString("user_phone"));
+        }
+        if (jsonObject.has("user_sex")) {
+            info.setUser_sex(jsonObject.getString("user_sex"));
+        }
+        if (jsonObject.has("user_picture_url")) {
+            info.setUser_picture_url(jsonObject.getString("user_picture_url"));
+        }
+        if (jsonObject.has("user_money")) {
+            info.setUser_money(jsonObject.getDouble("user_money"));
+        }
 
         return info;
+    }
+
+    /**
+     * 得到购物车列表，注意在非UI线程调用此接口
+     * 发生网络错误时抛出异常
+     */
+    public List<GoodsBean> getCartGoodsList() throws Exception{
+        final List<GoodsBean> cartShopList = new ArrayList<>();
+
+        String userId = null;
+        JSONObject user = new JSONObject();
+        user.put("userId", "2");
+        userId = user.toString();
+
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_GETCART, userId);
+        JSONObject cartJson = new JSONObject(result);
+        JSONArray storeArray = (JSONArray) cartJson.get("sellerItem");
+        for (int i = 0; i < storeArray.length(); i++) {
+            JSONObject storeItem = (JSONObject) storeArray.get(i);
+            GoodsBean shopItem = new GoodsBean();
+            shopItem.setGoodsName(storeItem.getString("shopName"));
+            shopItem.setGoodsPrice(0);
+            cartShopList.add(shopItem);
+            JSONArray goodsArray = (JSONArray) storeItem.get("proItem");
+            for (int j = 0; j < goodsArray.length(); j++) {
+                JSONObject goods = (JSONObject) goodsArray.get(j);
+                GoodsBean goodsItem = new GoodsBean();
+                JSONObject product = (JSONObject) goods.get("product");
+                goodsItem.setGoodsName(product.getString("name"));
+                goodsItem.setGoodsPrice(product.getDouble("price"));
+                goodsItem.setGoodsIcon(product.getString("picture"));
+                goodsItem.setGoodsNum(Integer.parseInt(goods.getString("num")));
+                cartShopList.add(goodsItem);
+            }
+
+        }
+
+        return cartShopList;
     }
 }

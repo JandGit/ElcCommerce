@@ -29,7 +29,7 @@ import java.util.List;
 public class HomeFrgPresenter {
 
     CallbackOfHomefrg mView;
-    CallbackOfModel mModel;
+    ElcModel mModel;
     Context mContext;
     private HomeFrgHandler mHandler;
 
@@ -77,11 +77,6 @@ public class HomeFrgPresenter {
         void showLoadingMore();
         void showLoadingHomeCompleted();
         void showLoadingMoreCompleted();
-    }
-
-    public interface CallbackOfModel{
-        //加载首页数据，位置为from-to的数据项目
-        List<RvItemBean> getHomePageData(int from, int to);
     }
 
     public HomeFrgPresenter(CallbackOfHomefrg mView, Context context) {

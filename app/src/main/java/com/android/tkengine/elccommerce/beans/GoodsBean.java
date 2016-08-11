@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 public class GoodsBean {
     protected String goodsName;   //商品名
     protected double goodsPrice;  //商品价格
-    protected Bitmap goodsIcon;   //商品图片
+    protected String goodsIcon;   //商品图片
     protected int goodsNum;      //所订购商品的数量
     protected boolean goodsSelected;   //是否订购
 
@@ -24,7 +24,7 @@ public class GoodsBean {
         this.goodsNum = goodsNum;
     }
 
-    public void setGoodsIcon(Bitmap goodsIcon){
+    public void setGoodsIcon(String goodsIcon){
         this.goodsIcon = goodsIcon;
     }
 
@@ -44,7 +44,7 @@ public class GoodsBean {
         return goodsNum;
     }
 
-    public Bitmap getGoodsIcon(){
+    public String getGoodsIcon(){
         return goodsIcon;
     }
 

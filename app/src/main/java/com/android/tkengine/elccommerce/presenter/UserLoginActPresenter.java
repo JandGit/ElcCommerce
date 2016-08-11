@@ -19,7 +19,7 @@ import java.io.InputStream;
 public class UserLoginActPresenter {
 
     CallbackOfView mView;
-    CallbackOfModel mModel;
+    ElcModel mModel;
     Context mContext;
 
     private MyHandler mHandler;

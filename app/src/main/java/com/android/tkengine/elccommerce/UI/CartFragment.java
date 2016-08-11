@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*import com.android.tkengine.elccommerce.PayActivity;*/
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.presenter.CartFrgPresenter;
@@ -79,13 +80,14 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
         cartRecyclerView.setAdapter(cartFrgPresenter);
         cartFrgPresenter.setOnItemClickListener(this);
 
+
         //购物车全选操作
-        cartSelectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        cartSelectAll.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View view) {
                 if(cartSelectAll.isChecked()){
                     goodsNumber = 0;
-                   cartSum = 0;
+                    cartSum = 0;
                     for(GoodsBean cartGoodsItem:cartFrgPresenter.cartGoodsList){
                         cartGoodsItem.setGoodsSelected(true);
                         cartSum = cartSum + cartGoodsItem.getGoodsPrice() *cartGoodsItem.getGoodsNum();
@@ -108,6 +110,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
                 }
             }
         });
+
+
 
         //购物车支付操作
         cartPay = (Button)cartView.findViewById(R.id.btn_cart_pay);
@@ -173,6 +177,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
         if(holder.goodsSelected.isChecked()){
             cartSum = cartSum + Double.parseDouble(holder.goodsPrice.getText().toString());
             cartGoodsSum.setText(String.valueOf(decimalFormat.format(cartSum)));
+            goodsNumber = goodsNumber + 1;
+            cartPay.setText("结算（"+String.valueOf(goodsNumber) +"）");
         }
     }
 
@@ -188,6 +194,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             if(holder.goodsSelected.isChecked()){
                 cartSum = cartSum - Double.parseDouble(holder.goodsPrice.getText().toString());
                 cartGoodsSum.setText(String.valueOf(decimalFormat.format(cartSum)));
+                goodsNumber = goodsNumber - 1;
+                cartPay.setText("结算（"+String.valueOf(goodsNumber) +"）");
             }
         }
     }
@@ -221,17 +229,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             }
 
             //判断购物车所有选项都被选中
-          /*  int index = 0;
-            while(index <= cartFrgPresenter.cartGoodsList.size() - 1){
-                if(!cartFrgPresenter.cartGoodsList.get(index).getGoodsSelected()){
-                    break;
-                }
-                index ++;
-            }
-            if(index == cartFrgPresenter.cartGoodsList.size()){
+           if(cartFrgPresenter.allGoodsSelected())
                 cartSelectAll.setChecked(true);
-            }*/
-
 
 
         }else {
@@ -251,7 +250,9 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             }
 
             //购物车没有全选
-           /* cartSelectAll.setChecked(false);*/
+            if(cartSelectAll.isChecked()){
+                cartSelectAll.setChecked(false);
+            }
 
         }
     }
@@ -283,15 +284,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             cartPay.setText("结算（"+String.valueOf(goodsNumber) +"）");
 
             //判断购物车所有选项都被选中
-          /*  cartSelectAll.setChecked(true);
-            int index = 0;
-            while(index <= cartFrgPresenter.cartGoodsList.size() - 1){
-                if(! cartFrgPresenter.cartGoodsList.get(index).getGoodsSelected()){
-                    cartSelectAll.setChecked(false);
-                    break;
-                }
-                index ++;
-            }*/
+            if(cartFrgPresenter.allGoodsSelected())
+                cartSelectAll.setChecked(true);
 
 
         }else{
@@ -310,7 +304,10 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             cartPay.setText("结算（"+String.valueOf(goodsNumber) +"）");
 
             //购物车没有全选
-          /*  cartSelectAll.setChecked(false);*/
+            if(cartSelectAll.isChecked()){
+                cartSelectAll.setChecked(false);
+            }
+
         }
     }
 

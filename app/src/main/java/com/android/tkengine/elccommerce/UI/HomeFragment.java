@@ -1,5 +1,6 @@
 package com.android.tkengine.elccommerce.UI;
 
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
@@ -47,6 +48,8 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     Toast mToast;
     //提示首页加载状态的页面
     TextView tv_tips;
+    //搜索框
+    TextView toolbarSearch;
 
 
     @Override
@@ -59,6 +62,14 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
 
     private void initView(){
         mToolbar = (Toolbar) mView.findViewById(R.id.tb_homeToolbar);
+        toolbarSearch =(TextView)mView.findViewById(R.id.et_toolbarSearch);
+        toolbarSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mView.getContext(),SearchActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //设置首页商品列表
         rv_mainView = (RecyclerView) mView.findViewById(R.id.rv_goodsList);
@@ -112,6 +123,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     @Override
     public void showLoadingHomePage() {
         mSwipeRefreshLayout.setRefreshing(true);
+        rv_mainView.setVisibility(View.INVISIBLE);
         tv_tips.setText("正在努力加载......");
     }
 
@@ -130,6 +142,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     public void showLoadingHomeCompleted() {
         mSwipeRefreshLayout.setRefreshing(false);
         tv_tips.setVisibility(View.GONE);
+        rv_mainView.setVisibility(View.VISIBLE);
     }
 
     @Override
