@@ -86,16 +86,21 @@
         android:layout_centerHorizontal="true" />
 
     <TextView
+        android:id="@+id/tv_nowLogining"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="正在登录......" />
+        android:layout_below="@+id/et_password"
+        android:layout_alignLeft="@+id/et_password"
+        android:layout_alignStart="@+id/et_password"
+        android:text="@string/now_logining" />
 
     <Button
         android:id="@+id/btn_signUp"
         android:onClick="onLoginBtnClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="登录"
+        android:text="@string/login"
         android:textColor="@color/colorWhite"
         android:layout_below="@+id/et_password"
         android:layout_marginTop="30dp"
@@ -109,7 +114,7 @@
         android:id="@+id/tv_forgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="忘记密码？"
+        android:text="@string/forgotpassword"
         android:layout_below="@+id/btn_signUp"
         android:layout_alignLeft="@+id/btn_signUp"
         android:layout_alignStart="@+id/btn_signUp"
@@ -121,7 +126,7 @@
         android:id="@+id/tv_signIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="注册新帐号"
+        android:text="@string/signin"
         android:clickable="true"
         android:background="@drawable/userlogin_textbackground"
         android:layout_alignTop="@+id/tv_forgotPassword"

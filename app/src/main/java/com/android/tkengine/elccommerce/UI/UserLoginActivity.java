@@ -100,7 +100,14 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
 
     @Override
     public void showLogining(){
+        findViewById(R.id.tv_nowLogining).setVisibility(View.VISIBLE);
+        findViewById(R.id.btn_signUp).setEnabled(false);
+    }
 
+    @Override
+    public void showLoginFailed(){
+        findViewById(R.id.tv_nowLogining).setVisibility(View.INVISIBLE);
+        findViewById(R.id.btn_signUp).setEnabled(true);
     }
 
 }

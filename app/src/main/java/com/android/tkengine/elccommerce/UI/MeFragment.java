@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.UserInfoBean;
 import com.android.tkengine.elccommerce.utils.BadgeView;
 import com.squareup.picasso.Picasso;
@@ -39,9 +41,7 @@ public class MeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //若用户未登录，则进入登录页面
-                if (!isUserLogined()) {
                     startActivityForResult(new Intent(getContext(), UserLoginActivity.class), 1);
-                }
             }
         });
 
@@ -63,7 +63,8 @@ public class MeFragment extends Fragment {
     private void showUserInfo() {
         SharedPreferences sp = getActivity().getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
         tv_userName.setText(sp.getString("UserName", "null"));
-        Picasso.with(getContext()).load(sp.getString("UserIcon", null)).fit().into(iv_userIcon);
+        Log.i("presenter", "设置头像" + (Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)));
+        Picasso.with(getContext()).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit().into(iv_userIcon);
     }
 
     //用户登录后返回，若用户登录成功，则把登录信息记录到本地

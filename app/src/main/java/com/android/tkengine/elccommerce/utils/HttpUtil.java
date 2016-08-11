@@ -131,7 +131,7 @@ public class HttpUtil {
         os.flush();
         os.close();
 
-        reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+        reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
         String strRead = null;
         while ((strRead = reader.readLine()) != null) {
             result += strRead;
@@ -158,7 +158,7 @@ public class HttpUtil {
         connection.setRequestMethod("GET");
         connection.connect();
 
-        reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+        reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
         String strRead = null;
         while ((strRead = reader.readLine()) != null) {
             result += strRead;
