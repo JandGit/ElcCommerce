@@ -92,7 +92,9 @@ public class ElcModel {
         jsonObject.put("user_password", password);
         params = jsonObject.toString();
         String result;
+        Log.i("mModel:", "发送请求：" + params);
         result = HttpUtil.sentHttpPost(Constants.SERVER_ADDRESS_LOGIN, params);
+        Log.i("mModel:", "服务器返回：" + result);
         jsonObject = new JSONObject(result);
         userId = jsonObject.getString("user_id");
 
@@ -104,7 +106,9 @@ public class ElcModel {
         jsonObject = new JSONObject();
         jsonObject.put("user_id", userId);
         params = jsonObject.toString();
+        Log.i("mModel:", "发送请求：" + params);
         result = HttpUtil.sentHttpPost(Constants.SERVER_GETUSERINFO, params);
+        Log.i("mModel:", "服务器返回：" + result);
         jsonObject = new JSONObject(result);
         if (jsonObject.has("user_name")) {
             info.setUser_name(jsonObject.getString("user_name"));
