@@ -9,5 +9,6 @@
     <color name = "colorBlack"> #0F0F0F</color>
     <color name = "colorGray">#A1A1A1</color>
     <color name = "colorLightGray">#eeeeee</color>
+    <color name="dividerColor">#eaeaea</color>
     <color name="colorTransparent">#00000000</color>
 </resources>
