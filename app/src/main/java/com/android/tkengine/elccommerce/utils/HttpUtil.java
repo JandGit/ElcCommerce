@@ -29,6 +29,7 @@ public class HttpUtil {
                 try {
                     url = new URL(httpUrl);
                     connection = (HttpURLConnection) url.openConnection();
+                    connection.setConnectTimeout(5000);
                     connection.setRequestMethod("GET");
                     connection.connect();
 
@@ -70,6 +71,7 @@ public class HttpUtil {
                 try {
                     url = new URL(httpUrl);
                     connection = (HttpURLConnection) url.openConnection();
+                    connection.setConnectTimeout(5000);
                     connection.setRequestMethod("POST");
                     connection.setDoOutput(true);
                     connection.setDoInput(true);
@@ -117,6 +119,7 @@ public class HttpUtil {
 
         url = new URL(httpUrl);
         connection = (HttpURLConnection) url.openConnection();
+        connection.setConnectTimeout(5000);
         connection.setRequestMethod("POST");
         connection.setDoOutput(true);
         connection.setDoInput(true);
@@ -151,6 +154,7 @@ public class HttpUtil {
 
         url = new URL(httpUrl);
         connection = (HttpURLConnection) url.openConnection();
+        connection.setConnectTimeout(5000);
         connection.setRequestMethod("GET");
         connection.connect();
 

@@ -24,8 +24,8 @@
                 android:layout_alignParentLeft="true"
                 android:scaleType="centerInside"
                 android:src="@mipmap/title_back"
-                android:layout_width="25dp"
-                android:layout_height="25dp" />
+                android:layout_width="40dp"
+                android:layout_height="match_parent" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -46,9 +46,20 @@
         android:src="@drawable/frgme_userunlogin"
         android:id="@+id/iv_userIcon" />
 
+    <TextView
+        android:id="@+id/tv_localUserName"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/iv_userIcon"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="本地用户名"
+        android:textSize="20sp"/>
+
     <EditText
         android:id="@+id/et_userName"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:ems="12"
         android:maxEms="14"
         android:textSize="20sp"
@@ -73,6 +84,11 @@
         android:inputType="textPassword"
         android:layout_below="@+id/et_userName"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="正在登录......" />
 
     <Button
         android:id="@+id/btn_signUp"

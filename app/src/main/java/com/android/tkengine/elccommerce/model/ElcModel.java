@@ -84,11 +84,16 @@ public class ElcModel{
         return allData;
     }
 
+    /**
+     * 在非UI线程调用该接口
+     * 调用后台接口登录用户
+     * 登录成功返回用户信息，失败返回null
+     */
     public UserInfoBean login(String userName, String password) throws Exception {
 
         JSONObject jsonObject = new JSONObject();
         String params;
-        String userId = null;
+        String userId;
         jsonObject.put("user_phone", userName);
         jsonObject.put("user_password", password);
         params = jsonObject.toString();
@@ -107,15 +112,28 @@ public class ElcModel{
         params = jsonObject.toString();
         result = HttpUtil.sentHttpPost(Constants.SERVER_GETUSERINFO, params);
         jsonObject = new JSONObject(result);
+
         if (jsonObject.has("user_name")) {
             info.setUser_name(jsonObject.getString("user_name"));
         }
+        else {
+            info.setUser_name("null");
+        }
+
         if (jsonObject.has("user_phone")) {
             info.setUser_phone(jsonObject.getString("user_phone"));
         }
+        else {
+            info.setUser_phone("null");
+        }
+
         if (jsonObject.has("user_sex")) {
             info.setUser_sex(jsonObject.getString("user_sex"));
         }
+        else{
+            info.setUser_sex("null");
+        }
+
         if (jsonObject.has("user_picture_url")) {
             info.setUser_picture_url(jsonObject.getString("user_picture_url"));
         }
@@ -133,7 +151,7 @@ public class ElcModel{
     public List<GoodsBean> getCartGoodsList() throws Exception{
         final List<GoodsBean> cartShopList = new ArrayList<>();
 
-        String userId = null;
+        String userId;
         JSONObject user = new JSONObject();
         user.put("userId", "2");
         userId = user.toString();
@@ -163,4 +181,5 @@ public class ElcModel{
 
         return cartShopList;
     }
+
 }
