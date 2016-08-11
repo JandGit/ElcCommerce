@@ -45,6 +45,8 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
     ImageView iv_userIcon;
     //用户名
     TextView tv_userName;
+    //忘记密码、注册用户、切换用户按钮
+    View viewLeft, viewRight;
 
     private UserLoginActPresenter mPresenter;
 
@@ -64,6 +66,8 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
         et_password = (TextView) findViewById(R.id.et_password);
         iv_userIcon = (ImageView) findViewById(R.id.iv_userIcon);
         tv_userName = (TextView) findViewById(R.id.tv_localUserName);
+        viewLeft = findViewById(R.id.tv_forgotPassword);
+        viewRight = findViewById(R.id.tv_signIn);
 
         findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +77,10 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
         });
 
         if(isUserLogined()){
-            showUserInfo();
+            setPageLogin();
+        }
+        else {
+            setPageUnLogin();
         }
     }
 
@@ -83,17 +90,41 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
         return sp.getBoolean("isLogin", false);
     }
 
-    //设置上方的用户头像及用户名
-    private void showUserInfo() {
+    private void setPageLogin(){
         SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
         tv_userName.setText(sp.getString("UserName", "null"));
         tv_userName.setVisibility(View.VISIBLE);
         et_userName.setText(sp.getString("UserPhone", " "));
         et_userName.setVisibility(View.INVISIBLE);
-        Log.i("presenter", "设置头像" + (Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)));
+        ((TextView)viewRight).setText("切换登录用户");
+        viewRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setPageUnLogin();
+            }
+        });
         Picasso.with(this).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit()
                 .error(R.drawable.frgme_userunlogin)
                 .into(iv_userIcon);
+    }
+
+    private void setPageUnLogin(){
+        iv_userIcon.setImageResource(R.drawable.frgme_userunlogin);
+        tv_userName.setVisibility(View.INVISIBLE);
+        et_userName.setVisibility(View.VISIBLE);
+        viewLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showToast("忘记密码");
+            }
+        });
+        ((TextView)viewRight).setText("注册新用户");
+        viewRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showToast("注册新用户");
+            }
+        });
     }
 
     //登录按钮按下回调事件
