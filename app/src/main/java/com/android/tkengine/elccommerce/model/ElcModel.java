@@ -175,7 +175,7 @@ public class ElcModel {
      * 提交购物车信息（用户id,商品id以及对应的数量），在非UI线程调用此接口
      * 发生网络错误时抛出异常
      */
-    public boolean postCartInfo(List<GoodsBean> cartGoodsList,String postUrl) throws Exception {
+    public boolean postCartInfo(List<GoodsBean>cartGoodsList,String postUrl) throws Exception {
         JSONObject cartInfo = new JSONObject();
         //用户ID
         cartInfo.put("userId","2");
