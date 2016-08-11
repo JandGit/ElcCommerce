@@ -24,4 +24,9 @@
     <string name="login">登录</string>
     <string name="forgotpassword">忘记密码？</string>
     <string name="signin">注册新帐号</string>
+    <string name="goods_receiver">收货人:</string>
+    <string name="receiver_address">收货地址:</string>
+    <string name="confirm_order">确认订单</string>
+    <string name="dispatch_way">配送方式</string>
+    <string name="dispatch">快递免邮</string>
 </resources>
