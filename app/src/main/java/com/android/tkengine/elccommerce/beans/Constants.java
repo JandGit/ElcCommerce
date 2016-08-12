@@ -26,4 +26,10 @@ public class Constants {
      * 获取首页商品列表
      */
     public static final String SERVER_HOMEPAGE = SERVER_ADDRESS + "product/app/home";
+
+    /**
+     * 订单接口
+     * 访问参数json数据格式,{"userId":?, "currentPage":?, "pageSize":?}
+     */
+    public static final String SERVER_GETORDER = SERVER_ADDRESS + "/order/app/userOrder";
 }
