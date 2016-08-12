@@ -120,10 +120,7 @@ public class HomeFrgPresenter {
             @Override
             public void run() {
                 try {
-                    //测试代码-----
-                    mModel.getOrders("2", 1);
-                    //--------------
-                    /*homePageData = mModel.getHomePageData();
+                    homePageData = mModel.getHomePageData();
                     if (null == homePageData) {
                         mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);
                     } else {
@@ -131,7 +128,7 @@ public class HomeFrgPresenter {
                         homepageAdapter = new HomeAdapter(homePageData, mContext);
                         msg.obj = homepageAdapter;
                         mHandler.sendMessage(msg);
-                    }*/
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);
