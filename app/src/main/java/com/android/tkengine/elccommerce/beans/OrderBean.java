@@ -1,21 +1,50 @@
 package com.android.tkengine.elccommerce.beans;
 
+import java.util.List;
+
 /**
  * 储存订单信息
  */
 public class OrderBean {
-    public static class GoodInfo{
+    public BoughtDateBean boughtDate;
+    public String id;
+    public int money;
+    public String sellerId;
+    public String shopName;
+    public String userId;
+    public String state;
+    public List<ProItemsBean> proItems;
 
+    public static class BoughtDateBean {
+        public int date;
+        public int day;
+        public int hours;
+        public int minutes;
+        public int month;
+        private int nanos;
+        public int seconds;
+        private long time;
+        private int timezoneOffset;
+        public int year;
     }
 
-    String id; //订单ID
-    String boughtDate; //订单日期
-    double money; //订单总价
-    String sellerId; //订单商家Id
-    String state; //订单状态
-    String shopName; //商家名称
-    String userId; //订单用户ID
+    public static class ProItemsBean {
+        private String id;
+        private int num;
+        private ProductBean product;
 
+        public static class ProductBean {
+            private String id;
+            private String name;
+            private String type;
+            private String city;
+            private int store;
+            private int price;
+            private String description;
+            private int sales;
+            private boolean ifDeleted;
+            private String picture;
 
-
+        }
+    }
 }

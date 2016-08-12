@@ -19,6 +19,7 @@ import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
