@@ -212,7 +212,6 @@ public class ElcModel {
         //反射获取含NewsAllBean信息的类型信息
         java.lang.reflect.Type type = new TypeToken<GoodsDetailsBean>() {}.getType();
         goodsDetailsList = gson.fromJson(result, type);
-        Log.d("getGoodsDetails: ", goodsDetailsList.getProduct_name());
         return goodsDetailsList;
     }
 

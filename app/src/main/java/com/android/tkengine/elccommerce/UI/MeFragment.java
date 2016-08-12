@@ -28,7 +28,7 @@ public class MeFragment extends Fragment {
 
     View mView;
     TextView tv_userName;
-    ImageView iv_userIcon;
+    ImageView iv_userIcon, s;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,6 +36,13 @@ public class MeFragment extends Fragment {
 
         tv_userName = (TextView) mView.findViewById(R.id.tv_frgMe_userName);
         iv_userIcon = (ImageView) mView.findViewById(R.id.iv_frgMeUserIcon);
+        s = (ImageView) mView.findViewById(R.id.iv_frgMeUnpaid);
+        s.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(getContext(), DisplayActivity.class), 1);
+            }
+        });
 
         mView.findViewById(R.id.rv_frgme_user).setOnClickListener(new View.OnClickListener() {
             @Override
