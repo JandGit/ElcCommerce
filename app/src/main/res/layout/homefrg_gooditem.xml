@@ -5,11 +5,15 @@
     android:orientation="horizontal">
 
     <RelativeLayout
+        android:id="@+id/layout_itemleft"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_marginRight="5dp"
-        android:background="?attr/selectableItemBackground"
+        android:background="@drawable/homefrg_itembackground"
         android:clickable="true">
 
         <ImageView
@@ -35,24 +39,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="评价"
+            android:text="产地"
             android:id="@+id/textView1"
             android:layout_below="@+id/tv_goodname1"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <RatingBar
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/rb_goodRate1"
-            style="@style/Base.Widget.AppCompat.RatingBar.Small"
+            android:id="@+id/tv_city1"
+            android:ems="5"
             android:layout_toRightOf="@+id/textView1"
             android:layout_toEndOf="@+id/textView1"
             android:layout_alignTop="@+id/textView1"
             android:layout_alignBottom="@+id/textView1"
-            android:layout_marginLeft="20dp"
-            android:numStars="5"
-            android:clickable="false" />
+            android:layout_marginLeft="20dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,18 +73,22 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="20000"
             android:id="@+id/tv_goodSales1"
-            android:layout_alignLeft="@+id/rb_goodRate1"
-            android:layout_alignStart="@+id/rb_goodRate1"
+            android:layout_alignLeft="@+id/tv_city1"
+            android:layout_alignStart="@+id/tv_city1"
             android:layout_alignTop="@+id/textView2" />
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/layout_itemright"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_marginLeft="5dp"
-        android:background="?attr/selectableItemBackground"
+        android:background="@drawable/homefrg_itembackground"
         android:clickable="true">
 
         <ImageView
@@ -108,24 +114,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="评价"
+            android:text="产地"
             android:id="@+id/textView5"
             android:layout_below="@+id/tv_goodname2"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <RatingBar
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/rb_goodRate2"
-            style="@style/Base.Widget.AppCompat.RatingBar.Small"
+            android:id="@+id/tv_city2"
+            android:ems="5"
             android:layout_toRightOf="@+id/textView5"
             android:layout_toEndOf="@+id/textView5"
             android:layout_alignTop="@+id/textView5"
             android:layout_alignBottom="@+id/textView5"
             android:layout_marginLeft="20dp"
-            android:numStars="5"
-            android:clickable="false" />
+            android:layout_marginStart="20dp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -144,8 +149,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="20000"
             android:id="@+id/tv_goodSales2"
-            android:layout_alignLeft="@+id/rb_goodRate2"
-            android:layout_alignStart="@+id/rb_goodRate2"
+            android:layout_alignLeft="@+id/tv_city2"
+            android:layout_alignStart="@+id/tv_city2"
+            android:layout_alignBottom="@+id/textView6"
             android:layout_alignTop="@+id/textView6" />
 
     </RelativeLayout>

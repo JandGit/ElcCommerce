@@ -7,6 +7,8 @@ import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -124,6 +126,7 @@ public class HomeFrgPresenter {
                     homepageAdapter = new HomeAdapter(homePageData, mContext);
                     msg.obj = homepageAdapter;
                     mHandler.sendMessage(msg);
+                    loadMoreOnHomePage();
                 }
             }
         }.start();
@@ -202,32 +205,29 @@ public class HomeFrgPresenter {
                     //设置首页广告
                     break;
                 case HomePageItemBean.TYPE_GROUP:
-                    ImageView iv = holder.getView(R.id.iv_groupBackground);
                     TextView tv = holder.getView(R.id.tv_groupName);
-                    Picasso.with(mContext).load(Constants.SERVER_ADDRESS + (String) itemData.data.get("groupIcon"))
-                            .fit().error(R.mipmap.ic_launcher).into(iv);
                     tv.setText((CharSequence) itemData.data.get("groupName"));
                     break;
                 case HomePageItemBean.TYPE_GOODS:
                     ImageView iv_goodsIcon = holder.getView(R.id.iv_goodIcon1);
                     TextView tv_goodsName = holder.getView(R.id.tv_goodname1);
-                    RatingBar rb = holder.getView(R.id.rb_goodRate1);
+                    TextView tv_city = holder.getView(R.id.tv_city1);
                     TextView tv_sales = holder.getView(R.id.tv_goodSales1);
                     Picasso.with(mContext).load(Constants.SERVER_ADDRESS + (String) itemData.data.get("icon1"))
                             .fit().error(R.mipmap.ic_launcher).into(iv_goodsIcon);
                     tv_goodsName.setText((String) itemData.data.get("name1"));
-                    //rb.setRating((Float) itemData.data.get("rate1"));
+                    tv_city.setText(((String) itemData.data.get("city1")));
                     tv_sales.setText(((Integer) itemData.data.get("sales1")).toString());
 
                     if (itemData.data.size() > 9) {
                         iv_goodsIcon = holder.getView(R.id.iv_goodIcon2);
                         tv_goodsName = holder.getView(R.id.tv_goodname2);
-                        rb = holder.getView(R.id.rb_goodRate2);
+                        tv_city = holder.getView(R.id.tv_city2);
                         tv_sales = holder.getView(R.id.tv_goodSales2);
                         Picasso.with(mContext).load(Constants.SERVER_ADDRESS + (String) itemData.data.get("icon2"))
                                 .fit().error(R.mipmap.ic_launcher).into(iv_goodsIcon);
                         tv_goodsName.setText((String) itemData.data.get("name2"));
-                        //rb.setRating((Float) itemData.data.get("rate2"));
+                        tv_city.setText(((String) itemData.data.get("city2")));
                         tv_sales.setText(((Integer) itemData.data.get("sales2")).toString());
                     }
 
