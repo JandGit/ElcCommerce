@@ -31,4 +31,5 @@
     <string name="dispatch">快递免邮</string>
     <string name="purchase_number">购买数量</string>
     <string name="sure">确定</string>
+    <string name="express">快递: 免运费</string>
 </resources>
