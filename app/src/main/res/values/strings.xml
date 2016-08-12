@@ -41,4 +41,5 @@
     <string name="purchase_number">购买数量</string>
     <string name="sure">确定</string>
     <string name="express">快递: 免运费</string>
+    <string name="orderact_title">我的订单</string>
 </resources>

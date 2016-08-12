@@ -1,6 +1,7 @@
 package com.android.tkengine.elccommerce.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +16,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.UI.DisplayActivity;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
@@ -223,6 +225,17 @@ public class HomeFrgPresenter {
                     tv_goodsName.setText((String) itemData.data.get("name1"));
                     tv_city.setText(((String) itemData.data.get("city1")));
                     tv_sales.setText(((Integer) itemData.data.get("sales1")).toString());
+                    //设置首页商品点击事件
+                    final String id1 = (String) itemData.data.get("id1");
+                    View view1 = holder.getView(R.id.layout_itemleft);
+                    view1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(mContext, DisplayActivity.class);
+                            intent.putExtra("productID", id1);
+                            mContext.startActivity(intent);
+                        }
+                    });
 
                     if (itemData.data.size() > 9) {
                         iv_goodsIcon = holder.getView(R.id.iv_goodIcon2);
@@ -234,6 +247,17 @@ public class HomeFrgPresenter {
                         tv_goodsName.setText((String) itemData.data.get("name2"));
                         tv_city.setText(((String) itemData.data.get("city2")));
                         tv_sales.setText(((Integer) itemData.data.get("sales2")).toString());
+                        //设置首页商品点击事件
+                        final String id2 = (String) itemData.data.get("id2");
+                        View view2 = holder.getView(R.id.layout_itemright);
+                        view2.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(mContext, DisplayActivity.class);
+                                intent.putExtra("productID", id2);
+                                mContext.startActivity(intent);
+                            }
+                        });
                     }
 
                     break;
