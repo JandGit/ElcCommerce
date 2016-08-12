@@ -18,6 +18,5 @@
         android:id="@+id/tv_groupName"
         android:textSize="20sp"
         android:gravity="center"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/colorWhite" />
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

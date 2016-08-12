@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_marginBottom="20dp"
     android:layout_height="wrap_content">
 
     <android.support.v4.view.ViewPager
@@ -60,7 +59,7 @@
             <TextView
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/iv1"
-                android:text="北方水果"
+                android:text="北果风光"
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
@@ -89,7 +88,7 @@
                 android:layout_below="@id/iv2"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/colorWhite"
-                android:text="南方水果"
+                android:text="南果缤纷"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -121,7 +120,7 @@
             <TextView
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/iv3"
-                android:text="西方水果"
+                android:text="西域果情"
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
@@ -159,4 +158,7 @@
     </LinearLayout>
 
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="60dp"/>
 </LinearLayout>

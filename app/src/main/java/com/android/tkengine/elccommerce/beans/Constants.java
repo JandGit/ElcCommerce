@@ -7,7 +7,7 @@ public class Constants {
     /**
      * 后台服务器地址
      */
-    public static final String SERVER_ADDRESS = "http://192.168.1.108:8080/TKBaas/";
+    public static final String SERVER_ADDRESS = "http://192.168.1.112:8080/TKBaas/";
     /**
      * 后台用户登录接口
      */
@@ -21,4 +21,9 @@ public class Constants {
      * 调用时向服务器Post数据:user_id = XXX
      */
     public static final String SERVER_GETCART = SERVER_ADDRESS + "cart/app/getUserProduct";
+
+    /**
+     * 获取首页商品列表
+     */
+    public static final String SERVER_HOMEPAGE = SERVER_ADDRESS + "product/app/home";
 }

@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if(RecyclerView.SCROLL_STATE_IDLE == newState && mRvAdapter.getItemCount() - 1 == lastVisibleItem
                         && !mSwipeRefreshLayout.isRefreshing()){
-                    mPresenter.loadMoreOnHomePage(lastVisibleItem + 1);
+                    mPresenter.loadMoreOnHomePage();
                 }
                 super.onScrollStateChanged(recyclerView, newState);
             }
@@ -102,11 +102,6 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     public void setRvAdapter(RecyclerView.Adapter adapter) {
         mRvAdapter = (HomeFrgPresenter.HomeAdapter) adapter;
         rv_mainView.setAdapter(adapter);
-    }
-
-    @Override
-    public void addViewInRv(List<HomePageItemBean> data) {
-       // mRvAdapter.addItems(data);
     }
 
     @Override
@@ -136,6 +131,18 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
 
     @Override
     public void showLoadingMoreCompleted() {
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showNetworkError(){
+        mSwipeRefreshLayout.setRefreshing(false);
+        mToast.setText("网络连接错误，请重试");
+        mToast.show();
+    }
+
+    public void addMoreItem(List<HomePageItemBean> data){
+        mRvAdapter.addItem(data);
         mSwipeRefreshLayout.setRefreshing(false);
     }
 }

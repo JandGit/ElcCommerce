@@ -1,6 +1,7 @@
 package com.android.tkengine.elccommerce.presenter;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
@@ -12,6 +13,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
@@ -28,14 +30,16 @@ public class HomeFrgPresenter {
 
     //首页RecyclerView的数据源
     List<HomePageItemBean> homePageData;
-    //
+    //首页Adapter
     HomeAdapter homepageAdapter;
+    //首页标记
+    int nowType;
 
     private HomeFrgHandler mHandler;
 
     //消息处理Handler
     public static class HomeFrgHandler extends Handler {
-        public final int MSG_RVREFRESH_COMPELETE = 0;
+        public final int MSG_NETWORK_ERROR = 0;
         public final int MSG_SETADAPTER = 1;
         public final int MSG_SHOW_LOADING_FAILED = 2;
         public final int MSG_SHOW_NOMORE_DATA = 3;
@@ -59,8 +63,12 @@ public class HomeFrgPresenter {
                     mView.showLoadingfailed();
                     break;
                 case MSG_ADD_MORE_DATA:
-                    HomeAdapter adapter1 = (HomeAdapter) msg.obj;
-                    adapter1.notifyDataSetChanged();
+                    List<HomePageItemBean> data = (List<HomePageItemBean>) msg.obj;
+                    mView.addMoreItem(data);
+                    mView.showLoadingMoreCompleted();
+                    break;
+                case MSG_NETWORK_ERROR:
+                    mView.showNetworkError();
                     break;
             }
 
@@ -72,9 +80,6 @@ public class HomeFrgPresenter {
         //设置HomeFragment的RecyclerView的Adapter
         void setRvAdapter(RecyclerView.Adapter adapter);
 
-        //将data内的数据加入到RecyclerView的末尾
-        void addViewInRv(List<HomePageItemBean> data);
-
         //提示首页正在加载
         void showLoadingHomePage();
 
@@ -84,11 +89,17 @@ public class HomeFrgPresenter {
         //提示正在加载更多数据
         void showLoadingMore();
 
+        //添加数据到首页末尾
+        void addMoreItem(List<HomePageItemBean> data);
+
         //提示首页加载成功
         void showLoadingHomeCompleted();
 
         //提示更多数据加载成功
         void showLoadingMoreCompleted();
+
+        //提示网络连接错误
+        void showNetworkError();
     }
 
     public HomeFrgPresenter(CallbackOfHomefrg mView, Context context) {
@@ -101,6 +112,7 @@ public class HomeFrgPresenter {
     //加载首页
     public void initHomePage() {
         mView.showLoadingHomePage();
+        nowType = 0;
         new Thread() {
             @Override
             public void run() {
@@ -112,47 +124,30 @@ public class HomeFrgPresenter {
                     homepageAdapter = new HomeAdapter(homePageData, mContext);
                     msg.obj = homepageAdapter;
                     mHandler.sendMessage(msg);
-
-                    loadMoreOnHomePage(0);
                 }
             }
         }.start();
     }
 
     //加载首页更多数据
-    public void loadMoreOnHomePage(final int from) {
+    public void loadMoreOnHomePage() {
+        if(nowType > 4){
+            return;
+        }
         mView.showLoadingMore();
-        int type = 0;
-        if(from < 1){
-            type = 0;
-        }
-        else if(from <= 8){
-            type = 1;
-        }
-        else if(from <= 11){
-            type = 2;
-        }
-        else if(from <= 19){
-            type = 3;
-        }
-        else {
-            type = 4;
-        }
-        final int type1 = type;
+
         new Thread() {
             @Override
             public void run() {
-                List<HomePageItemBean> data = mModel.getGoods(type1);
-                if (null != data) {
-                    for(HomePageItemBean temp : data){
-                        homePageData.add(temp);
+                try {
+                    List<HomePageItemBean> data = mModel.getGoods(nowType++);
+                    if (null != data) {
+                        Message msg = mHandler.obtainMessage(mHandler.MSG_ADD_MORE_DATA);
+                        msg.obj = data;
+                        mHandler.sendMessage(msg);
                     }
-                    Message msg = mHandler.obtainMessage(mHandler.MSG_SETADAPTER);
-                    msg.obj = homepageAdapter;
-                    mHandler.sendMessage(msg);
-                }
-                else {
-                    mHandler.sendEmptyMessage(mHandler.MSG_SHOW_NOMORE_DATA);
+                } catch (Exception e) {
+                    mHandler.sendEmptyMessage(mHandler.MSG_NETWORK_ERROR);
                 }
             }
         }.start();
@@ -162,6 +157,15 @@ public class HomeFrgPresenter {
     public static class HomeAdapter extends MultiItemAdapter<HomePageItemBean> {
 
         Context mContext;
+        List<HomePageItemBean> mData;
+
+
+        public void addItem(List<HomePageItemBean> data){
+            for(HomePageItemBean temp : data){
+                mData.add(temp);
+                notifyItemInserted(mData.size() - 1);
+            }
+        }
 
         public HomeAdapter(final List<HomePageItemBean> mData, Context mContext) {
             super(mData, mContext, new MultiItemSupport() {
@@ -187,6 +191,7 @@ public class HomeFrgPresenter {
             });
 
             this.mContext = mContext;
+            this.mData = mData;
         }
 
         @Override
@@ -199,7 +204,8 @@ public class HomeFrgPresenter {
                 case HomePageItemBean.TYPE_GROUP:
                     ImageView iv = holder.getView(R.id.iv_groupBackground);
                     TextView tv = holder.getView(R.id.tv_groupName);
-                    Picasso.with(mContext).load((String) itemData.data.get("groupIcon")).fit().error(R.mipmap.ic_launcher).into(iv);
+                    Picasso.with(mContext).load(Constants.SERVER_ADDRESS + (String) itemData.data.get("groupIcon"))
+                            .fit().error(R.mipmap.ic_launcher).into(iv);
                     tv.setText((CharSequence) itemData.data.get("groupName"));
                     break;
                 case HomePageItemBean.TYPE_GOODS:
@@ -207,19 +213,23 @@ public class HomeFrgPresenter {
                     TextView tv_goodsName = holder.getView(R.id.tv_goodname1);
                     RatingBar rb = holder.getView(R.id.rb_goodRate1);
                     TextView tv_sales = holder.getView(R.id.tv_goodSales1);
-                    Picasso.with(mContext).load((String) itemData.data.get("icon1")).fit().error(R.mipmap.ic_launcher).into(iv_goodsIcon);
+                    Picasso.with(mContext).load(Constants.SERVER_ADDRESS + (String) itemData.data.get("icon1"))
+                            .fit().error(R.mipmap.ic_launcher).into(iv_goodsIcon);
                     tv_goodsName.setText((String) itemData.data.get("name1"));
-                    rb.setRating((Float) itemData.data.get("rate1"));
-                    tv_sales.setText((String) itemData.data.get("sales1"));
+                    //rb.setRating((Float) itemData.data.get("rate1"));
+                    tv_sales.setText(((Integer) itemData.data.get("sales1")).toString());
 
-                    iv_goodsIcon = holder.getView(R.id.iv_goodIcon2);
-                    tv_goodsName = holder.getView(R.id.tv_goodname2);
-                    rb = holder.getView(R.id.rb_goodRate2);
-                    tv_sales = holder.getView(R.id.tv_goodSales2);
-                    Picasso.with(mContext).load((String) itemData.data.get("icon2")).fit().error(R.mipmap.ic_launcher).into(iv_goodsIcon);
-                    tv_goodsName.setText((String) itemData.data.get("name2"));
-                    rb.setRating((Float) itemData.data.get("rate2"));
-                    tv_sales.setText((String) itemData.data.get("sales2"));
+                    if (itemData.data.size() > 9) {
+                        iv_goodsIcon = holder.getView(R.id.iv_goodIcon2);
+                        tv_goodsName = holder.getView(R.id.tv_goodname2);
+                        rb = holder.getView(R.id.rb_goodRate2);
+                        tv_sales = holder.getView(R.id.tv_goodSales2);
+                        Picasso.with(mContext).load(Constants.SERVER_ADDRESS + (String) itemData.data.get("icon2"))
+                                .fit().error(R.mipmap.ic_launcher).into(iv_goodsIcon);
+                        tv_goodsName.setText((String) itemData.data.get("name2"));
+                        //rb.setRating((Float) itemData.data.get("rate2"));
+                        tv_sales.setText(((Integer) itemData.data.get("sales2")).toString());
+                    }
 
                     break;
 
