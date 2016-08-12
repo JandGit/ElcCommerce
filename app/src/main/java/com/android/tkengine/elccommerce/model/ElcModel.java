@@ -30,6 +30,8 @@ public class ElcModel {
 
 
 
+
+
     /**
      * 加载首页标题，广告等数据
      * 在非UI线程调用
