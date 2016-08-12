@@ -1,16 +1,21 @@
 package com.android.tkengine.elccommerce.UI;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.beans.UserInfoBean;
+import com.android.tkengine.elccommerce.model.ElcModel;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +35,36 @@ public class MainActivity extends AppCompatActivity {
         initView();
 
         mFM = getSupportFragmentManager();
+
+        //启动时载入用户信息，自动登录
+        final SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
+        final String phone = sp.getString("UserPhone", null);
+        final String password = sp.getString("password", null);
+        if(phone != null && !phone.isEmpty() && password != null && !password.isEmpty()){
+            new Thread(){
+                @Override
+                public void run() {
+                    try {
+                        UserInfoBean info = new ElcModel(MainActivity.this).login(phone, password);
+                        if(info != null){
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putBoolean("isLogin", true)
+                                    .putString("UserPhone", info.getUser_phone())
+                                    .putString("password", password)
+                                    .putString("UserName", info.getUser_name())
+                                    .putString("UserId", info.getUserId())
+                                    .putString("UserIcon", info.getUser_picture_url())
+                                    .putString("UserSex", info.getUser_sex())
+                                    .putFloat("UserMoney", (float) info.getUser_money())
+                                    .apply();
+                            Log.i("main", "自动登录");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
+        }
     }
 
     private void initView(){
@@ -143,5 +178,15 @@ public class MainActivity extends AppCompatActivity {
             isFirstOpen = false;
         }
         super.onWindowFocusChanged(hasFocus);
+    }
+
+    @Override
+    protected void onDestroy() {
+        //退出程序时，清空用户登录信息
+        SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.putBoolean("isLogin", false).apply();
+
+        super.onDestroy();
     }
 }

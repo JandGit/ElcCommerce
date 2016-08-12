@@ -72,27 +72,6 @@ public class MeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (Activity.RESULT_OK == resultCode && 1 == requestCode) {
-            UserInfoBean info = (UserInfoBean) data.getSerializableExtra("info");
-            //更改当前已登录用户信息
-            SharedPreferences sp = getActivity().getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putBoolean("isLogin", true)
-                    .putString("UserPhone", info.getUser_phone())
-                    .putString("UserName", info.getUser_name())
-                    .putString("UserId", info.getUserId())
-                    .putString("UserIcon", info.getUser_picture_url())
-                    .putString("UserSex", info.getUser_sex())
-                    .putFloat("UserMoney", (float) info.getUser_money())
-                    .apply();
-            //记住用户
-            sp = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-            editor = sp.edit();
-            editor.putString(info.getUserId() + ":UserPassword", data.getStringExtra("password"))
-                    .putString(info.getUserId() + ":UserPhone", info.getUser_phone())
-                    .putString(info.getUserId() + ":UserName", info.getUser_name())
-                    .putString(info.getUserId() + ":UserIcon", info.getUser_picture_url())
-                    .apply();
-
             //显示用户信息
             showUserInfo();
         }

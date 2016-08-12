@@ -1,5 +1,6 @@
 package com.android.tkengine.elccommerce.model;
 
+
 import android.content.Context;
 import android.util.Log;
 
@@ -17,6 +18,7 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,75 +33,113 @@ public class ElcModel {
 
 
 
-    public List<HomePageItemBean> getHomePageData() {
-        HomePageItemBean itemData;
+
+
+
+    /**
+     * 加载首页标题，广告等数据
+     * 在非UI线程调用
+     * @return
+     */
+    public List<HomePageItemBean> getHomePageData() throws Exception {
         ArrayList<HomePageItemBean> allData = new ArrayList<>();
 
         HomePageItemBean headitem = new HomePageItemBean();
         headitem.type = HomePageItemBean.TYPE_HEAD;
         headitem.data = new HashMap<>(1);
         allData.add(headitem);
-
+        allData.addAll(getGoods(0));
 
         return allData;
     }
 
     /**
      * 获取首页商品列表
+     * 网络错误时抛出异常
      * @param type 商品类型，0为热销，1为推荐，2为北果，3为南果，4为西果
      * @return
      */
-    public List<HomePageItemBean> getGoods(int type){
+    public List<HomePageItemBean> getGoods(int type) throws Exception {
         ArrayList<HomePageItemBean> allData = new ArrayList<>();
-        switch (type){
-            case 0: {
-                HomePageItemBean group = new HomePageItemBean();
-                group.type = HomePageItemBean.TYPE_GROUP;
-                group.data = new HashMap<>(2);
-                group.data.put("groupIcon", "分组图片URL");
+        HomePageItemBean item = null;
+
+        String params = null;
+        HomePageItemBean group = new HomePageItemBean();
+        group.type = HomePageItemBean.TYPE_GROUP;
+        group.data = new HashMap<>(1);
+        switch (type) {
+            case 0:
+                params = "{\"type\":\"sales\"}";
                 group.data.put("groupName", "热销商品");
-                allData.add(group);
-                for (int i = 0; i < 10; i++) {
-                    HomePageItemBean item = new HomePageItemBean();
-                    item.type = HomePageItemBean.TYPE_GOODS;
-                    item.data = new HashMap<>(8);
-                    item.data.put("icon1", "商品图片1");
-                    item.data.put("name1", "商品名字1");
-                    item.data.put("rate1", 4.5f);
-                    item.data.put("sales1", "3000");
-                    item.data.put("icon2", "商品图片2");
-                    item.data.put("name2", "商品名字2");
-                    item.data.put("rate2", 4.5f);
-                    item.data.put("sales2", "3000");
-                    allData.add(item);
-                }
                 break;
-            }
-            case 1: {
-                HomePageItemBean group = new HomePageItemBean();
-                group.type = HomePageItemBean.TYPE_GROUP;
-                group.data = new HashMap<>(2);
-                group.data.put("groupIcon", "分组图片URL");
+            case 1:
+                params = "{\"type\":\"recommend\"}";
                 group.data.put("groupName", "推荐商品");
-                allData.add(group);
-                for (int i = 0; i < 10; i++) {
-                    HomePageItemBean item = new HomePageItemBean();
-                    item.type = HomePageItemBean.TYPE_GOODS;
-                    item.data = new HashMap<>(8);
-                    item.data.put("icon1", "商品图片1");
-                    item.data.put("name1", "商品名字1");
-                    item.data.put("rate1", 4.5f);
-                    item.data.put("sales1", "3000");
-                    item.data.put("icon2", "商品图片2");
-                    item.data.put("name2", "商品名字2");
-                    item.data.put("rate2", 4.5f);
-                    item.data.put("sales2", "3000");
+                break;
+            case 2:
+                params = "{\"type\":\"north\"}";
+                group.data.put("groupName", "北果风光");
+                break;
+            case 3:
+                params = "{\"type\":\"south\"}";
+                group.data.put("groupName", "南果缤纷");
+                break;
+            case 4:
+                params = "{\"type\":\"west\"}";
+                group.data.put("groupName", "西域果情");
+                break;
+            default:
+                throw new Exception("类型type错误");
+        }
+        allData.add(group);
+
+        Log.i("EclModel:", "发送服务器请求,获取首页\n" + params);
+        String response = HttpUtil.sentHttpPost(Constants.SERVER_HOMEPAGE, params);
+        Log.i("EclModel:", "服务器返回：" + response);
+        JSONObject jsonObject = new JSONObject(response);
+        JSONArray jArray = jsonObject.getJSONArray("product_list");
+        Log.i("EclModel:", "开始解析商品列表, 数目:" + jArray.length());
+        for(int i = 0; i < jArray.length(); i++){
+            jsonObject = jArray.getJSONObject(i);
+            if (0 == i % 2) {
+                item = new HomePageItemBean();
+                item.data = new HashMap<>(18);
+                item.type = HomePageItemBean.TYPE_GOODS;
+                item.data.put("id1", jsonObject.get("product_id"));
+                item.data.put("name1", jsonObject.get("product_name"));
+                item.data.put("type1", jsonObject.get("product_type"));
+                item.data.put("city1", jsonObject.get("product_city"));
+                item.data.put("store1", jsonObject.getInt("product_store"));
+                item.data.put("sales1", jsonObject.getInt("product_sales"));
+                item.data.put("price1", jsonObject.getDouble("product_price"));
+                item.data.put("description1", jsonObject.get("product_description"));
+                item.data.put("icon1", jsonObject.get("picture_url"));
+
+                if(jArray.length() - 1 == i){
                     allData.add(item);
                 }
-                break;
+                Log.i("EclModel:", "解析第" + i + "个商品：，名称:" + item.data.get("name1") +
+                        "\nid:" + item.data.get("id1") + "\n图片：" + item.data.get("icon1"));
+            }
+            else {
+                assert item != null;
+                item.data.put("id2", jsonObject.get("product_id"));
+                item.data.put("name2", jsonObject.get("product_name"));
+                item.data.put("type2", jsonObject.get("product_type"));
+                item.data.put("city2", jsonObject.get("product_city"));
+                item.data.put("store2", jsonObject.getInt("product_store"));
+                item.data.put("sales2", jsonObject.getInt("product_sales"));
+                item.data.put("price2", jsonObject.getDouble("product_price"));
+                item.data.put("description2", jsonObject.get("product_description"));
+                item.data.put("icon2", jsonObject.get("picture_url"));
+
+                allData.add(item);
+                Log.i("EclModel:", "解析第" + i + "个商品：，名称:" + item.data.get("name2") +
+                        "\nid:" + item.data.get("id2") + "\n图片：" + item.data.get("icon2"));
             }
         }
 
+        Log.i("EclModel:", "解析完毕，返回数据,数据量" + allData.size());
         return allData;
     }
 
@@ -188,8 +228,8 @@ public class ElcModel {
         user.put("userId", "2");
         userId = user.toString();
 
-        String result = HttpUtil.sentHttpPost("http://192.168.1.101:8080/TKBaas/cart/app/getUserProduct"
-                , userId);
+        String result = HttpUtil.sentHttpPost("http://192.168.1.105:8080/TKBaas/cart/app/getUserProduct"
+        , userId);
         Log.d("cartGet",result);
         JSONObject cartJson = new JSONObject(result);
         JSONArray storeArray = (JSONArray) cartJson.get("sellerItem");
