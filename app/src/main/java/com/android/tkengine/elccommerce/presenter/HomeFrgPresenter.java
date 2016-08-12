@@ -19,6 +19,7 @@ import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -120,9 +121,9 @@ public class HomeFrgPresenter {
             public void run() {
                 try {
                     //测试代码-----
-                    //mModel.getOrders("2", 1);
+                    mModel.getOrders("2", 1);
                     //--------------
-                    homePageData = mModel.getHomePageData();
+                    /*homePageData = mModel.getHomePageData();
                     if (null == homePageData) {
                         mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);
                     } else {
@@ -130,7 +131,7 @@ public class HomeFrgPresenter {
                         homepageAdapter = new HomeAdapter(homePageData, mContext);
                         msg.obj = homepageAdapter;
                         mHandler.sendMessage(msg);
-                    }
+                    }*/
                 } catch (Exception e) {
                     e.printStackTrace();
                     mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);

@@ -40,17 +40,16 @@ public class ElcModel {
      */
     public OrderBean[] getOrders(String userId, int page) throws IOException {
         String params = "{\"userId\":\"" + userId + "\", \"currentPage\":" + page + ",\"pageSize\":30}";
+        Log.i("ElcModel:", "向服务器发送请求参数：" + params + "\n" + Constants.SERVER_GETORDER);
         String result = HttpUtil.sentHttpPost(Constants.SERVER_GETORDER, params);
         Log.i("ElcModel:", "服务器返回：" + params);
-        /*Gson gson = new Gson();
+        Gson gson = new Gson();
         Type type = new TypeToken<OrderBean[]>(){}.getType();
         Log.i("ElcModel:", "Gson开始解析服务器返回数据");
         OrderBean[] data = gson.fromJson(result, type);
         Log.i("ElcModel:", "解析成功,数据数目" + data.length);
 
-        return data;*/
-
-        return null;
+        return data;
     }
 
 
