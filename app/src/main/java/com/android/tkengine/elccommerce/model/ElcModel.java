@@ -1,15 +1,18 @@
 package com.android.tkengine.elccommerce.model;
 
-
 import android.content.Context;
 import android.util.Log;
 
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
+import com.android.tkengine.elccommerce.beans.GoodsDetailsBean;
 import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.beans.UserInfoBean;
+import com.android.tkengine.elccommerce.utils.HttpCallbackListener;
 import com.android.tkengine.elccommerce.utils.HttpUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,6 +44,72 @@ public class ElcModel {
         return allData;
     }
 
+    /**
+     * 获取首页商品列表
+     * @param type 商品类型，0为热销，1为推荐，2为北果，3为南果，4为西果
+     * @return
+     */
+    public List<HomePageItemBean> getGoods(int type){
+        ArrayList<HomePageItemBean> allData = new ArrayList<>();
+        switch (type){
+            case 0: {
+                HomePageItemBean group = new HomePageItemBean();
+                group.type = HomePageItemBean.TYPE_GROUP;
+                group.data = new HashMap<>(2);
+                group.data.put("groupIcon", "分组图片URL");
+                group.data.put("groupName", "热销商品");
+                allData.add(group);
+                for (int i = 0; i < 10; i++) {
+                    HomePageItemBean item = new HomePageItemBean();
+                    item.type = HomePageItemBean.TYPE_GOODS;
+                    item.data = new HashMap<>(8);
+                    item.data.put("icon1", "商品图片1");
+                    item.data.put("name1", "商品名字1");
+                    item.data.put("rate1", 4.5f);
+                    item.data.put("sales1", "3000");
+                    item.data.put("icon2", "商品图片2");
+                    item.data.put("name2", "商品名字2");
+                    item.data.put("rate2", 4.5f);
+                    item.data.put("sales2", "3000");
+                    allData.add(item);
+                }
+                break;
+            }
+            case 1: {
+                HomePageItemBean group = new HomePageItemBean();
+                group.type = HomePageItemBean.TYPE_GROUP;
+                group.data = new HashMap<>(2);
+                group.data.put("groupIcon", "分组图片URL");
+                group.data.put("groupName", "推荐商品");
+                allData.add(group);
+                for (int i = 0; i < 10; i++) {
+                    HomePageItemBean item = new HomePageItemBean();
+                    item.type = HomePageItemBean.TYPE_GOODS;
+                    item.data = new HashMap<>(8);
+                    item.data.put("icon1", "商品图片1");
+                    item.data.put("name1", "商品名字1");
+                    item.data.put("rate1", 4.5f);
+                    item.data.put("sales1", "3000");
+                    item.data.put("icon2", "商品图片2");
+                    item.data.put("name2", "商品名字2");
+                    item.data.put("rate2", 4.5f);
+                    item.data.put("sales2", "3000");
+                    allData.add(item);
+                }
+                break;
+            }
+        }
+
+        return allData;
+    }
+
+    /**
+     *
+     * @param userName 登录的用户名
+     * @param password 登录密码
+     * @return 用户信息，如果登录用户名或密码错误返回null
+     * @throws Exception 网络连接错误
+     */
     public UserInfoBean login(String userName, String password) throws Exception {
 
         JSONObject jsonObject = new JSONObject();
@@ -88,6 +157,26 @@ public class ElcModel {
     }
 
     /**
+     * 得到商品详情，注意在非UI线程调用此接口
+     * 发生网络错误时抛出异常
+     */
+
+    public GoodsDetailsBean getGoodsDetails( String goodsId) throws Exception {
+        GoodsDetailsBean goodsDetailsList = new GoodsDetailsBean();
+        String productId = null;
+        JSONObject product = new JSONObject();
+        product.put("product_id", goodsId);
+        productId = product.toString();
+        String result = HttpUtil.sentHttpPost("http://192.168.1.101:8080/TKBaas/product/app/getProduct", productId);
+        Gson gson = new Gson();
+        //反射获取含NewsAllBean信息的类型信息
+        java.lang.reflect.Type type = new TypeToken<GoodsDetailsBean>() {}.getType();
+        goodsDetailsList = gson.fromJson(result, type);
+        Log.d("getGoodsDetails: ", goodsDetailsList.getProduct_name());
+        return goodsDetailsList;
+    }
+
+    /**
      * 得到购物车列表，注意在非UI线程调用此接口
      * 发生网络错误时抛出异常
      */
@@ -99,8 +188,8 @@ public class ElcModel {
         user.put("userId", "2");
         userId = user.toString();
 
-        String result = HttpUtil.sentHttpPost("http://192.168.1.105:8080/TKBaas/cart/app/getUserProduct"
-        , userId);
+        String result = HttpUtil.sentHttpPost("http://192.168.1.101:8080/TKBaas/cart/app/getUserProduct"
+                , userId);
         Log.d("cartGet",result);
         JSONObject cartJson = new JSONObject(result);
         JSONArray storeArray = (JSONArray) cartJson.get("sellerItem");
@@ -115,6 +204,7 @@ public class ElcModel {
             for (int j = 0; j < goodsArray.length(); j++) {
                 JSONObject goods = (JSONObject) goodsArray.get(j);
                 GoodsBean goodsItem = new GoodsBean();
+                goodsItem.setId(goods.getString("id"));
                 JSONObject product = (JSONObject) goods.get("product");
                 goodsItem.setGoodsId(product.getString("id"));
                 goodsItem.setGoodsName(product.getString("name"));
@@ -161,6 +251,42 @@ public class ElcModel {
         boolean postResult = cartJson.getBoolean("result");
         return postResult;
 
+    }
+
+    /**
+     * 提交订单信息（用户id,收货人地址，订单总额，商品goodsId以及商品id），在非UI线程调用此接口
+     * 发生网络错误时抛出异常
+     */
+    public boolean postOrderInfo(List<GoodsBean> receiverGoodsList,String address,String moneyAmount,String postUrl) throws Exception {
+        JSONObject goodsInfo = new JSONObject();
+        //用户ID
+        goodsInfo.put("userId","2");
+        //收货人地址
+        goodsInfo.put("addressId",address);
+        //订单总额
+        goodsInfo.put("totalMoney",moneyAmount);
+        //各商品goodsId
+        JSONArray goodsIds = new JSONArray();
+        for(GoodsBean cartGoodsItem:receiverGoodsList){
+            JSONObject goodsId = new JSONObject();
+            goodsId.put("proId",cartGoodsItem.getGoodsId());
+            goodsIds.put(goodsId);
+        }
+        goodsInfo.put("proIds", goodsIds);
+        //各商品id
+        JSONArray ids = new JSONArray();
+        for(GoodsBean cartGoodsItem:receiverGoodsList){
+            JSONObject id = new JSONObject();
+            id.put("proItemId",cartGoodsItem.getId());
+            ids.put(id);
+        }
+        goodsInfo.put("proItemIds", ids);
+        //发送到服务器
+        String result = HttpUtil.sentHttpPost(postUrl, goodsInfo.toString());
+        Log.d("json",result);
+        JSONObject cartJson = new JSONObject(result);
+        boolean postResult = cartJson.getBoolean("result");
+        return postResult;
     }
 
 

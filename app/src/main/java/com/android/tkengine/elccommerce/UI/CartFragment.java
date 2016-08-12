@@ -23,6 +23,7 @@ import android.widget.Toast;
 /*import com.android.tkengine.elccommerce.PayActivity;*/
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
+import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.presenter.CartFrgPresenter;
 import com.android.tkengine.elccommerce.utils.DividerItemDecoration;
 import com.android.tkengine.elccommerce.utils.OnRecyclerViewItemClickListener;
@@ -264,6 +265,7 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     public void onItemViewClick(){
         Intent intent = new Intent(cartView.getContext(),DisplayActivity.class);
         startActivity(intent);
+
     }
 
     //点击选择一组商品

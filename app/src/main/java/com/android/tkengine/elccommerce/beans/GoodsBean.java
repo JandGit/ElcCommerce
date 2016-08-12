@@ -14,6 +14,7 @@ public class GoodsBean implements Serializable {
     protected String goodsIcon;   //商品图片
     protected int goodsNum;      //所订购商品的数量
     protected boolean goodsSelected;   //是否订购
+    protected String Id;
 
     public void setGoodsId(String goodsId){
         this.goodsId = goodsId;
@@ -33,6 +34,10 @@ public class GoodsBean implements Serializable {
 
     public void setGoodsIcon(String goodsIcon){
         this.goodsIcon = goodsIcon;
+    }
+
+    public void setId(String id) {
+        Id = id;
     }
 
     public void setGoodsSelected(boolean goodsSelected){
@@ -61,5 +66,9 @@ public class GoodsBean implements Serializable {
 
     public boolean getGoodsSelected(){
         return goodsSelected;
+    }
+
+    public String getId() {
+        return Id;
     }
 }

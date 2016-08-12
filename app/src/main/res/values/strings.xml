@@ -28,7 +28,6 @@
     <string name="receiver_address">收货地址:</string>
     <string name="confirm_order">确认订单</string>
     <string name="dispatch_way_label">配送方式</string>
-    <string name="dispatch_way">快递免邮</string>
     <string name="dispatch_time_label">配送时间</string>
     <string name="dispatch_time">工作日、双休日均可</string>
     <string name="dispatch_cost_label">配送费用</string>
