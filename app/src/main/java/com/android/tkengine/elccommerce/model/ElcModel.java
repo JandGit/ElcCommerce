@@ -35,13 +35,14 @@ public class ElcModel {
      * 在非UI线程调用
      * @return
      */
-    public List<HomePageItemBean> getHomePageData() {
+    public List<HomePageItemBean> getHomePageData() throws Exception {
         ArrayList<HomePageItemBean> allData = new ArrayList<>();
 
         HomePageItemBean headitem = new HomePageItemBean();
         headitem.type = HomePageItemBean.TYPE_HEAD;
         headitem.data = new HashMap<>(1);
         allData.add(headitem);
+        allData.addAll(getGoods(0));
 
         return allData;
     }

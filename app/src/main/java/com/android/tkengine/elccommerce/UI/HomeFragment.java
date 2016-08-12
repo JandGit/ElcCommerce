@@ -92,6 +92,18 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
             }
         });
 
+        //设置网络错误重新加载按钮
+        tv_tips.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!mSwipeRefreshLayout.isRefreshing()){
+                    mSwipeRefreshLayout.setRefreshing(true);
+                    mPresenter.initHomePage();
+                    tv_tips.setText("正在努力加载......");
+                }
+            }
+        });
+
         mToast = Toast.makeText(getContext(), null, Toast.LENGTH_SHORT);
 
         mPresenter = new HomeFrgPresenter(this, getContext());

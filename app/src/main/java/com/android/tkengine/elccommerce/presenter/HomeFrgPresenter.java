@@ -114,19 +114,23 @@ public class HomeFrgPresenter {
     //加载首页
     public void initHomePage() {
         mView.showLoadingHomePage();
-        nowType = 0;
+        nowType = 1;
         new Thread() {
             @Override
             public void run() {
-                homePageData = mModel.getHomePageData();
-                if (null == homePageData) {
+                try {
+                    homePageData = mModel.getHomePageData();
+                    if (null == homePageData) {
+                        mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);
+                    } else {
+                        Message msg = mHandler.obtainMessage(mHandler.MSG_SETADAPTER);
+                        homepageAdapter = new HomeAdapter(homePageData, mContext);
+                        msg.obj = homepageAdapter;
+                        mHandler.sendMessage(msg);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                     mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);
-                } else {
-                    Message msg = mHandler.obtainMessage(mHandler.MSG_SETADAPTER);
-                    homepageAdapter = new HomeAdapter(homePageData, mContext);
-                    msg.obj = homepageAdapter;
-                    mHandler.sendMessage(msg);
-                    loadMoreOnHomePage();
                 }
             }
         }.start();
