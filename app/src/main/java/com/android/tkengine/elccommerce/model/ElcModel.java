@@ -28,6 +28,13 @@ public class ElcModel {
     }
 
 
+
+
+    /**
+     * 加载首页标题，广告等数据
+     * 在非UI线程调用
+     * @return
+     */
     public List<HomePageItemBean> getHomePageData() {
         ArrayList<HomePageItemBean> allData = new ArrayList<>();
 
@@ -41,7 +48,7 @@ public class ElcModel {
 
     /**
      * 获取首页商品列表
-     *
+     * 网络错误时抛出异常
      * @param type 商品类型，0为热销，1为推荐，2为北果，3为南果，4为西果
      * @return
      */

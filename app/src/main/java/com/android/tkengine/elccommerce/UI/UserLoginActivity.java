@@ -142,9 +142,27 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
 
     @Override
     public void onLoginSuccess(UserInfoBean info) {
-        Intent intent = new Intent();
-        intent.putExtra("info", info);
-        setResult(RESULT_OK, intent);
+        //更改当前已登录用户信息
+        SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean("isLogin", true)
+                .putString("UserPhone", info.getUser_phone())
+                .putString("password", et_password.getText().toString())
+                .putString("UserName", info.getUser_name())
+                .putString("UserId", info.getUserId())
+                .putString("UserIcon", info.getUser_picture_url())
+                .putString("UserSex", info.getUser_sex())
+                .putFloat("UserMoney", (float) info.getUser_money())
+                .apply();
+        //记住用户
+        sp = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        editor = sp.edit();
+        editor.putString(info.getUserId() + ":UserPassword", et_password.getText().toString())
+                .putString(info.getUserId() + ":UserPhone", info.getUser_phone())
+                .putString(info.getUserId() + ":UserName", info.getUser_name())
+                .putString(info.getUserId() + ":UserIcon", info.getUser_picture_url())
+                .apply();
+        setResult(RESULT_OK);
         finish();
     }
 
