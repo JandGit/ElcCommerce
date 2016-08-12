@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
+import com.android.tkengine.elccommerce.beans.DisItemBean;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.beans.RvItemBean;
 import com.android.tkengine.elccommerce.beans.UserInfoBean;
@@ -76,6 +77,33 @@ public class ElcModel {
                 itemData.data.put("goodsName", "水果" + i);
                 itemData.data.put("shopName", "水果商店");
                 itemData.data.put("rating", 4.5f);
+            }
+            allData.add(itemData);
+        }
+
+        return allData;
+    }
+
+    public List<DisItemBean> getData(int from, int to) {
+        DisItemBean itemData;
+        ArrayList<DisItemBean> allData = new ArrayList<>(to - from + 1);
+        for (int i = from; i <= to; i++) {
+            itemData = new DisItemBean();
+            if (0 == i) {
+                itemData.data = new HashMap<>(1);
+                itemData.type = DisItemBean.TYPE_ITEM1;
+                int[] img = new int[4];
+                img[0] = R.mipmap.advertise1;
+                img[1] = R.mipmap.advertise2;
+                img[2] = R.mipmap.advertise3;
+                img[3] = R.mipmap.advertise4;
+                itemData.data.put("goods", img);
+            } else if (1 == i) {
+                itemData.type = DisItemBean.TYPE_ITEM2;
+            } else {
+                itemData.data = new HashMap<>(1);
+                itemData.type = DisItemBean.TYPE_ITEM3;
+                itemData.data.put("Image", R.mipmap.apple);
             }
             allData.add(itemData);
         }

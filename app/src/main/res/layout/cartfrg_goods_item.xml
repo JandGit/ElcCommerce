@@ -63,36 +63,45 @@
                 android:layout_toRightOf="@+id/goods_mark"
                 android:layout_marginLeft="5dp"/>
 
-
-            <TextView
-                android:layout_marginLeft="110dp"
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                android:id="@+id/tv_cart_goodsReduce"
+            <LinearLayout
+                android:layout_marginRight="10dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/et_cart_goodsNum"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true">
+            <TextView
+                android:background="@color/colorLightGray"
+                android:layout_gravity="center_vertical"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:id="@+id/tv_cart_goodsReduce"
                 android:text="-"/>
 
             <EditText
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                android:textSize="13sp"
+                android:layout_marginLeft="5dp"
+                android:background="@color/colorLightGray"
+                android:layout_gravity="center_vertical"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:textColor="@color/colorBlack"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
                 android:id="@+id/et_cart_goodsNum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/tv_cart_goodsAdd"
                 android:text="1"/>
 
             <TextView
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                android:layout_alignParentRight="true"
+                android:layout_marginLeft="5dp"
+                android:background="@color/colorLightGray"
+                android:layout_gravity="center_vertical"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:textSize="20sp"
+                android:gravity="center"
                 android:id="@+id/tv_cart_goodsAdd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="+"/>
-
+            </LinearLayout>
 
         </RelativeLayout>
 

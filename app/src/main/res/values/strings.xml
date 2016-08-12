@@ -29,4 +29,6 @@
     <string name="confirm_order">确认订单</string>
     <string name="dispatch_way">配送方式</string>
     <string name="dispatch">快递免邮</string>
+    <string name="purchase_number">购买数量</string>
+    <string name="sure">确定</string>
 </resources>
