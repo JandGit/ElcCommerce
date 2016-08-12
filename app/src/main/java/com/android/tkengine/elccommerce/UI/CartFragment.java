@@ -26,7 +26,6 @@ import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.presenter.CartFrgPresenter;
 import com.android.tkengine.elccommerce.utils.DividerItemDecoration;
 import com.android.tkengine.elccommerce.utils.OnRecyclerViewItemClickListener;
-
 import java.text.DecimalFormat;
 
 public class CartFragment extends Fragment implements OnRecyclerViewItemClickListener{
@@ -124,6 +123,7 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
                     Toast.makeText(cartView.getContext(),"你还没有选择商品哦",Toast.LENGTH_SHORT).show();
                 }else{
                     Intent intent = new Intent(cartView.getContext(),PayActivity.class);
+                  /*  intent.putExtra("receiver_goods_data",(Serializable)cartFrgPresenter.getReceiverGoods());*/
                     startActivity(intent);
                 }
             }

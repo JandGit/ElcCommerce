@@ -27,6 +27,16 @@
     <string name="goods_receiver">收货人:</string>
     <string name="receiver_address">收货地址:</string>
     <string name="confirm_order">确认订单</string>
+    <string name="dispatch_way_label">配送方式</string>
+    <string name="dispatch_way">快递免邮</string>
+    <string name="dispatch_time_label">配送时间</string>
+    <string name="dispatch_time">工作日、双休日均可</string>
+    <string name="dispatch_cost_label">配送费用</string>
+    <string name="dispatch_cost">免邮</string>
+    <string name="bill_info_label">发票信息</string>
+    <string name="bill_info">电子发票</string>
+    <string name="place_order">立即下单</string>
+    <string name="total_amount">合计：</string>
     <string name="dispatch_way">配送方式</string>
     <string name="dispatch">快递免邮</string>
     <string name="purchase_number">购买数量</string>

@@ -2,10 +2,12 @@ package com.android.tkengine.elccommerce.beans;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
+
 /**
  * Created by 陈嘉shuo on 2016/8/9.
  */
-public class GoodsBean {
+public class GoodsBean implements Serializable {
     protected String goodsId;    //商品ID
     protected String goodsName;   //商品名
     protected double goodsPrice;  //商品价格
