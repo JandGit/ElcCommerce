@@ -2,24 +2,16 @@ package com.android.tkengine.elccommerce.model;
 
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Message;
 import android.util.Log;
 
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
-import com.android.tkengine.elccommerce.beans.RvItemBean;
+import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.beans.UserInfoBean;
-import com.android.tkengine.elccommerce.presenter.HomeFrgPresenter;
-import com.android.tkengine.elccommerce.presenter.UserLoginActPresenter;
-import com.android.tkengine.elccommerce.utils.HttpCallbackListener;
 import com.android.tkengine.elccommerce.utils.HttpUtil;
-import com.android.tkengine.elccommerce.utils.ImageTools;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -36,50 +28,73 @@ public class ElcModel {
 
 
 
-    public List<RvItemBean> getHomePageData(int from, int to) {
-        RvItemBean itemData;
-        ArrayList<RvItemBean> allData = new ArrayList<>(to - from + 1);
-        for (int i = from; i <= to; i++) {
-            itemData = new RvItemBean();
-            if (0 == i) {
-                itemData.data = new HashMap<>(1);
-                itemData.type = RvItemBean.TYPE_AD;
-                int[] img = new int[4];
-                img[0] = R.mipmap.advertise1;
-                img[1] = R.mipmap.advertise2;
-                img[2] = R.mipmap.advertise3;
-                img[3] = R.mipmap.advertise4;
-                itemData.data.put("advertisement", img);
-            } else if (1 == i) {
-                itemData.type = RvItemBean.TYPE_CATEGORY;
-            } else if (from + 2 == i) {
-                itemData.data = new HashMap<>(1);
-                itemData.type = RvItemBean.TYPE_GROUPTITLE;
-                itemData.data.put("groupName", "小图标商品列表");
-            } else if (30 == i) {
-                itemData.data = new HashMap<>(1);
-                itemData.type = RvItemBean.TYPE_GROUPTITLE;
-                itemData.data.put("groupName", "大图标商品列表");
-            } else if (i > 30 && i <= 600) {
-                itemData.data = new HashMap<>(8);
-                itemData.type = RvItemBean.TYPE_ITEM2;
-                itemData.data.put("goodsIconId1", R.mipmap.background);
-                itemData.data.put("goodsIconId2", R.mipmap.apple);
-                itemData.data.put("goodsName1", "水果1");
-                itemData.data.put("goodsName2", "水果2");
-                itemData.data.put("rating1", 4.0f);
-                itemData.data.put("rating2", 4.8f);
-                itemData.data.put("sale1", "2000");
-                itemData.data.put("sale2", "1000");
-            } else {
-                itemData.data = new HashMap<>(4);
-                itemData.type = RvItemBean.TYPE_ITEM1;
-                itemData.data.put("goodsIconId", R.mipmap.apple);
-                itemData.data.put("goodsName", "水果" + i);
-                itemData.data.put("shopName", "水果商店");
-                itemData.data.put("rating", 4.5f);
+    public List<HomePageItemBean> getHomePageData() {
+        HomePageItemBean itemData;
+        ArrayList<HomePageItemBean> allData = new ArrayList<>();
+
+        HomePageItemBean headitem = new HomePageItemBean();
+        headitem.type = HomePageItemBean.TYPE_HEAD;
+        headitem.data = new HashMap<>(1);
+        allData.add(headitem);
+
+
+        return allData;
+    }
+
+    /**
+     * 获取首页商品列表
+     * @param type 商品类型，0为热销，1为推荐，2为北果，3为南果，4为西果
+     * @return
+     */
+    public List<HomePageItemBean> getGoods(int type){
+        ArrayList<HomePageItemBean> allData = new ArrayList<>();
+        switch (type){
+            case 0: {
+                HomePageItemBean group = new HomePageItemBean();
+                group.type = HomePageItemBean.TYPE_GROUP;
+                group.data = new HashMap<>(2);
+                group.data.put("groupIcon", "分组图片URL");
+                group.data.put("groupName", "热销商品");
+                allData.add(group);
+                for (int i = 0; i < 10; i++) {
+                    HomePageItemBean item = new HomePageItemBean();
+                    item.type = HomePageItemBean.TYPE_GOODS;
+                    item.data = new HashMap<>(8);
+                    item.data.put("icon1", "商品图片1");
+                    item.data.put("name1", "商品名字1");
+                    item.data.put("rate1", 4.5f);
+                    item.data.put("sales1", "3000");
+                    item.data.put("icon2", "商品图片2");
+                    item.data.put("name2", "商品名字2");
+                    item.data.put("rate2", 4.5f);
+                    item.data.put("sales2", "3000");
+                    allData.add(item);
+                }
+                break;
             }
-            allData.add(itemData);
+            case 1: {
+                HomePageItemBean group = new HomePageItemBean();
+                group.type = HomePageItemBean.TYPE_GROUP;
+                group.data = new HashMap<>(2);
+                group.data.put("groupIcon", "分组图片URL");
+                group.data.put("groupName", "推荐商品");
+                allData.add(group);
+                for (int i = 0; i < 10; i++) {
+                    HomePageItemBean item = new HomePageItemBean();
+                    item.type = HomePageItemBean.TYPE_GOODS;
+                    item.data = new HashMap<>(8);
+                    item.data.put("icon1", "商品图片1");
+                    item.data.put("name1", "商品名字1");
+                    item.data.put("rate1", 4.5f);
+                    item.data.put("sales1", "3000");
+                    item.data.put("icon2", "商品图片2");
+                    item.data.put("name2", "商品名字2");
+                    item.data.put("rate2", 4.5f);
+                    item.data.put("sales2", "3000");
+                    allData.add(item);
+                }
+                break;
+            }
         }
 
         return allData;

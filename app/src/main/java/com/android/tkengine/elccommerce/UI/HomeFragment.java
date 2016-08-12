@@ -1,10 +1,7 @@
 package com.android.tkengine.elccommerce.UI;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,16 +10,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.tkengine.elccommerce.R;
-import com.android.tkengine.elccommerce.beans.RvItemBean;
+import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.presenter.HomeFrgPresenter;
-import com.android.tkengine.elccommerce.utils.ImageTools;
 
 import java.util.List;
 
@@ -33,7 +26,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     //主页面RecyclerView
     RecyclerView rv_mainView;
     //RecyclerViewAdapter
-    HomeFrgPresenter.HomepageAdapter mRvAdapter;
+    HomeFrgPresenter.HomeAdapter mRvAdapter;
     //标题栏toolbar
     Toolbar mToolbar;
     //下拉刷新
@@ -101,19 +94,19 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
 
         mToast = Toast.makeText(getContext(), null, Toast.LENGTH_SHORT);
 
-       // mPresenter = new HomeFrgPresenter(this, getContext());
-       // mPresenter.initHomePage();
+        mPresenter = new HomeFrgPresenter(this, getContext());
+        mPresenter.initHomePage();
     }
 
     @Override
     public void setRvAdapter(RecyclerView.Adapter adapter) {
-        mRvAdapter = (HomeFrgPresenter.HomepageAdapter) adapter;
+        mRvAdapter = (HomeFrgPresenter.HomeAdapter) adapter;
         rv_mainView.setAdapter(adapter);
     }
 
     @Override
-    public void addViewInRv(List<RvItemBean> data) {
-        mRvAdapter.addItems(data);
+    public void addViewInRv(List<HomePageItemBean> data) {
+       // mRvAdapter.addItems(data);
     }
 
     @Override
