@@ -8,12 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"
         android:text="@string/confirm_order"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:background="@color/colorWhite"
@@ -36,14 +38,14 @@
                     android:text="@string/goods_receiver"/>
 
                 <TextView
-                    android:id="@+id/tv_goods_receiver"
+                    android:id="@+id/tv_receiver_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tv_receiver_label"
                     android:layout_marginRight="5dp"/>
 
                 <TextView
-                    android:id="@+id/tv_receiver_address"
+                    android:id="@+id/tv_receiver_tel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -58,6 +60,7 @@
                     android:text="@string/receiver_address"/>
 
                 <TextView
+                    android:id="@+id/tv_receiver_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/tv_address_label"/>
@@ -65,6 +68,7 @@
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_receiver_goods"
                 android:background="@color/colorWhite"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -83,14 +87,14 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"
-                    android:text="@string/dispatch_way"/>
+                    android:text="@string/dispatch_way_label"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5dp"
-                    android:text="@string/dispatch"/>
+                    android:text="@string/dispatch_way"/>
 
             </RelativeLayout>
 
@@ -106,14 +110,14 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"
-                    android:text="@string/dispatch_way"/>
+                    android:text="@string/dispatch_time_label"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5dp"
-                    android:text="@string/dispatch"/>
+                    android:text="@string/dispatch_time"/>
 
             </RelativeLayout>
 
@@ -129,23 +133,82 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"
-                    android:text="@string/dispatch_way"/>
+                    android:text="@string/dispatch_cost_label"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5dp"
-                    android:text="@string/dispatch"/>
+                    android:text="@string/dispatch_cost"/>
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:background="@color/colorWhite"
+                android:layout_marginTop="2dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/bill_info_label"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/bill_info"/>
+
+            </RelativeLayout>
 
 
         </LinearLayout>
 
     </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:id="@+id/order_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1.0px"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/darker_gray" />
+
+        <Button
+            android:id="@+id/btn_place_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/order_divider"
+            android:gravity="center"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
+            android:text="@string/place_order"/>
+
+        <TextView
+            android:id="@+id/tv_money_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/colorPrimary"
+            android:gravity="center"
+            android:layout_toLeftOf="@+id/btn_place_order"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_toLeftOf="@+id/tv_money_amount"
+            android:text="@string/total_amount"/>
+    </RelativeLayout>
 
 </LinearLayout>

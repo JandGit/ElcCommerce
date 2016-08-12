@@ -237,6 +237,19 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return goodsSelectedList;
     }
 
+    //结算商品
+    public List<GoodsBean> getReceiverGoods(){
+        final List<GoodsBean> receiverGoodsList = new ArrayList<GoodsBean>();
+        for(GoodsBean cartGoodsItem:cartGoodsList){
+            if(cartGoodsItem.getGoodsSelected()){
+                if(cartGoodsItem.getGoodsPrice() != 0)
+                receiverGoodsList.add(cartGoodsItem);
+            }
+        }
+        return receiverGoodsList;
+    }
+
+
     //判断是否全选
     public boolean allGoodsSelected(){
         int index = 0;
@@ -272,8 +285,6 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
         }).start();
     }
-
-
 
 
     public static class GoodsViewHolder extends RecyclerView.ViewHolder {
