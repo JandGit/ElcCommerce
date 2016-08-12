@@ -119,6 +119,9 @@ public class HomeFrgPresenter {
             @Override
             public void run() {
                 try {
+                    //测试代码-----
+                    //mModel.getOrders("2", 1);
+                    //--------------
                     homePageData = mModel.getHomePageData();
                     if (null == homePageData) {
                         mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);

@@ -8,13 +8,17 @@ import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.beans.HomePageItemBean;
+import com.android.tkengine.elccommerce.beans.OrderBean;
 import com.android.tkengine.elccommerce.beans.UserInfoBean;
 import com.android.tkengine.elccommerce.utils.HttpUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +32,26 @@ public class ElcModel {
     }
 
 
+    /**
+     * 获取用户的订单信息
+     * @param userId 用户Id
+     * @param page 需要获取的页码
+     * @return
+     */
+    public OrderBean[] getOrders(String userId, int page) throws IOException {
+        String params = "{\"userId\":\"" + userId + "\", \"currentPage\":" + page + ",\"pageSize\":30}";
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_GETORDER, params);
+        Log.i("ElcModel:", "服务器返回：" + params);
+        /*Gson gson = new Gson();
+        Type type = new TypeToken<OrderBean[]>(){}.getType();
+        Log.i("ElcModel:", "Gson开始解析服务器返回数据");
+        OrderBean[] data = gson.fromJson(result, type);
+        Log.i("ElcModel:", "解析成功,数据数目" + data.length);
 
+        return data;*/
 
+        return null;
+    }
 
 
     /**
@@ -89,12 +111,12 @@ public class ElcModel {
         }
         allData.add(group);
 
-        Log.i("EclModel:", "发送服务器请求,获取首页\n" + params);
+       // Log.i("EclModel:", "发送服务器请求,获取首页\n" + params);
         String response = HttpUtil.sentHttpPost(Constants.SERVER_HOMEPAGE, params);
-        Log.i("EclModel:", "服务器返回：" + response);
+       // Log.i("EclModel:", "服务器返回：" + response);
         JSONObject jsonObject = new JSONObject(response);
         JSONArray jArray = jsonObject.getJSONArray("product_list");
-        Log.i("EclModel:", "开始解析商品列表, 数目:" + jArray.length());
+       // Log.i("EclModel:", "开始解析商品列表, 数目:" + jArray.length());
         for(int i = 0; i < jArray.length(); i++){
             jsonObject = jArray.getJSONObject(i);
             if (0 == i % 2) {
@@ -114,8 +136,8 @@ public class ElcModel {
                 if(jArray.length() - 1 == i){
                     allData.add(item);
                 }
-                Log.i("EclModel:", "解析第" + i + "个商品：，名称:" + item.data.get("name1") +
-                        "\nid:" + item.data.get("id1") + "\n图片：" + item.data.get("icon1"));
+               // Log.i("EclModel:", "解析第" + i + "个商品：，名称:" + item.data.get("name1") +
+                        //"\nid:" + item.data.get("id1") + "\n图片：" + item.data.get("icon1"));
             }
             else {
                 assert item != null;
@@ -130,12 +152,12 @@ public class ElcModel {
                 item.data.put("icon2", jsonObject.get("picture_url"));
 
                 allData.add(item);
-                Log.i("EclModel:", "解析第" + i + "个商品：，名称:" + item.data.get("name2") +
-                        "\nid:" + item.data.get("id2") + "\n图片：" + item.data.get("icon2"));
+                //Log.i("EclModel:", "解析第" + i + "个商品：，名称:" + item.data.get("name2") +
+                        //"\nid:" + item.data.get("id2") + "\n图片：" + item.data.get("icon2"));
             }
         }
 
-        Log.i("EclModel:", "解析完毕，返回数据,数据量" + allData.size());
+       // Log.i("EclModel:", "解析完毕，返回数据,数据量" + allData.size());
         return allData;
     }
 
