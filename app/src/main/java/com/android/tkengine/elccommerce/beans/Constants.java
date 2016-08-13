@@ -45,5 +45,10 @@ public class Constants {
      * 订单接口
      * 访问参数json数据格式,{"userId":?, "currentPage":?, "pageSize":?}
      */
-    public static final String SERVER_GETORDER = SERVER_ADDRESS + "order/app/userOrder";
+    public static final String SERVER_GETORDER_ALL = SERVER_ADDRESS + "order/app/userOrder";
+    /**
+     * 订单接口
+     * 访问参数Json格式,{"userId":?, "currentPage":?, "pageSize":?, "state":"unpaid"|"unsent"|"unreceived"|"uncomment"}
+     */
+    public static final String SERVER_GETORDER_SPC = SERVER_ADDRESS + "order/app/searchUserOrder";
 }

@@ -37,16 +37,52 @@ public class ElcModel {
         this.mContext = mContext;
     }
 
+    /**
+     * 获取订单
+     * 网络连接错误时抛出异常
+     * @param userId 用户Id
+     * @param page 0为所有订单，1为待付款，2为待发货，3为待收货，4为待评价
+     * @param from 用于订单分块显示，指定加载订单的起始位置
+     * @return
+     */
+    public OrderBean[] getOrder(String userId, int page, int from) throws Exception{
+        String url = Constants.SERVER_GETORDER_SPC;
+        String params;
+        switch (page){
+            case 0:
+                url = Constants.SERVER_GETORDER_ALL;
+                params = "{\"userId\":\"" + userId + "\", \"currentPage\":" + from + ",\"pageSize\":30}";
+                break;
+            case 1:
+                params = "{\"userId\":\"" + userId + "\", \"currentPage\":" + from + ",\"pageSize\":30, \"state\":\"unpaid\"}";
+                break;
+            case 2:
+                params = "{\"userId\":\"" + userId + "\", \"currentPage\":" + from + ",\"pageSize\":30, \"state\":\"unsent\"}";
+                break;
+            case 3:
+                params = "{\"userId\":\"" + userId + "\", \"currentPage\":" + from + ",\"pageSize\":30, \"state\":\"unreceived\"}";
+                break;
+            case 4:
+                params = "{\"userId\":\"" + userId + "\", \"currentPage\":" + from + ",\"pageSize\":30, \"state\":\"uncomment\"}";
+                break;
+            default:
+                throw new Exception("错误的page参数");
+        }
+        Log.i("ElcModel:", "向服务器:" + url + "发送POST请求，\n参数：" + params);
+        String result = HttpUtil.sentHttpPost(url, params);
+
+        return null;
+    }
 
     /**
-     * 获取用户的订单信息
+     * 获取用户的所有订单信息
      * @param userId 用户Id
      * @param page 需要获取的页码
      * @return
      */
     public OrderBean[] getOrders(String userId, int page) throws IOException, JSONException {
         String params = "{\"userId\":\"" + userId + "\", \"currentPage\":" + page + ",\"pageSize\":30}";
-        String result = HttpUtil.sentHttpPost(Constants.SERVER_GETORDER, params);
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_GETORDER_ALL, params);
         JSONObject jsonObject = new JSONObject(result);
         result = jsonObject.getJSONArray("result").toString();
 

@@ -84,7 +84,8 @@
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:id="@+id/showMyOrders">
 
         <TextView
             android:id="@+id/textView1"

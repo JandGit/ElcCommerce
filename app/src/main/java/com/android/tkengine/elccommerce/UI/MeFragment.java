@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
@@ -37,11 +38,24 @@ public class MeFragment extends Fragment {
         tv_userName = (TextView) mView.findViewById(R.id.tv_frgMe_userName);
         iv_userIcon = (ImageView) mView.findViewById(R.id.iv_frgMeUserIcon);
 
+        //上方用户头像点击事件
         mView.findViewById(R.id.rv_frgme_user).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //若用户未登录，则进入登录页面
+                if (!isUserLogined()) {
                     startActivityForResult(new Intent(getContext(), UserLoginActivity.class), 1);
+                }
+                else {
+                    Toast.makeText(getContext(), "个人信息", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        //我的订单点击事件
+        mView.findViewById(R.id.showMyOrders).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), OrderActivity.class));
             }
         });
 
@@ -63,7 +77,7 @@ public class MeFragment extends Fragment {
     private void showUserInfo() {
         SharedPreferences sp = getActivity().getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
         tv_userName.setText(sp.getString("UserName", "null"));
-        Picasso.with(getContext()).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit()
+        Picasso.with(getContext()).load(Constants.SERVER_ADDRESS + sp.getString("UserIcon", null)).fit()
                 .error(R.drawable.frgme_userunlogin)
                 .into(iv_userIcon);
     }
