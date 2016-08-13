@@ -45,19 +45,41 @@ public class MeFragment extends Fragment {
                 //若用户未登录，则进入登录页面
                 if (!isUserLogined()) {
                     startActivityForResult(new Intent(getContext(), UserLoginActivity.class), 1);
-                }
-                else {
+                } else {
                     Toast.makeText(getContext(), "个人信息", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         //我的订单点击事件
-        mView.findViewById(R.id.showMyOrders).setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
+            int i;
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(), OrderActivity.class));
+                switch (view.getId()) {
+                    case R.id.showMyOrders:
+                        i = 0;
+                        break;
+                    case R.id.unpaidOrder:
+                        i = 1;
+                        break;
+                    case R.id.unsentOrder:
+                        i = 2;
+                        break;
+                    case R.id.unrecievedOrder:
+                        i = 3;
+                        break;
+                    default:
+                        i = 0;
+                }
+                Intent intent = new Intent(getContext(), OrderActivity.class);
+                intent.putExtra("flag", i);
+                startActivity(intent);
             }
-        });
+        };
+        mView.findViewById(R.id.showMyOrders).setOnClickListener(listener);
+        mView.findViewById(R.id.unpaidOrder).setOnClickListener(listener);
+        mView.findViewById(R.id.unsentOrder).setOnClickListener(listener);
+        mView.findViewById(R.id.unrecievedOrder).setOnClickListener(listener);
 
         //若用户已登录,展示信息
         if (isUserLogined()) {

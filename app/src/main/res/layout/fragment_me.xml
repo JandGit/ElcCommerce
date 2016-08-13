@@ -131,7 +131,8 @@
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:layout_width="0dp"
-            android:layout_height="80dp">
+            android:layout_height="80dp"
+            android:id="@+id/unpaidOrder">
 
             <ImageView
                 android:id="@+id/iv_frgMeUnpaid"
@@ -155,7 +156,8 @@
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:layout_width="0dp"
-            android:layout_height="80dp">
+            android:layout_height="80dp"
+            android:id="@+id/unsentOrder">
 
             <ImageView
                 android:id="@+id/iv_frgMeUnsent"
@@ -179,7 +181,8 @@
             android:orientation="vertical"
             android:gravity="center_horizontal"
             android:layout_width="0dp"
-            android:layout_height="80dp">
+            android:layout_height="80dp"
+            android:id="@+id/unrecievedOrder">
 
             <ImageView
                 android:id="@+id/iv_frgMeUnrecieved"

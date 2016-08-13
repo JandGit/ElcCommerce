@@ -25,6 +25,7 @@ import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.utils.Indicator;
 import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
+import com.android.tkengine.elccommerce.utils.MyIndicator;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -250,7 +251,7 @@ public class HomeFrgPresenter {
                         }
                     });
                     LinearLayout indicator = holder.getView(R.id.bottom_indicator);
-                    Indicator.setUpViewPager(vp, indicator,mContext, 3, 1);
+                    new MyIndicator().setUpViewPager(vp, indicator,mContext, 3, 1);
                     break;
                 case HomePageItemBean.TYPE_GROUP:
                     TextView tv = holder.getView(R.id.tv_groupName);

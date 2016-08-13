@@ -22,6 +22,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:textColor="@color/colorBlack"
                     android:text="@string/orderact_title"
                     android:textSize="20sp"
                     android:layout_centerInParent="true" />
@@ -71,6 +72,7 @@
         android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/tv_tips"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:visibility="invisible"
         android:gravity="center"
         android:text="正在加载"

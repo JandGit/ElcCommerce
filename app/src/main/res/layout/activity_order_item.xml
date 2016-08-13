@@ -1,120 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:clickable="true"
-    android:background="@drawable/homefrg_itembackground"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/homefrg_itembackground"
+    android:clickable="true">
 
-    <View
-        android:id="@+id/v2"
-        android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/dividerColor"/>
     <RelativeLayout
         android:id="@+id/re1"
-        android:layout_below="@+id/v2"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginTop="10dp">
-    <ImageView
-        android:id="@+id/iv1"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/shop"/>
 
-    <TextView
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/iv1"
-        android:layout_toEndOf="@id/iv1"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:textColor="@color/colorBlack"
-        android:text="商家名称"
-        android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:id="@+id/tv_shopName" />
+        <ImageView
+            android:id="@+id/iv1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/shop" />
 
         <TextView
-            android:text="交易状态"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_centerVertical="true"
+            android:id="@+id/tv_shopName"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:id="@+id/tv_state" />
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/iv1"
+            android:layout_toRightOf="@id/iv1"
+            android:text="商家名称"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:text="交易状态" />
     </RelativeLayout>
+
     <View
-        android:background="@color/dividerColor"
-        android:layout_below="@+id/re1"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-    <ListView
-        android:layout_below="@id/re1"
+        android:layout_height="1dp"
+        android:layout_below="@+id/re1"
+        android:background="@color/dividerColor" />
+
+    <com.android.tkengine.elccommerce.utils.LongListView
         android:id="@+id/lv_orderProitems"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/re1"
+        android:footerDividersEnabled="false" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/lv_orderProitems"
+        android:background="@color/dividerColor" />
+
     <TextView
         android:id="@+id/tv_sum"
-        android:layout_below="@+id/lv_orderProitems"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginEnd="20dp"
-        android:textColor="@color/colorBlack"
-        android:text="共N件商品 总计X元"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/lv_orderProitems"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:text="共N件商品 总计X元"
+        android:textColor="@color/colorBlack" />
 
     <View
         android:id="@+id/v1"
-        android:background="@color/dividerColor"
-        android:layout_below="@+id/tv_sum"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:layout_below="@+id/tv_sum"
+        android:background="@color/dividerColor" />
 
     <Button
-        android:layout_below="@+id/v1"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:text="评价"
-        android:background="@drawable/actorder_button"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
         android:id="@+id/btn_comment"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp" />
-
-    <Button
-        android:text="删除订单"
-        android:background="@drawable/actorder_button"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/v1"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/actorder_button"
+        android:text="评价" />
+
+    <Button
         android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
         android:layout_alignTop="@+id/btn_comment"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/btn_comment"
         android:layout_toStartOf="@+id/btn_comment"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp" />
+        android:background="@drawable/actorder_button"
+        android:text="删除订单" />
 
     <Button
-        android:text="查看详情"
-        android:background="@drawable/actorder_button"
+        android:id="@+id/btn_detail"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:id="@+id/btn_detail"
         android:layout_alignTop="@+id/btn_delete"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/btn_delete"
         android:layout_toStartOf="@+id/btn_delete"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp" />
+        android:background="@drawable/actorder_button"
+        android:text="查看详情" />
 </RelativeLayout>

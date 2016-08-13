@@ -33,6 +33,8 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
     OrderActPresenter mPresenter;
     //
     RecyclerView[] allItems = new RecyclerView[5];
+    //标记是否在加载
+    boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,14 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
         tv_tips = (TextView) findViewById(R.id.tv_tips);
         mViewPager = (ViewPager) findViewById(R.id.vp_main);
         mTab = (TabLayout) findViewById(R.id.tl_tags);
+
+        //设置返回箭头
+        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         //设置网络错误时点击重新加载
         tv_tips.setOnClickListener(new View.OnClickListener() {
@@ -100,13 +110,11 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
                 view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT));
                 view.setLayoutManager(new LinearLayoutManager(OrderActivity.this));
-                if(0 == position){
-                    currentRv = view;
-                    if(null == currentRv.getAdapter()){
-                        mPresenter.loadPage(position);
-                        Log.i("act", "加载网络");
-                    }
-                }
+                /*currentRv = view;
+                if(null == currentRv.getAdapter()){
+                    mPresenter.loadPage(position);
+                    Log.i("act", "加载网络");
+                }*/
 
                 container.addView(view);
                 allItems[position] = view;
@@ -123,8 +131,10 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
             public void onPageSelected(int position) {
                 currentRv = allItems[position];
                 tv_tips.setVisibility(View.GONE);
-                if(currentRv != null && null == currentRv.getAdapter()){
+                Log.i("act", "选择" + position);
+                if(currentRv != null && null == currentRv.getAdapter() && !isLoading){
                     mPresenter.loadPage(position);
+                    isLoading = true;
                     Log.i("act", "加载网络");
                 }
             }
@@ -133,10 +143,27 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
             }
         });
         mTab.setupWithViewPager(mViewPager);
+
+        int i = getIntent().getIntExtra("flag", -1);
+        mViewPager.setCurrentItem(i + 1 % 4);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if(hasFocus){
+            //设置ViewPager页面
+            int i = getIntent().getIntExtra("flag", -1);
+            if (0 <= i && i <= 4) {
+                mViewPager.setCurrentItem(i);
+                Log.i("act", "输入" + i);
+            }
+        }
+        super.onWindowFocusChanged(hasFocus);
     }
 
     @Override
     public void showNowLoading() {
+        isLoading = true;
         tv_tips.setText("正在努力加载...");
         tv_tips.setVisibility(View.VISIBLE);
         tv_tips.setClickable(false);
@@ -144,6 +171,7 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
 
     @Override
     public void showLoadingFailed() {
+        isLoading = false;
         tv_tips.setText("网络连接错误，点击重试");
         tv_tips.setVisibility(View.VISIBLE);
         tv_tips.setClickable(true);
@@ -151,12 +179,14 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
 
     @Override
     public void setAdapter(MultiItemAdapter adapter) {
+        isLoading = false;
         currentRv.setAdapter(adapter);
         tv_tips.setVisibility(View.GONE);
     }
 
     @Override
     public void showNodata() {
+        isLoading = false;
         tv_tips.setText("空空如也...");
         tv_tips.setVisibility(View.VISIBLE);
         tv_tips.setClickable(false);

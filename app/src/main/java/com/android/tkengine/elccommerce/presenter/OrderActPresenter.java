@@ -109,7 +109,7 @@ public class OrderActPresenter {
             @Override
             public void run() {
                 try {
-                    OrderBean[] orders = mModel.getOrder(userId, page, 0);
+                    OrderBean[] orders = mModel.getOrder(userId, page, 1);
                     if(orders != null && orders.length != 0){
                         List<OrderBean> data = Arrays.asList(orders);
                         MultiItemAdapter<OrderBean> adapter = new OrderAdapter(data, mContext, R.layout.activity_order_item);
@@ -174,6 +174,7 @@ public class OrderActPresenter {
 
                 data.add(temp);
             }
+            Log.i("商品数目：", "" + data.size());
             lv.setAdapter(new BaseAdapter() {
                 ArrayList<Map<String, Object>> mData = data;
                 @Override
