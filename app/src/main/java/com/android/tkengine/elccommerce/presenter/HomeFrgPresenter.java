@@ -76,6 +76,9 @@ public class HomeFrgPresenter {
                     mView.addMoreItem(data);
                     mView.showLoadingMoreCompleted();
                     break;
+                case MSG_SHOW_NOMORE_DATA:
+                    mView.showLoadingMoreCompleted();
+                    break;
                 case MSG_NETWORK_ERROR:
                     mView.showNetworkError();
                     break;
@@ -159,6 +162,10 @@ public class HomeFrgPresenter {
                         Message msg = mHandler.obtainMessage(mHandler.MSG_ADD_MORE_DATA);
                         msg.obj = data;
                         mHandler.sendMessage(msg);
+                    }
+                    else {
+                        mHandler.sendEmptyMessage(mHandler.MSG_SHOW_NOMORE_DATA);
+                        nowType--;
                     }
                 } catch (Exception e) {
                     mHandler.sendEmptyMessage(mHandler.MSG_NETWORK_ERROR);

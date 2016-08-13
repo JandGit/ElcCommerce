@@ -34,7 +34,7 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
         setContentView(R.layout.activity_order);
 
         initView();
-        mPresenter = new OrderActPresenter(this);
+        mPresenter = new OrderActPresenter(this, this);
     }
 
     private void initView(){

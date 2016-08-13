@@ -70,8 +70,14 @@ public class ElcModel {
         }
         Log.i("ElcModel:", "向服务器:" + url + "发送POST请求，\n参数：" + params);
         String result = HttpUtil.sentHttpPost(url, params);
+        Log.i("ElcModel:", "服务器返回数据：" + result);
+        JSONObject jsonObject = new JSONObject(result);
+        result = jsonObject.getJSONArray("result").toString();
+        Log.i("ElcModel:", "开始解析JSON：" + result);
+        Gson gson = new Gson();
+        Type type = new TypeToken<OrderBean[]>(){}.getType();
 
-        return null;
+        return gson.fromJson(result, type);
     }
 
     /**
@@ -202,7 +208,10 @@ public class ElcModel {
         }
 
        // Log.i("EclModel:", "解析完毕，返回数据,数据量" + allData.size());
-        return allData;
+        if (allData.size() > 1) {
+            return allData;
+        }
+        return null;
     }
 
     /**
