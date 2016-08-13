@@ -5,6 +5,20 @@ package com.android.tkengine.elccommerce.beans;
  */
 public class Constants {
     /**
+     * 当前用户登录信息的SharePreference文件名
+     * 存储格式：
+     * "isLogin"   -----当前用户是否登录，boolean
+     "UserPhone" ------用户手机号码，即登录账户,String
+     "password" -------用户登录密码, String
+     "UserName" -----------用户名,String
+     "UserId" ------------用户ID，String
+     "UserIcon"  -------------用户头像URL
+     "UserSex"   -------------用户性别,String
+     "UserMoney",  -----------用户钱包，float
+     */
+    public static final String SP_LOGIN_USERINFO = "LoginInfo";
+
+    /**
      * 后台服务器地址
      */
     public static final String SERVER_ADDRESS = "http://192.168.1.102:9999/TKBaas/";

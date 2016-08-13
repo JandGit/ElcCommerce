@@ -76,55 +76,61 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
             }
         });
 
-        if(isUserLogined()){
-            setPageLogin();
+        setPage();
+    }
+
+    private void setPage(){
+        SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
+        String userPhone = sp.getString("UserPhone", null);
+        if (userPhone != null) {
+            tv_userName.setText(sp.getString("UserName", "null"));
+            tv_userName.setVisibility(View.VISIBLE);
+            et_userName.setText(userPhone);
+            et_userName.setVisibility(View.INVISIBLE);
+            ((TextView)viewRight).setText("切换登录用户");
+            viewRight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    iv_userIcon.setImageResource(R.drawable.frgme_userunlogin);
+                    tv_userName.setVisibility(View.INVISIBLE);
+                    et_userName.setVisibility(View.VISIBLE);
+                    viewLeft.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            showToast("忘记密码");
+                        }
+                    });
+                    ((TextView)viewRight).setText("注册新用户");
+                    viewRight.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            showToast("注册新用户");
+                        }
+                    });
+                }
+            });
+            Picasso.with(this).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit()
+                    .error(R.drawable.frgme_userunlogin)
+                    .into(iv_userIcon);
         }
         else {
-            setPageUnLogin();
+            iv_userIcon.setImageResource(R.drawable.frgme_userunlogin);
+            tv_userName.setVisibility(View.INVISIBLE);
+            et_userName.setVisibility(View.VISIBLE);
+            viewLeft.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showToast("忘记密码");
+                }
+            });
+            ((TextView)viewRight).setText("注册新用户");
+            viewRight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showToast("注册新用户");
+                }
+            });
         }
-    }
-
-    //检查用户是否已经登录
-    private boolean isUserLogined() {
-        SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
-        return sp.getBoolean("isLogin", false);
-    }
-
-    private void setPageLogin(){
-        SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
-        tv_userName.setText(sp.getString("UserName", "null"));
-        tv_userName.setVisibility(View.VISIBLE);
-        et_userName.setText(sp.getString("UserPhone", " "));
-        et_userName.setVisibility(View.INVISIBLE);
-        ((TextView)viewRight).setText("切换登录用户");
-        viewRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setPageUnLogin();
-            }
-        });
-        Picasso.with(this).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit()
-                .error(R.drawable.frgme_userunlogin)
-                .into(iv_userIcon);
-    }
-
-    private void setPageUnLogin(){
-        iv_userIcon.setImageResource(R.drawable.frgme_userunlogin);
-        tv_userName.setVisibility(View.INVISIBLE);
-        et_userName.setVisibility(View.VISIBLE);
-        viewLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showToast("忘记密码");
-            }
-        });
-        ((TextView)viewRight).setText("注册新用户");
-        viewRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showToast("注册新用户");
-            }
-        });
     }
 
     //登录按钮按下回调事件
