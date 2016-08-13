@@ -2,9 +2,11 @@ package com.android.tkengine.elccommerce.presenter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -20,6 +23,7 @@ import com.android.tkengine.elccommerce.UI.DisplayActivity;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
+import com.android.tkengine.elccommerce.utils.Indicator;
 import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -208,8 +212,38 @@ public class HomeFrgPresenter {
         public void convert(ViewHolder holder, HomePageItemBean itemData) {
             switch (holder.getItemViewType()) {
                 case HomePageItemBean.TYPE_HEAD:
-                    ViewPager vp = holder.getView(R.id.vp_homeAD);
                     //设置首页广告
+                    ViewPager vp = holder.getView(R.id.vp_homeAD);
+                    final Bitmap[] imgs = (Bitmap[]) itemData.data.get("AD");
+                    vp.setAdapter(new PagerAdapter() {
+                        @Override
+                        public int getCount() {
+                            return imgs.length;
+                        }
+
+                        @Override
+                        public Object instantiateItem(ViewGroup container, int position) {
+                            ImageView iv = new ImageView(mContext);
+                            iv.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT));
+                            iv.setImageBitmap(imgs[position]);
+                            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                            container.addView(iv);
+                            return iv;
+                        }
+
+                        @Override
+                        public void destroyItem(ViewGroup container, int position, Object object) {
+                            container.removeView((View) object);
+                        }
+
+                        @Override
+                        public boolean isViewFromObject(View view, Object object) {
+                            return view == object;
+                        }
+                    });
+                    LinearLayout indicator = holder.getView(R.id.bottom_indicator);
+                    Indicator.setUpViewPager(vp, indicator,mContext, 3, 1);
                     break;
                 case HomePageItemBean.TYPE_GROUP:
                     TextView tv = holder.getView(R.id.tv_groupName);
@@ -220,7 +254,7 @@ public class HomeFrgPresenter {
                     TextView tv_goodsName = holder.getView(R.id.tv_goodname1);
                     TextView tv_city = holder.getView(R.id.tv_city1);
                     TextView tv_sales = holder.getView(R.id.tv_goodSales1);
-                    Picasso.with(mContext).load(Constants.SERVER_ADDRESS + (String) itemData.data.get("icon1"))
+                    Picasso.with(mContext).load((String) itemData.data.get("icon1"))
                             .fit().error(R.mipmap.ic_launcher).into(iv_goodsIcon);
                     tv_goodsName.setText((String) itemData.data.get("name1"));
                     tv_city.setText(((String) itemData.data.get("city1")));
@@ -242,7 +276,7 @@ public class HomeFrgPresenter {
                         tv_goodsName = holder.getView(R.id.tv_goodname2);
                         tv_city = holder.getView(R.id.tv_city2);
                         tv_sales = holder.getView(R.id.tv_goodSales2);
-                        Picasso.with(mContext).load(Constants.SERVER_ADDRESS + (String) itemData.data.get("icon2"))
+                        Picasso.with(mContext).load((String) itemData.data.get("icon2"))
                                 .fit().error(R.mipmap.ic_launcher).into(iv_goodsIcon);
                         tv_goodsName.setText((String) itemData.data.get("name2"));
                         tv_city.setText(((String) itemData.data.get("city2")));

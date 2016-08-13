@@ -3,22 +3,30 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <android.support.v4.view.ViewPager
-        android:background="@mipmap/background"
-        android:id="@+id/vp_homeAD"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"/>
+        android:layout_height="wrap_content">
 
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_homeAD"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"/>
+
+        <LinearLayout
+            android:id="@+id/bottom_indicator"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|center_horizontal"/>
+    </FrameLayout>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="80dp">
 
         <LinearLayout
             android:clickable="true"
-            android:background="@drawable/homefrg_itembackground"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:layout_weight="1"
@@ -26,8 +34,8 @@
             android:layout_height="match_parent">
             <ImageView
                 android:layout_marginTop="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/headitem_advice"/>
             <TextView
@@ -38,7 +46,6 @@
         </LinearLayout>
         <LinearLayout
             android:clickable="true"
-            android:background="@drawable/homefrg_itembackground"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:layout_weight="1"
@@ -46,8 +53,8 @@
             android:layout_height="match_parent">
             <ImageView
                 android:layout_marginTop="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/headitem_northfruit" />
             <TextView
@@ -58,15 +65,14 @@
         </LinearLayout>
         <LinearLayout
             android:clickable="true"
-            android:background="@drawable/homefrg_itembackground"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent">
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="10dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/headitem_southfruit"/>
@@ -78,7 +84,6 @@
         </LinearLayout>
         <LinearLayout
             android:clickable="true"
-            android:background="@drawable/homefrg_itembackground"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:layout_weight="1"
@@ -86,8 +91,8 @@
             android:layout_height="match_parent">
             <ImageView
                 android:layout_marginTop="10dp"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/headitem_westfruit"/>
             <TextView

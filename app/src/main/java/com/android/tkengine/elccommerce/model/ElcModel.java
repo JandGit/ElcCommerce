@@ -2,7 +2,10 @@ package com.android.tkengine.elccommerce.model;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
@@ -65,6 +68,11 @@ public class ElcModel {
         HomePageItemBean headitem = new HomePageItemBean();
         headitem.type = HomePageItemBean.TYPE_HEAD;
         headitem.data = new HashMap<>(1);
+        Bitmap[] imgs = new Bitmap[3];
+        imgs[0] = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.advertise1);
+        imgs[1] = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.advertise2);
+        imgs[2] = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.advertise3);
+        headitem.data.put("AD", imgs);
         allData.add(headitem);
         allData.addAll(getGoods(0));
 
