@@ -10,7 +10,7 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:layout_width="match_parent"
             android:layout_height="42dp">
 
@@ -21,10 +21,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="@string/orderact_title"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:layout_centerInParent="true" />
 
                 <ImageView
                     android:id="@+id/iv_back"

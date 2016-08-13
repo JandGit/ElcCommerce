@@ -53,21 +53,21 @@ public class OrderBean {
     }
 
     public static class ProItemsBean {
-        private String id;
-        private int num;
-        private ProductBean product;
+        public String id;
+        public int num;
+        public ProductBean product;
 
         public static class ProductBean {
-            private String id;
-            private String name;
-            private String type;
-            private String city;
-            private int store;
-            private int price;
-            private String description;
-            private int sales;
-            private boolean ifDeleted;
-            private String picture;
+            public String id;
+            public String name;
+            public String type;
+            public String city;
+            public int store;
+            public double price;
+            public String description;
+            public int sales;
+            public boolean ifDeleted;
+            public String picture;
 
         }
     }

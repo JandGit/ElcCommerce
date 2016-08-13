@@ -8,13 +8,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.beans.OrderBean;
 import com.android.tkengine.elccommerce.presenter.OrderActPresenter;
 import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
+
+import java.util.List;
 
 public class OrderActivity extends AppCompatActivity implements OrderActPresenter.CallbackOfView{
 
@@ -27,6 +31,8 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
     TextView tv_tips;
     //presenter
     OrderActPresenter mPresenter;
+    //
+    RecyclerView[] allItems = new RecyclerView[5];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +47,6 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
         tv_tips = (TextView) findViewById(R.id.tv_tips);
         mViewPager = (ViewPager) findViewById(R.id.vp_main);
         mTab = (TabLayout) findViewById(R.id.tl_tags);
-        mTab.setupWithViewPager(mViewPager);
 
         //设置网络错误时点击重新加载
         tv_tips.setOnClickListener(new View.OnClickListener() {
@@ -52,10 +57,26 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
         });
 
         mViewPager.setAdapter(new PagerAdapter() {
-            RecyclerView[] allItems = new RecyclerView[5];
             @Override
             public int getCount() {
                 return 5;
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                switch (position){
+                    case 0:
+                        return "全部";
+                    case 1:
+                        return "待付款";
+                    case 2:
+                        return "待发货";
+                    case 3:
+                        return "待收货";
+                    case 4:
+                        return "待评价";
+                }
+                return null;
             }
 
             @Override
@@ -64,18 +85,9 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
             }
 
             @Override
-            public int getItemPosition(Object object) {
-                for(int i = 0; i < 5; i++){
-                    if(object == allItems[i]){
-                        return i;
-                    }
-                }
-                return 0;
-            }
-
-            @Override
             public void destroyItem(ViewGroup container, int position, Object object) {
                 container.removeView((View) object);
+                Log.i("recycler", "销毁" + position);
             }
 
             @Override
@@ -88,9 +100,17 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
                 view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT));
                 view.setLayoutManager(new LinearLayoutManager(OrderActivity.this));
+                if(0 == position){
+                    currentRv = view;
+                    if(null == currentRv.getAdapter()){
+                        mPresenter.loadPage(position);
+                        Log.i("act", "加载网络");
+                    }
+                }
 
                 container.addView(view);
                 allItems[position] = view;
+                Log.i("recycler", "加载" + position);
                 return view;
             }
         });
@@ -101,13 +121,18 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
 
             @Override
             public void onPageSelected(int position) {
-                currentRv = (RecyclerView) mViewPager.getChildAt(position);
+                currentRv = allItems[position];
+                tv_tips.setVisibility(View.GONE);
+                if(currentRv != null && null == currentRv.getAdapter()){
+                    mPresenter.loadPage(position);
+                    Log.i("act", "加载网络");
+                }
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
             }
         });
+        mTab.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -126,6 +151,19 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
 
     @Override
     public void setAdapter(MultiItemAdapter adapter) {
+        currentRv.setAdapter(adapter);
+        tv_tips.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showNodata() {
+        tv_tips.setText("空空如也...");
+        tv_tips.setVisibility(View.VISIBLE);
+        tv_tips.setClickable(false);
+    }
+
+    @Override
+    public void addMoreItem(List<OrderBean> data) {
 
     }
 }

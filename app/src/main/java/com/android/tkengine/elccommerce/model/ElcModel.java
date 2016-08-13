@@ -43,9 +43,10 @@ public class ElcModel {
      * @param userId 用户Id
      * @param page 0为所有订单，1为待付款，2为待发货，3为待收货，4为待评价
      * @param from 用于订单分块显示，指定加载订单的起始位置
-     * @return
+     * @return 若无信息返回null,其他情况为数组
      */
     public OrderBean[] getOrder(String userId, int page, int from) throws Exception{
+        userId = "1";
         String url = Constants.SERVER_GETORDER_SPC;
         String params;
         switch (page){
@@ -71,13 +72,18 @@ public class ElcModel {
         Log.i("ElcModel:", "向服务器:" + url + "发送POST请求，\n参数：" + params);
         String result = HttpUtil.sentHttpPost(url, params);
         Log.i("ElcModel:", "服务器返回数据：" + result);
-        JSONObject jsonObject = new JSONObject(result);
-        result = jsonObject.getJSONArray("result").toString();
-        Log.i("ElcModel:", "开始解析JSON：" + result);
-        Gson gson = new Gson();
-        Type type = new TypeToken<OrderBean[]>(){}.getType();
+        if (result != null && !result.isEmpty()) {
+            JSONObject jsonObject = new JSONObject(result);
+            result = jsonObject.getJSONArray("result").toString();
+            Log.i("ElcModel:", "开始解析JSON：" + result);
+            if (result != null && !result.isEmpty()) {
+                Gson gson = new Gson();
+                Type type = new TypeToken<OrderBean[]>(){}.getType();
 
-        return gson.fromJson(result, type);
+                return gson.fromJson(result, type);
+            }
+        }
+        return null;
     }
 
     /**
