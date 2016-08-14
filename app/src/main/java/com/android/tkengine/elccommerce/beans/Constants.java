@@ -21,7 +21,7 @@ public class Constants {
     /**
      * 后台服务器地址
      */
-    public static final String SERVER_ADDRESS = "http://192.168.1.102:9999/TKBaas/";
+    public static final String SERVER_ADDRESS = "http://qq84429406.eicp.net/TKBaas/";
     /**
      * 后台用户登录接口
      */
@@ -70,5 +70,10 @@ public class Constants {
      * 订单接口
      * 访问参数json数据格式,{"userId":?, "currentPage":?, "pageSize":?}
      */
-    public static final String SERVER_GETORDER = SERVER_ADDRESS + "order/app/userOrder";
+    public static final String SERVER_GETORDER_ALL = SERVER_ADDRESS + "order/app/userOrder";
+    /**
+     * 订单接口
+     * 访问参数Json格式,{"userId":?, "currentPage":?, "pageSize":?, "state":"unpaid"|"unsent"|"unreceived"|"uncomment"}
+     */
+    public static final String SERVER_GETORDER_SPC = SERVER_ADDRESS + "order/app/searchUserOrder";
 }

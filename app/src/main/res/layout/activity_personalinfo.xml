@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.android.tkengine.elccommerce.UI.PersonalinfoActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb"
+        android:layout_width="match_parent"
+        android:layout_height="42dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="个人信息"
+                android:textSize="20sp"
+                android:layout_centerInParent="true"/>
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:clickable="true"
+                android:onClick="onBackClick"
+                android:background="?attr/selectableItemBackground"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:scaleType="centerInside"
+                android:src="@mipmap/title_back"
+                android:layout_alignTop="@+id/tv1"
+                android:layout_alignBottom="@+id/tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@+id/tb"
+        android:background="@color/dividerColor"/>
+
+    <RelativeLayout
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/rl_userIcon"
+        android:layout_below="@+id/tb"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+
+        <ImageView
+            android:id="@+id/iv_userIcon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="头像"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/rl_userPhone"
+        android:layout_below="@+id/rl_userIcon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="登录帐号"/>
+
+        <TextView
+            android:id="@+id/tv_userPhone"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp" />
+
+        <View
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor"
+            android:layout_below="@id/tv_userPhone"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/rl_userName"
+        android:layout_below="@+id/rl_userPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="姓名"/>
+
+        <TextView
+            android:id="@+id/tv_userName"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp" />
+
+        <View
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor"
+            android:layout_below="@id/tv_userName"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/rl_userSex"
+        android:layout_below="@+id/rl_userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="性别"/>
+
+        <TextView
+            android:id="@+id/tv_userSex"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp" />
+
+        <View
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor"
+            android:layout_below="@id/tv_userSex"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/rl_modifyPassword"
+        android:layout_below="@+id/rl_userSex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/t1"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="修改登录密码"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_below="@id/rl_modifyPassword"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/dividerColor"/>
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:onClick="onLogoutClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="退出当前账户"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/loginbutton_background"
+        android:layout_below="@+id/rl_modifyPassword"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="80dp" />
+
+    <Button
+        android:id="@+id/btn_changeAccount"
+        android:onClick="onChangeAccountClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="切换账户"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/loginbutton_background"
+        android:layout_below="@+id/btn_logout"
+        android:layout_alignLeft="@+id/btn_logout"
+        android:layout_alignStart="@+id/btn_logout"
+        android:layout_alignRight="@+id/btn_logout"
+        android:layout_alignEnd="@+id/btn_logout"
+        android:layout_marginTop="10dp" />
+
+</RelativeLayout>

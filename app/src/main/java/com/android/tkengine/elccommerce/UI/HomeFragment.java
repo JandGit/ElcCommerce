@@ -97,9 +97,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
             @Override
             public void onClick(View view) {
                 if(!mSwipeRefreshLayout.isRefreshing()){
-                    mSwipeRefreshLayout.setRefreshing(true);
                     mPresenter.initHomePage();
-                    tv_tips.setText("正在努力加载......");
                 }
             }
         });
@@ -121,12 +119,15 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
         mSwipeRefreshLayout.setRefreshing(true);
         rv_mainView.setVisibility(View.INVISIBLE);
         tv_tips.setText("正在努力加载......");
+        tv_tips.setVisibility(View.VISIBLE);
+        tv_tips.setClickable(false);
     }
 
     @Override
     public void showLoadingfailed() {
         mSwipeRefreshLayout.setRefreshing(false);
         tv_tips.setText("首页加载失败，点击重试");
+        tv_tips.setClickable(true);
     }
 
     @Override
@@ -155,6 +156,5 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
 
     public void addMoreItem(List<HomePageItemBean> data){
         mRvAdapter.addItem(data);
-        mSwipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
@@ -38,18 +39,48 @@ public class MeFragment extends Fragment {
         tv_userName = (TextView) mView.findViewById(R.id.tv_frgMe_userName);
         iv_userIcon = (ImageView) mView.findViewById(R.id.iv_frgMeUserIcon);
 
+        //上方用户头像点击事件
         mView.findViewById(R.id.rv_frgme_user).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //若用户未登录，则进入登录页面
+                if (!isUserLogined()) {
                     startActivityForResult(new Intent(getContext(), UserLoginActivity.class), 1);
+                } else {
+                    startActivity(new Intent(getContext(), PersonalinfoActivity.class));
+                }
             }
         });
-
-        //若用户已登录,展示信息
-        if (isUserLogined()) {
-            showUserInfo();
-        }
+        //我的订单点击事件
+        View.OnClickListener listener = new View.OnClickListener() {
+            int i;
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.showMyOrders:
+                        i = 0;
+                        break;
+                    case R.id.unpaidOrder:
+                        i = 1;
+                        break;
+                    case R.id.unsentOrder:
+                        i = 2;
+                        break;
+                    case R.id.unrecievedOrder:
+                        i = 3;
+                        break;
+                    default:
+                        i = 0;
+                }
+                Intent intent = new Intent(getContext(), OrderActivity.class);
+                intent.putExtra("flag", i);
+                startActivity(intent);
+            }
+        };
+        mView.findViewById(R.id.showMyOrders).setOnClickListener(listener);
+        mView.findViewById(R.id.unpaidOrder).setOnClickListener(listener);
+        mView.findViewById(R.id.unsentOrder).setOnClickListener(listener);
+        mView.findViewById(R.id.unrecievedOrder).setOnClickListener(listener);
 
         return mView;
     }
@@ -60,21 +91,20 @@ public class MeFragment extends Fragment {
         return sp.getBoolean("isLogin", false);
     }
 
-    //设置上方的用户头像及用户名
-    private void showUserInfo() {
-        SharedPreferences sp = getActivity().getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
-        tv_userName.setText(sp.getString("UserName", "null"));
-        Picasso.with(getContext()).load(Constants.SERVER_ADDRESS  + sp.getString("UserIcon", null)).fit()
-                .error(R.drawable.frgme_userunlogin)
-                .into(iv_userIcon);
-    }
-
-    //用户登录后返回，若用户登录成功，则把登录信息记录到本地
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (Activity.RESULT_OK == resultCode && 1 == requestCode) {
-            //显示用户信息
-            showUserInfo();
+    public void onResume() {
+        //若用户已登录,展示信息
+        if (isUserLogined()) {
+            SharedPreferences sp = getActivity().getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
+            tv_userName.setText(sp.getString("UserName", "null"));
+            Picasso.with(getContext()).load(Constants.SERVER_ADDRESS + sp.getString("UserIcon", null)).fit()
+                    .error(R.drawable.frgme_userunlogin)
+                    .into(iv_userIcon);
         }
+        else {
+            tv_userName.setText("点击登录");
+            iv_userIcon.setImageResource(R.drawable.frgme_userunlogin);
+        }
+        super.onResume();
     }
 }

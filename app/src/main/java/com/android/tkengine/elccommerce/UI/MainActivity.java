@@ -33,9 +33,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initView();
-
-        mFM = getSupportFragmentManager();
-
         //启动时载入用户信息，自动登录
         final SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
         final String phone = sp.getString("UserPhone", null);
@@ -64,6 +61,25 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }.start();
+
+            //
+            if(savedInstanceState != null){
+                isFirstOpen = savedInstanceState.getBoolean("flag");
+                switch (savedInstanceState.getInt("selected")){
+                    case 0:
+                        findViewById(R.id.tag_home).performClick();
+                        break;
+                    case 1:
+                        findViewById(R.id.tag_shop).performClick();
+                        break;
+                    case 2:
+                        findViewById(R.id.tag_cart).performClick();
+                        break;
+                    case 3:
+                        findViewById(R.id.tag_my).performClick();
+                        break;
+                }
+            }
         }
     }
 
@@ -77,10 +93,20 @@ public class MainActivity extends AppCompatActivity {
         iv_tagCart = (ImageView) findViewById(R.id.iv_tagCart);
         iv_tagMy = (ImageView) findViewById(R.id.iv_tagMy);
 
-        frgHome = new HomeFragment();
-        frgShop = new ShopFragment();
-        frgCart = new CartFragment();
-        frgMe = new MeFragment();
+        mFM = getSupportFragmentManager();
+
+        if (null == (frgHome = mFM.findFragmentByTag("Home"))) {
+            frgHome = new HomeFragment();
+        }
+        if (null == (frgShop = mFM.findFragmentByTag("Shop"))) {
+            frgShop = new ShopFragment();
+        }
+        if (null == (frgCart = mFM.findFragmentByTag("Cart"))) {
+            frgCart = new CartFragment();
+        }
+        if (null == (frgMe = mFM.findFragmentByTag("My"))) {
+            frgMe = new MeFragment();
+        }
         findViewById(R.id.tag_home).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,6 +204,26 @@ public class MainActivity extends AppCompatActivity {
             isFirstOpen = false;
         }
         super.onWindowFocusChanged(hasFocus);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("flag", isFirstOpen);
+        int i = 5;
+        if(!frgHome.isHidden()){
+           i = 0;
+        }
+        else if(!frgShop.isHidden()){
+            i = 1;
+        }
+        else if(!frgCart.isHidden()){
+            i = 2;
+        }
+        else if(!frgMe.isHidden()){
+            i = 3;
+        }
+        outState.putInt("selected", i);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
