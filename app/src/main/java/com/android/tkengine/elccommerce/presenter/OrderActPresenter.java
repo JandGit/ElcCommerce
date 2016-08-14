@@ -143,9 +143,9 @@ public class OrderActPresenter {
             TextView tv_state = holder.getView(R.id.tv_state);
             ListView lv = holder.getView(R.id.lv_orderProitems);
             TextView tv_sum = holder.getView(R.id.tv_sum);
-            Button btn_delete = holder.getView(R.id.btn_delete);
-            Button btn_detail = holder.getView(R.id.btn_detail);
-            Button btn_comment = holder.getView(R.id.btn_comment);
+            View btn_delete = holder.getView(R.id.btn_delete);
+            View btn_detail = holder.getView(R.id.btn_detail);
+            View btn_comment = holder.getView(R.id.btn_comment);
             if(itemData.shopName != null){
                 tv_shopName.setText(itemData.shopName);
             }

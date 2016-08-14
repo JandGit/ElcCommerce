@@ -17,6 +17,7 @@
         android:clickable="true">
 
         <ImageView
+            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:id="@+id/iv_goodIcon1"
@@ -85,6 +86,7 @@
         android:clickable="true">
 
         <ImageView
+            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:id="@+id/iv_goodIcon2"
