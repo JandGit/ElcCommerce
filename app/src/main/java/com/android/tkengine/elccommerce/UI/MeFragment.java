@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.UserInfoBean;
+import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.utils.BadgeView;
 import com.squareup.picasso.Picasso;
 

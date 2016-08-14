@@ -42,4 +42,11 @@
     <string name="sure">确定</string>
     <string name="express">快递: 免运费</string>
     <string name="orderact_title">我的订单</string>
+    <string name="add_success">加入购物车成功</string>
+    <string name="add_fail">加入购物车失败</string>
+    <string name="no_comments">该商品暂无评论</string>
+    <string name="enter_store">进入店铺</string>
+    <string name="store_all">全部</string>
+    <string name="store_sales">销量</string>
+    <string name="store_grade">等级</string>
 </resources>

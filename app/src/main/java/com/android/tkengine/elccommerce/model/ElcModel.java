@@ -5,16 +5,17 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.widget.ImageView;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.beans.CommentsBean;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.beans.GoodsDetailsBean;
 import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.beans.OrderBean;
+import com.android.tkengine.elccommerce.beans.StoreBean;
+import com.android.tkengine.elccommerce.beans.StoreDetailsBean;
 import com.android.tkengine.elccommerce.beans.UserInfoBean;
-import com.android.tkengine.elccommerce.utils.HttpCallbackListener;
 import com.android.tkengine.elccommerce.utils.HttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -39,6 +40,7 @@ import java.util.zip.GZIPOutputStream;
 public class ElcModel {
 
     Context mContext;
+    final static String TAG = "http://192.168.1.102:9999/TKBaas/";
 
     public ElcModel(Context mContext) {
         this.mContext = mContext;
@@ -294,9 +296,7 @@ public class ElcModel {
         jsonObject.put("user_password", password);
         params = jsonObject.toString();
         String result;
-        Log.i("mModel:", "发送请求：" + params);
         result = HttpUtil.sentHttpPost(Constants.SERVER_ADDRESS_LOGIN, params);
-        Log.i("mModel:", "服务器返回：" + result);
         jsonObject = new JSONObject(result);
         userId = jsonObject.getString("user_id");
 
@@ -329,6 +329,7 @@ public class ElcModel {
         }
 
         return info;
+
     }
     public UserInfoBean getUserInfo(String userId) throws JSONException, IOException {
         if (null == userId || userId.isEmpty()) {
@@ -375,12 +376,94 @@ public class ElcModel {
         JSONObject product = new JSONObject();
         product.put("product_id", goodsId);
         productId = product.toString();
-        String result = HttpUtil.sentHttpPost("http://192.168.1.101:8080/TKBaas/product/app/getProduct", productId);
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_PRODUCTDETAILS, productId);
         Gson gson = new Gson();
-        //反射获取含NewsAllBean信息的类型信息
         java.lang.reflect.Type type = new TypeToken<GoodsDetailsBean>() {}.getType();
         goodsDetailsList = gson.fromJson(result, type);
         return goodsDetailsList;
+    }
+
+    /**
+     * 得到评论详情，注意在非UI线程调用此接口
+     * 发生网络错误时抛出异常
+     */
+
+    public List<CommentsBean.ResultBean> getCommentsDetails(String productID) throws Exception {
+        List<CommentsBean.ResultBean> resultBeen = new ArrayList<CommentsBean.ResultBean>();
+        String productId = null;
+        JSONObject product = new JSONObject();
+        product.put("productId", productID);
+        product.put("pageSize", "15");
+        product.put("currentPage", "1");
+        productId = product.toString();
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_COMMENTS, productId);
+        Gson gson = new Gson();
+        java.lang.reflect.Type type = new TypeToken<CommentsBean>() {}.getType();
+        CommentsBean commentsBean = gson.fromJson(result, type);
+        resultBeen = commentsBean.getResult();
+        return resultBeen;
+    }
+
+    /**
+     * 添加到购物车，注意在非UI线程调用此接口
+     * 发生网络错误时抛出异常
+     */
+
+    public boolean addInCart(String productID, String num) throws Exception {
+        String productId = null;
+        JSONObject product = new JSONObject();
+        product.put("productId", productID);
+        product.put("userId", "402891815678675c015678717688014a");
+        product.put("num", num);
+        productId = product.toString();
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_ADDCART, productId);
+        JSONObject addCartResult = new JSONObject(result);
+        boolean callback= addCartResult.getBoolean("result");
+        return callback;
+    }
+
+    /**
+     * 得到商铺信息，注意在非UI线程调用此接口
+     * 发生网络错误时抛出异常
+     */
+
+    public StoreDetailsBean getStore(String storeId, String currentPage, String pageSize) throws Exception {
+        StoreDetailsBean storeDetailsBean = new StoreDetailsBean();
+        String productId = null;
+        JSONObject product = new JSONObject();
+        product.put("seller_id", storeId);
+        product.put("currentPage", currentPage);
+        product.put("pageSize", pageSize);
+        productId = product.toString();
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_STOREDETAILS, productId);
+        Gson gson = new Gson();
+        java.lang.reflect.Type type = new TypeToken<StoreDetailsBean>() {}.getType();
+        storeDetailsBean = gson.fromJson(result, type);
+        return storeDetailsBean;
+    }
+
+    /**
+     * 得到商铺列表，注意在非UI线程调用此接口
+     * 发生网络错误时抛出异常
+     */
+
+    public  List <StoreBean.ResultBean>  getStoreList (String currentPage, String pageSize, String sort) throws Exception {
+        List <StoreBean.ResultBean> resultBean = new ArrayList<StoreBean.ResultBean>();
+        String productId = null;
+        JSONObject product = new JSONObject();
+        JSONObject page = new JSONObject();
+        page.put("currentPage",currentPage);
+        page.put("pageSize",pageSize);
+        product.put("key", "");
+        product.put("sort", sort);
+        product.put("page",page);
+        productId = product.toString();
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_STORE, productId);
+        Gson gson = new Gson();
+        java.lang.reflect.Type type = new TypeToken<StoreBean>() {}.getType();
+        StoreBean storeBean = gson.fromJson(result, type);
+        resultBean = storeBean.getResult();
+        return resultBean;
     }
 
     /**
@@ -392,10 +475,10 @@ public class ElcModel {
 
         String userId = null;
         JSONObject user = new JSONObject();
-        user.put("userId", "2");
+        user.put("userId", "402891815678675c015678717688014a");
         userId = user.toString();
 
-        String result = HttpUtil.sentHttpPost("http://192.168.1.105:8080/TKBaas/cart/app/getUserProduct"
+        String result = HttpUtil.sentHttpPost("http://192.168.1.102:9999/TKBaas/cart/app/getUserProduct"
         , userId);
         Log.d("cartGet",result);
         JSONObject cartJson = new JSONObject(result);
@@ -433,7 +516,7 @@ public class ElcModel {
     public boolean postCartInfo(List<GoodsBean>cartGoodsList,String postUrl) throws Exception {
         JSONObject cartInfo = new JSONObject();
         //用户ID
-        cartInfo.put("userId","2");
+        cartInfo.put("userId","402891815678675c015678717688014a");
         //各商品ID
         JSONArray productId = new JSONArray();
         for(GoodsBean cartGoodsItem:cartGoodsList){
@@ -467,7 +550,7 @@ public class ElcModel {
     public boolean postOrderInfo(List<GoodsBean> receiverGoodsList,String address,String moneyAmount,String postUrl) throws Exception {
         JSONObject goodsInfo = new JSONObject();
         //用户ID
-        goodsInfo.put("userId","2");
+        goodsInfo.put("userId","402891815678675c015678717688014a");
         //收货人地址
         goodsInfo.put("addressId",address);
         //订单总额

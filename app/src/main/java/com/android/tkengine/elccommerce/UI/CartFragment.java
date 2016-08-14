@@ -260,12 +260,13 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
         }
     }
 
-
     //点击各商品进入商品详情
-    public void onItemViewClick(){
+    @Override
+    public void onItemViewClick(CartFrgPresenter.GoodsViewHolder viewHolder) {
         Intent intent = new Intent(cartView.getContext(),DisplayActivity.class);
+        int index = viewHolder.getPosition();
+        intent.putExtra("productID",cartFrgPresenter.cartGoodsList.get(index).getGoodsId());
         startActivity(intent);
-
     }
 
     //点击选择一组商品
@@ -318,11 +319,13 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     @Override
     public void onPause() {
         super.onPause();
-        cartFrgPresenter.postCartGoodsList(cartFrgPresenter.cartGoodsList,"http://192.168.1.105:8080/TKBaas/cart/app/updateCart");
+        cartFrgPresenter.postCartGoodsList(cartFrgPresenter.cartGoodsList,"http://192.168.1.102:9999/TKBaas/cart/app/updateCart");
     }
 
-
-
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        cartFrgPresenter = new CartFrgPresenter(cartView.getContext());
+        cartRecyclerView.setAdapter(cartFrgPresenter);
+    }
 }
