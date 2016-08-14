@@ -2,9 +2,11 @@ package com.android.tkengine.elccommerce.UI;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,6 +42,11 @@ public class PersonalinfoActivity extends AppCompatActivity {
         tv_userPhone.setText(sp.getString("UserPhone", " "));
         tv_userName.setText(sp.getString("UserName", " "));
         tv_userSex.setText(sp.getString("UserSex", " "));
+
+        //实现沉浸式状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
     }
 
     //退出账户按钮事件
