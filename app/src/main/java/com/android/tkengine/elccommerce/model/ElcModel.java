@@ -368,7 +368,6 @@ public class ElcModel {
         product.put("page",page);
         productId = product.toString();
         String result = HttpUtil.sentHttpPost(Constants.SERVER_STORE, productId);
-        Log.d("aaaa", result);
         Gson gson = new Gson();
         java.lang.reflect.Type type = new TypeToken<StoreBean>() {}.getType();
         StoreBean storeBean = gson.fromJson(result, type);

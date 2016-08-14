@@ -4,6 +4,40 @@
     android:background="@android:color/white"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:id="@+id/store_list_add_all"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/store_all"/>
+        <TextView
+            android:id="@+id/store_list_by_sales"
+            android:textColor="@color/colorBlack"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/store_sales"/>
+        <TextView
+            android:id="@+id/store_list_by_grade"
+            android:textColor="@color/colorBlack"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/store_grade"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1.0px"
+        android:background="@android:color/darker_gray" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/shop_rlv"
         android:layout_width="match_parent"
