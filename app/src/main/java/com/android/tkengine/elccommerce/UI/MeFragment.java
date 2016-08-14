@@ -46,7 +46,7 @@ public class MeFragment extends Fragment {
                 if (!isUserLogined()) {
                     startActivityForResult(new Intent(getContext(), UserLoginActivity.class), 1);
                 } else {
-                    Toast.makeText(getContext(), "个人信息", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getContext(), PersonalinfoActivity.class));
                 }
             }
         });
@@ -81,11 +81,6 @@ public class MeFragment extends Fragment {
         mView.findViewById(R.id.unsentOrder).setOnClickListener(listener);
         mView.findViewById(R.id.unrecievedOrder).setOnClickListener(listener);
 
-        //若用户已登录,展示信息
-        if (isUserLogined()) {
-            showUserInfo();
-        }
-
         return mView;
     }
 
@@ -95,21 +90,20 @@ public class MeFragment extends Fragment {
         return sp.getBoolean("isLogin", false);
     }
 
-    //设置上方的用户头像及用户名
-    private void showUserInfo() {
-        SharedPreferences sp = getActivity().getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
-        tv_userName.setText(sp.getString("UserName", "null"));
-        Picasso.with(getContext()).load(Constants.SERVER_ADDRESS + sp.getString("UserIcon", null)).fit()
-                .error(R.drawable.frgme_userunlogin)
-                .into(iv_userIcon);
-    }
-
-    //用户登录后返回，若用户登录成功，则把登录信息记录到本地
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (Activity.RESULT_OK == resultCode && 1 == requestCode) {
-            //显示用户信息
-            showUserInfo();
+    public void onResume() {
+        //若用户已登录,展示信息
+        if (isUserLogined()) {
+            SharedPreferences sp = getActivity().getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
+            tv_userName.setText(sp.getString("UserName", "null"));
+            Picasso.with(getContext()).load(Constants.SERVER_ADDRESS + sp.getString("UserIcon", null)).fit()
+                    .error(R.drawable.frgme_userunlogin)
+                    .into(iv_userIcon);
         }
+        else {
+            tv_userName.setText("点击登录");
+            iv_userIcon.setImageResource(R.drawable.frgme_userunlogin);
+        }
+        super.onResume();
     }
 }
