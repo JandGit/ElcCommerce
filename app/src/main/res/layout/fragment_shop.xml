@@ -4,12 +4,10 @@
     android:background="@android:color/white"
     android:layout_height="match_parent">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/shop_rlv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="店铺"
-        android:id="@+id/textView7"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center" />
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
 </LinearLayout>

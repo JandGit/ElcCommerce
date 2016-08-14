@@ -158,7 +158,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.goodsContext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    onRecyclerViewItemClickListener.onItemViewClick();
+                    onRecyclerViewItemClickListener.onItemViewClick(holder);
                 }
             });
 
@@ -207,7 +207,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 notifyDataSetChanged();
             }
         }).start();*/
-        postCartGoodsList(selectedGoodsList,"http://192.168.1.105:8080/TKBaas/cart/app/delIncart");
+        postCartGoodsList(selectedGoodsList,"http://192.168.1.102:9999/TKBaas/cart/app/delIncart");
         if(selectedGoodsList != null){
             for(GoodsBean selectedGoodsItem:selectedGoodsList){
                 cartGoodsList.remove(selectedGoodsItem);

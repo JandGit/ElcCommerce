@@ -39,7 +39,7 @@ public class PayPresenter{
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(context).inflate(R.layout.cartfrg_goods_item, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.cartfrg_goods_item, parent, unsuccess);
             return new ReceiverGoodsViewHolder(view);
         }
 

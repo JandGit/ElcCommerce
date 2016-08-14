@@ -42,6 +42,31 @@ public class Constants {
     public static final String SERVER_HOMEPAGE = SERVER_ADDRESS + "product/app/home";
 
     /**
+     * 获取商品详情
+     */
+    public static final String SERVER_PRODUCTDETAILS = SERVER_ADDRESS + "product/app/getProduct";
+
+    /**
+     * 添加商品到购物车
+     */
+    public static final String SERVER_ADDCART = SERVER_ADDRESS + "cart/app/addInCart";
+
+    /**
+     * 获取评论详情
+     */
+    public static final String SERVER_COMMENTS = SERVER_ADDRESS + "comment/app/getProductComment";
+
+    /**
+     * 获取商店详情
+     */
+    public static final String SERVER_STOREDETAILS = SERVER_ADDRESS + "product/app/getSellerProductList";
+
+    /**
+     * 获取商店列表
+     */
+    public static final String SERVER_STORE = SERVER_ADDRESS + "seller/app/queryList";
+
+    /**
      * 订单接口
      * 访问参数json数据格式,{"userId":?, "currentPage":?, "pageSize":?}
      */

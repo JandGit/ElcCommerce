@@ -9,6 +9,6 @@ public interface OnRecyclerViewItemClickListener {
     void onItemAddClick(CartFrgPresenter.GoodsViewHolder viewHolder);
     void onItemReduceClick(CartFrgPresenter.GoodsViewHolder viewHolder);
     void onItemCheckboxClick(CartFrgPresenter.GoodsViewHolder viewHolder);
-    void onItemViewClick();
+    void onItemViewClick(CartFrgPresenter.GoodsViewHolder viewHolder);
     void onGroupCheckboxClick(CartFrgPresenter. StoreViewHolder viewHolder);
 }
