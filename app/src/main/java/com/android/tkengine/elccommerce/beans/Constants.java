@@ -51,4 +51,38 @@ public class Constants {
      * 访问参数Json格式,{"userId":?, "currentPage":?, "pageSize":?, "state":"unpaid"|"unsent"|"unreceived"|"uncomment"}
      */
     public static final String SERVER_GETORDER_SPC = SERVER_ADDRESS + "order/app/searchUserOrder";
+    /**
+     * 用户充值钱包接口
+     * Json格式:
+     * user_idd = 用户ID,String
+     * user_password = 密码,String
+     * charge_money = 重置金额, double
+     * 返回数据：
+     * charge_state = boolean, 成功为true
+     */
+    public static final String SERVER_CHARGEMONEY = SERVER_ADDRESS + "user/app/changeMoney";
+    /**
+     * 用户信息修改
+     * Json格式:
+     * user_id = 用户ID,String
+     * picture_name = 头像文件名
+     * picture_str = 头像byte数据字符串
+     * user_sex = 用户性别,String
+     * user_name = 用户名,String
+     *
+     * 返回格式：
+     * result = boolean
+     */
+    public static final String SERVER_CHANGE_USERINFO = SERVER_ADDRESS + "user/app/changeInfo";
+    /**
+     * 修改用户密码
+     * Json格式:
+     * user_id = 用户Id， String
+     * old_password = 用户旧密码, String
+     * new_password = 用户新密码,String
+     *
+     * 返回格式：
+     * result = boolean
+     */
+    public static final String SERVER_CHANGE_PASSWORD = SERVER_ADDRESS + "user/app/changePassword";
 }

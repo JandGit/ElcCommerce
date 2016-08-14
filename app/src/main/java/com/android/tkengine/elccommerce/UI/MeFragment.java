@@ -96,7 +96,7 @@ public class MeFragment extends Fragment {
         if (isUserLogined()) {
             SharedPreferences sp = getActivity().getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
             tv_userName.setText(sp.getString("UserName", "null"));
-            Picasso.with(getContext()).load(Constants.SERVER_ADDRESS + sp.getString("UserIcon", null)).fit()
+            Picasso.with(getContext()).load(sp.getString("UserIcon", null)).fit()
                     .error(R.drawable.frgme_userunlogin)
                     .into(iv_userIcon);
         }

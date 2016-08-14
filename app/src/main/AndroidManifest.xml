@@ -3,6 +3,8 @@
     package="com.android.tkengine.elccommerce">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -24,7 +26,8 @@
         <activity android:name=".UI.PayActivity" />
         <activity android:name=".UI.SearchActivity" />
         <activity android:name=".UI.OrderActivity" />
-        <activity android:name=".UI.PersonalinfoActivity"></activity>
+        <activity android:name=".UI.PersonalinfoActivity" />
+        <activity android:name=".UI.MywalletActivity"></activity>
     </application>
 
 </manifest>

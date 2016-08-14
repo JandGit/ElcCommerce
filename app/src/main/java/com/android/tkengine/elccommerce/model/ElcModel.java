@@ -19,15 +19,22 @@ import com.android.tkengine.elccommerce.utils.HttpUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.codehaus.plexus.util.Base64;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.GZIPOutputStream;
 
 public class ElcModel {
 
@@ -86,24 +93,75 @@ public class ElcModel {
         return null;
     }
 
-    /**
-     * 获取用户的所有订单信息
-     * @param userId 用户Id
-     * @param page 需要获取的页码
-     * @return
-     */
-    public OrderBean[] getOrders(String userId, int page) throws IOException, JSONException {
-        String params = "{\"userId\":\"" + userId + "\", \"currentPage\":" + page + ",\"pageSize\":30}";
-        String result = HttpUtil.sentHttpPost(Constants.SERVER_GETORDER_ALL, params);
-        JSONObject jsonObject = new JSONObject(result);
-        result = jsonObject.getJSONArray("result").toString();
+    public boolean setPassword(String userId, String oldpassword, String newpassword) throws JSONException, IOException {
+        if(null == userId || userId.isEmpty()){
+            return false;
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("user_id", userId);
+        jsonObject.put("old_password", oldpassword);
+        jsonObject.put("new_password", newpassword);
+        String params = jsonObject.toString();
+        Log.i("Model:setUserInfo", "向服务器发送数据：" + params);
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_CHANGE_USERINFO, params);
+        Log.i("Model:setPassword", "服务器返回：" + result);
+        jsonObject = new JSONObject(result);
 
-        Gson gson = new Gson();
-        Type type = new TypeToken<OrderBean[]>(){}.getType();
-
-        return gson.fromJson(result, type);
+        return jsonObject.getBoolean("result");
     }
 
+    /**
+     * 修改个人信息
+     * @param userId 用户ID
+     * @param icon 修改的头像
+     * @param sex 修改的性别
+     * @param userName  修改的用户名
+     * @return 成功返回true,参数错误返回false
+     * @throws JSONException 请求参数错误
+     * @throws IOException  网络错误
+     */
+    public boolean setUserInfo(String userId, File icon, String sex, String userName) throws JSONException, IOException {
+        if(null == userId || userId.isEmpty()){
+            return false;
+        }
+        String iconJson;
+
+        if (icon != null) {
+            FileInputStream  input = new FileInputStream(icon);
+            ByteArrayOutputStream baas = new ByteArrayOutputStream((int)icon.length());
+            int len;
+            byte[] b = new byte[1024];
+            while((len = input.read(b)) != -1){
+                baas.write(b, 0, len);
+            }
+            byte[] data = baas.toByteArray();
+            ByteArrayOutputStream byteZip = new ByteArrayOutputStream();
+            GZIPOutputStream zip = new GZIPOutputStream(byteZip);
+            zip.write(data);
+            zip.finish();
+            zip.flush();
+            //压缩后的二进制流
+            byte[] zipData = byteZip.toByteArray();
+            iconJson = new String(Base64.encodeBase64(zipData));
+        }
+        else {
+            iconJson = "0";
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("user_id", userId);
+        jsonObject.put("picture_name", userId + ".jpg");
+        jsonObject.put("picture_str", iconJson);
+        jsonObject.put("user_sex", sex);
+        jsonObject.put("user_name", userName);
+        String params = jsonObject.toString();
+        Log.i("Model:setUserInfo", "向服务器发送数据：" + params);
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_CHANGE_USERINFO, params);
+        Log.i("Model:setUserInfo", "服务器返回：" + result);
+        jsonObject = new JSONObject(result);
+
+        return jsonObject.getBoolean("result");
+    }
 
     /**
      * 加载首页标题，广告等数据
@@ -247,6 +305,39 @@ public class ElcModel {
         }
         UserInfoBean info = new UserInfoBean();
         info.setUserId(userId);
+        jsonObject = new JSONObject();
+        jsonObject.put("user_id", userId);
+        params = jsonObject.toString();
+        Log.i("mModel:", "发送请求：" + params);
+        result = HttpUtil.sentHttpPost(Constants.SERVER_GETUSERINFO, params);
+        Log.i("mModel:", "服务器返回：" + result);
+        jsonObject = new JSONObject(result);
+        if (jsonObject.has("user_name")) {
+            info.setUser_name(jsonObject.getString("user_name"));
+        }
+        if (jsonObject.has("user_phone")) {
+            info.setUser_phone(jsonObject.getString("user_phone"));
+        }
+        if (jsonObject.has("user_sex")) {
+            info.setUser_sex(jsonObject.getString("user_sex"));
+        }
+        if (jsonObject.has("user_picture_url")) {
+            info.setUser_picture_url(jsonObject.getString("user_picture_url"));
+        }
+        if (jsonObject.has("user_money")) {
+            info.setUser_money(jsonObject.getDouble("user_money"));
+        }
+
+        return info;
+    }
+    public UserInfoBean getUserInfo(String userId) throws JSONException, IOException {
+        if (null == userId || userId.isEmpty()) {
+            return null;
+        }
+        UserInfoBean info = new UserInfoBean();
+        info.setUserId(userId);
+        String params, result;
+        JSONObject jsonObject;
         jsonObject = new JSONObject();
         jsonObject.put("user_id", userId);
         params = jsonObject.toString();
