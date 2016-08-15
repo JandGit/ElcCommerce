@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_address_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_receiverName"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:gravity="center"
+        android:layout_alignParentLeft="true"
+        android:textSize="16sp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/tv_receiverTel"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp" />
+
+    <TextView
+        android:id="@+id/tv_receiverAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_below="@+id/tv_receiverName"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp" />
+
+    <View
+        android:id="@+id/view_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tv_receiverAddress"
+        android:background="#eaeaea" />
+
+
+    <CheckBox
+        android:id="@+id/chk_defaultAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/view_divider"
+        android:layout_marginLeft="5dp"/>
+
+    <TextView
+        android:id="@+id/tv_defaultAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:gravity="center"
+        android:layout_toRightOf="@+id/chk_defaultAddress"
+        android:layout_below="@+id/view_divider"
+        android:text="@string/default_address"/>
+
+    <LinearLayout
+        android:id="@+id/ll_deleteAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/view_divider">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="@string/deldete"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_editAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:layout_toLeftOf="@+id/ll_deleteAddress"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/view_divider">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="@string/edit"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:layout_below="@+id/chk_defaultAddress"
+        android:background="@color/colorLightGray"/>
+
+
+
+</RelativeLayout>

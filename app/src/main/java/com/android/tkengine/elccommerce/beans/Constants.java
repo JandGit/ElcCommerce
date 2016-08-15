@@ -76,4 +76,61 @@ public class Constants {
      * 访问参数Json格式,{"userId":?, "currentPage":?, "pageSize":?, "state":"unpaid"|"unsent"|"unreceived"|"uncomment"}
      */
     public static final String SERVER_GETORDER_SPC = SERVER_ADDRESS + "order/app/searchUserOrder";
+    public static final String SERVER_GET_CART = SERVER_ADDRESS + "cart/app/getUserProduct";
+    /**
+     * 删除购物车商品
+     * 调用时向服务器Post数据:user_id = XXX
+     */
+    public static final String SERVER_DELETE_CARTGOODS = SERVER_ADDRESS + "cart/app/delIncart";
+    /**
+     * 商品加入购物车
+     * 调用时向服务器Post数据:user_id = XXX
+     */
+    public static final String SERVER_ADD_CARTGOODS = SERVER_ADDRESS + "cart/app/addInCart";
+    /**
+     * 购物车页面退出时，提交商品数量更改的信息
+     * 调用时向服务器Post数据:user_id = XXX
+     */
+    public static final String SERVER_UPDATE_CART = SERVER_ADDRESS + "cart/app/updateCart";
+    /**
+     * 从服务器获取用户设置的收货地址
+     * 调用时向服务器Post数据:user_id = XXX
+     */
+    public static final String SERVER_GET_ADDRESSINFO = SERVER_ADDRESS + "address/app/getList";
+    /**
+     *调用第三方API，获取全国各省各市各县
+     */
+    public static final String HTTP_GET_POSITIONINFO = "http://www.weather.com.cn/data/list3/city";
+    /**
+     * 提交用户新添加的地址
+     * 调用时向服务器Post数据:user_id = XXX
+     */
+    public static final String SERVER_POST_NEWADDRESS = SERVER_ADDRESS + "address/app/add";
+    /**
+     * 提交用户所删除地址的
+     * 调用时向服务器Post数据:user_id = XXX
+     */
+    public static final String SERVER_POST_DELETEDADDRESS = SERVER_ADDRESS + "address/app/delete";
+    /**
+     * 提交用户所编辑地址的
+     * 调用时向服务器Post数据:user_id = XXX
+     */
+    public static final String SERVER_POST_EDITADDRESS = SERVER_ADDRESS + "address/app/update";
+    /**
+     * 搜索获取商品
+     * 调用时向服务器Post数据:user_id = XXX
+     */
+    public static final String SERVER_GET_GOODS = SERVER_ADDRESS + "product/app/getProductListByAll";
+    /**
+     * 购物车结算，确认订单
+     * 调用时向服务器Post数据:user_id = XXX
+     */
+    public static final String SERVER_POST_ORDER = SERVER_ADDRESS + "order/app/submitOrder";
+
+
+
+
+
+
+
 }

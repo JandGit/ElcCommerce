@@ -80,8 +80,6 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             GoodsBean cartGoodsItem = cartGoodsList.get(position);
             ((GoodsViewHolder) holder).goodsName.setText(cartGoodsItem.getGoodsName());
             Picasso.with(context).load(cartGoodsItem.getGoodsIcon()).fit().into(((GoodsViewHolder) holder).goodsIcon);
-           /* ((GoodsViewHolder)holder).goodsIcon.setImageBitmap(cartGoodsItem.getGoodsIcon());*/
-           /* ((GoodsViewHolder) holder).goodsIcon.setImageResource(R.mipmap.ic_launcher);*/
             ((GoodsViewHolder) holder).goodsPrice.setText(String.valueOf(cartGoodsItem.getGoodsPrice()));
             ((GoodsViewHolder) holder).goodsNumber.setText(String.valueOf(cartGoodsItem.getGoodsNum()));
             ((GoodsViewHolder) holder).goodsSelected.setChecked(cartGoodsItem.getGoodsSelected());
@@ -207,7 +205,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 notifyDataSetChanged();
             }
         }).start();*/
-        postCartGoodsList(selectedGoodsList,"http://192.168.1.102:9999/TKBaas/cart/app/delIncart");
+        postCartGoodsList(selectedGoodsList,Constants.SERVER_DELETE_CARTGOODS);
         if(selectedGoodsList != null){
             for(GoodsBean selectedGoodsItem:selectedGoodsList){
                 cartGoodsList.remove(selectedGoodsItem);
@@ -239,11 +237,12 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     //结算商品
     public List<GoodsBean> getReceiverGoods(){
-        final List<GoodsBean> receiverGoodsList = new ArrayList<GoodsBean>();
+        List<GoodsBean> receiverGoodsList = new ArrayList<GoodsBean>();
         for(GoodsBean cartGoodsItem:cartGoodsList){
             if(cartGoodsItem.getGoodsSelected()){
-                if(cartGoodsItem.getGoodsPrice() != 0)
-                receiverGoodsList.add(cartGoodsItem);
+                if(cartGoodsItem.getGoodsPrice() != 0){
+                    receiverGoodsList.add(cartGoodsItem);
+                }
             }
         }
         return receiverGoodsList;
@@ -273,7 +272,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             @Override
             public void run() {
                 try{
-                    boolean result = new ElcModel(context).postCartInfo(goodsList,postUrl);
+                     boolean result = new ElcModel(context).postCartInfo(goodsList,postUrl);
                     if(result){
                         Message message = new Message();
                         message.what = POST_SUCCESS;

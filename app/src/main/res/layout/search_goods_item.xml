@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:src="@mipmap/ic_launcher"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/iv_search_goodsIcon"
+        android:layout_marginLeft="10dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorBlack"
+                android:maxLines="2"
+                android:textSize="13sp"
+                android:id="@+id/tv_search_goodsName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:id="@+id/search_goods_mark"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp"
+                android:text="@string/price"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"/>
+            <TextView
+                android:gravity="center_vertical"
+                android:textColor="@color/colorPrimary"
+                android:textSize="25sp"
+                android:text="20"
+                android:id="@+id/tv_search_goodsPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/search_goods_mark"
+                android:layout_marginLeft="5dp"/>
+
+            <TextView
+                android:id="@+id/tv_search_goodsPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_marginRight="15dp"
+                android:layout_alignParentRight="true"
+                android:text="产地"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="销量"/>
+
+            <TextView
+                android:id="@+id/tv_search_goodsSale"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_marginLeft="5dp"
+                android:text="销量"/>
+
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="库存"/>
+
+            <TextView
+                android:id="@+id/tv_search_goodsStore"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:text="库存"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

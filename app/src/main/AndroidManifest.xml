@@ -27,6 +27,11 @@
         <activity android:name=".UI.CommentsActivity"/>
         <activity android:name=".UI.StoreDetailsActivity"/>
         <activity android:name=".UI.OrderActivity"></activity>
+        <activity android:name=".UI.AddressActivity"/>
+        <activity android:name=".UI.NewAddressActivity" />
+        <activity android:name=".UI.ProvinceInfoActivity"/>
+        <activity android:name=".UI.CityInfoActivity"/>
+        <activity android:name=".UI.CountyInfoActivity"/>
         <activity android:name=".UI.PersonalinfoActivity"></activity>
     </application>
 

@@ -131,9 +131,9 @@ public class HttpUtil {
 
         OutputStream os = connection.getOutputStream();
         os.write(params.getBytes("utf-8"));
+
         os.flush();
         os.close();
-
         reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
         String strRead = null;
         while ((strRead = reader.readLine()) != null) {

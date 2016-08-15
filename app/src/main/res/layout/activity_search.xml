@@ -4,46 +4,64 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-   <SearchView
-       android:id="@+id/sv_fruit_search"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"/>
-
-    ListView
-        android:id="@+id/lv_match_data"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <AutoCompleteTextView
+            android:id="@+id/autotv_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:dropDownHeight="wrap_content"
+            android:hint="请输入文字进行搜索"
+            android:completionHint="最近记录"
+            android:completionThreshold="1" />
+
+        <Button
+            android:id="@+id/btn_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"
+            android:text="@string/search"/>
+
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/tv_saleSort"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:layout_weight="1"
-            android:text="综合排序"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="销量排序"/>
+            android:text="销量优先"/>
 
         <ExpandableListView
-            android:id="@+id/expandableListView"
+            android:id="@+id/elv_priceSort"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
 
         <ExpandableListView
+            android:id="@+id/elv_priceSection"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
+
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

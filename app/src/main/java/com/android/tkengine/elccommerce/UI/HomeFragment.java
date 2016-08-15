@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.presenter.HomeFrgPresenter;
+import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
 
 import java.util.List;
 

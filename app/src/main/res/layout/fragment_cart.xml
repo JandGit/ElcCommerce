@@ -99,7 +99,7 @@
                     android:layout_height="match_parent"
                     android:textSize="17sp"
                     android:layout_toLeftOf="@+id/tv_cart_goodsSum"
-                    android:text="￥"/>
+                    android:text="@string/money_mark"/>
 
                 <TextView
                     android:gravity="center"
@@ -107,7 +107,7 @@
                     android:layout_height="match_parent"
                     android:layout_toLeftOf="@+id/tv_money_mark"
                     android:textSize="17sp"
-                    android:text="合计："/>
+                    android:text="@string/total_amount"/>
 
             </RelativeLayout>
 

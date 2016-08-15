@@ -2,6 +2,7 @@ package com.android.tkengine.elccommerce.UI;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.location.Address;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -22,11 +23,14 @@ import android.widget.Toast;
 
 /*import com.android.tkengine.elccommerce.PayActivity;*/
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.presenter.CartFrgPresenter;
 import com.android.tkengine.elccommerce.utils.DividerItemDecoration;
 import com.android.tkengine.elccommerce.utils.OnRecyclerViewItemClickListener;
+
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
 public class CartFragment extends Fragment implements OnRecyclerViewItemClickListener{
@@ -124,7 +128,7 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
                     Toast.makeText(cartView.getContext(),"你还没有选择商品哦",Toast.LENGTH_SHORT).show();
                 }else{
                     Intent intent = new Intent(cartView.getContext(),PayActivity.class);
-                  /*  intent.putExtra("receiver_goods_data",(Serializable)cartFrgPresenter.getReceiverGoods());*/
+                   intent.putExtra("receiver_goods_data",(Serializable)cartFrgPresenter.getReceiverGoods());
                     startActivity(intent);
                 }
             }
@@ -260,13 +264,12 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
         }
     }
 
+
     //点击各商品进入商品详情
-    @Override
-    public void onItemViewClick(CartFrgPresenter.GoodsViewHolder viewHolder) {
+    public void onItemViewClick(CartFrgPresenter.GoodsViewHolder holder){
         Intent intent = new Intent(cartView.getContext(),DisplayActivity.class);
-        int index = viewHolder.getPosition();
-        intent.putExtra("productID",cartFrgPresenter.cartGoodsList.get(index).getGoodsId());
         startActivity(intent);
+
     }
 
     //点击选择一组商品
@@ -319,7 +322,7 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     @Override
     public void onPause() {
         super.onPause();
-        cartFrgPresenter.postCartGoodsList(cartFrgPresenter.cartGoodsList,"http://192.168.1.102:9999/TKBaas/cart/app/updateCart");
+        cartFrgPresenter.postCartGoodsList(cartFrgPresenter.cartGoodsList, Constants.SERVER_UPDATE_CART );
     }
 
     @Override

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorLightGray"
     android:orientation="vertical">
 
     <TextView
@@ -18,7 +19,6 @@
         android:layout_weight="1">
 
         <LinearLayout
-            android:background="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="2dp"
@@ -26,13 +26,16 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rl_receiver_address"
+                android:background="@color/colorWhite"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_height="70dp"
+                >
                 <TextView
                     android:id="@+id/tv_receiver_label"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
                     android:layout_marginLeft="10dp"
                     android:textSize="18sp"
                     android:text="@string/goods_receiver"/>
@@ -40,16 +43,19 @@
                 <TextView
                     android:id="@+id/tv_receiver_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
                     android:layout_toRightOf="@+id/tv_receiver_label"
                     android:layout_marginRight="5dp"/>
 
                 <TextView
                     android:id="@+id/tv_receiver_tel"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp" />
+                    android:layout_marginRight="10dp"
+                    android:text="点击创建新收货地址"/>
 
                 <TextView
                     android:id="@+id/tv_address_label"
@@ -63,7 +69,9 @@
                     android:id="@+id/tv_receiver_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/tv_address_label"/>
+                    android:maxLines="2"
+                    android:layout_below="@+id/tv_receiver_label"
+                    android:layout_toRightOf="@+id/tv_address_label" />
 
             </RelativeLayout>
 
@@ -76,45 +84,50 @@
                 android:layout_weight="1"/>
 
             <RelativeLayout
+                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center_vertical"
+                android:layout_height="35dp"
                 android:background="@color/colorWhite"
-                android:layout_marginTop="2dp">
+                android:layout_marginTop="10dp"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"
-                    android:text="@string/dispatch_way_label"/>
+                    android:text="@string/dispatch_way"/>
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5dp"
-                    android:text="@string/dispatch_way"/>
+                    android:text="@string/dispatch"/>
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:gravity="center_vertical"
                 android:background="@color/colorWhite"
                 android:layout_marginTop="2dp">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"
                     android:text="@string/dispatch_time_label"/>
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5dp"
                     android:text="@string/dispatch_time"/>
@@ -123,21 +136,23 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:gravity="center_vertical"
                 android:background="@color/colorWhite"
                 android:layout_marginTop="2dp">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"
                     android:text="@string/dispatch_cost_label"/>
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5dp"
                     android:text="@string/dispatch_cost"/>
@@ -146,21 +161,23 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:gravity="center_vertical"
                 android:background="@color/colorWhite"
                 android:layout_marginTop="2dp">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="5dp"
                     android:text="@string/bill_info_label"/>
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="5dp"
                     android:text="@string/bill_info"/>
@@ -201,13 +218,23 @@
             android:layout_height="match_parent"
             android:textColor="@color/colorPrimary"
             android:gravity="center"
-            android:layout_toLeftOf="@+id/btn_place_order"/>
+            android:layout_toLeftOf="@+id/btn_place_order"
+            android:layout_marginRight="5dp"/>
+
+        <TextView
+            android:id="@+id/tv_money_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_toLeftOf="@+id/tv_money_amount"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/money_mark"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_toLeftOf="@+id/tv_money_amount"
+            android:layout_toLeftOf="@+id/tv_money_unit"
             android:text="@string/total_amount"/>
     </RelativeLayout>
 

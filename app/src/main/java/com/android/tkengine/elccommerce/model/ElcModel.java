@@ -7,14 +7,16 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.android.tkengine.elccommerce.R;
-import com.android.tkengine.elccommerce.beans.CommentsBean;
+import com.android.tkengine.elccommerce.beans.commentsBean;
 import com.android.tkengine.elccommerce.beans.Constants;
+import com.android.tkengine.elccommerce.beans.GoodsAddressBean;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.beans.GoodsDetailsBean;
 import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.beans.OrderBean;
 import com.android.tkengine.elccommerce.beans.StoreBean;
 import com.android.tkengine.elccommerce.beans.StoreDetailsBean;
+import com.android.tkengine.elccommerce.beans.SearchGoodsBean;
 import com.android.tkengine.elccommerce.beans.UserInfoBean;
 import com.android.tkengine.elccommerce.utils.HttpUtil;
 import com.google.gson.Gson;
@@ -33,7 +35,6 @@ import java.util.List;
 public class ElcModel {
 
     Context mContext;
-    final static String TAG = "http://192.168.1.102:9999/TKBaas/";
 
     public ElcModel(Context mContext) {
         this.mContext = mContext;
@@ -271,7 +272,6 @@ public class ElcModel {
         }
 
         return info;
-
     }
 
     /**
@@ -287,6 +287,7 @@ public class ElcModel {
         productId = product.toString();
         String result = HttpUtil.sentHttpPost(Constants.SERVER_PRODUCTDETAILS, productId);
         Gson gson = new Gson();
+        //反射获取含NewsAllBean信息的类型信息
         java.lang.reflect.Type type = new TypeToken<GoodsDetailsBean>() {}.getType();
         goodsDetailsList = gson.fromJson(result, type);
         return goodsDetailsList;
@@ -297,8 +298,8 @@ public class ElcModel {
      * 发生网络错误时抛出异常
      */
 
-    public List<CommentsBean.ResultBean> getCommentsDetails(String productID) throws Exception {
-        List<CommentsBean.ResultBean> resultBeen = new ArrayList<CommentsBean.ResultBean>();
+    public List<commentsBean.ResultBean> getCommentsDetails(String productID) throws Exception {
+        List<commentsBean.ResultBean> resultBeen = new ArrayList<commentsBean.ResultBean>();
         String productId = null;
         JSONObject product = new JSONObject();
         product.put("productId", productID);
@@ -307,8 +308,8 @@ public class ElcModel {
         productId = product.toString();
         String result = HttpUtil.sentHttpPost(Constants.SERVER_COMMENTS, productId);
         Gson gson = new Gson();
-        java.lang.reflect.Type type = new TypeToken<CommentsBean>() {}.getType();
-        CommentsBean commentsBean = gson.fromJson(result, type);
+        java.lang.reflect.Type type = new TypeToken<commentsBean>() {}.getType();
+        commentsBean commentsBean = gson.fromJson(result, type);
         resultBeen = commentsBean.getResult();
         return resultBeen;
     }
@@ -387,8 +388,7 @@ public class ElcModel {
         user.put("userId", "402891815678675c015678717688014a");
         userId = user.toString();
 
-        String result = HttpUtil.sentHttpPost("http://192.168.1.102:9999/TKBaas/cart/app/getUserProduct"
-        , userId);
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_GET_CART,userId);
         Log.d("cartGet",result);
         JSONObject cartJson = new JSONObject(result);
         JSONArray storeArray = (JSONArray) cartJson.get("sellerItem");
@@ -431,7 +431,7 @@ public class ElcModel {
         for(GoodsBean cartGoodsItem:cartGoodsList){
             if(cartGoodsItem.getGoodsPrice() != 0){
                 productId.put(cartGoodsItem.getGoodsId());
-                Log.d("productID",cartGoodsItem.getGoodsId());
+                Log.d("shop",cartGoodsItem.getGoodsId());
             }
         }
         cartInfo.put("productId", productId);
@@ -440,7 +440,7 @@ public class ElcModel {
         for(GoodsBean cartGoodsItem:cartGoodsList){
             if(cartGoodsItem.getGoodsPrice() != 0){
                 num.put(cartGoodsItem.getGoodsNum());
-                Log.d(" num",String.valueOf(cartGoodsItem.getGoodsNum()));
+                Log.d("shop",String.valueOf(cartGoodsItem.getGoodsNum()));
             }
         }
         cartInfo.put("num", num);
@@ -453,15 +453,15 @@ public class ElcModel {
     }
 
     /**
-     * 提交订单信息（用户id,收货人地址，订单总额，商品goodsId以及商品id），在非UI线程调用此接口
+     * 提交订单信息（用户id,收货人地址id，订单总额，商品goodsId以及商品id），在非UI线程调用此接口
      * 发生网络错误时抛出异常
      */
-    public boolean postOrderInfo(List<GoodsBean> receiverGoodsList,String address,String moneyAmount,String postUrl) throws Exception {
+    public boolean postOrderInfo(List<GoodsBean> receiverGoodsList,String addressId,String moneyAmount) throws Exception {
         JSONObject goodsInfo = new JSONObject();
         //用户ID
-        goodsInfo.put("userId","402891815678675c015678717688014a");
+        goodsInfo.put("userId","2");
         //收货人地址
-        goodsInfo.put("addressId",address);
+        goodsInfo.put("addressId",addressId);
         //订单总额
         goodsInfo.put("totalMoney",moneyAmount);
         //各商品goodsId
@@ -481,13 +481,125 @@ public class ElcModel {
         }
         goodsInfo.put("proItemIds", ids);
         //发送到服务器
-        String result = HttpUtil.sentHttpPost(postUrl, goodsInfo.toString());
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_POST_ORDER, goodsInfo.toString());
         Log.d("json",result);
         JSONObject cartJson = new JSONObject(result);
         boolean postResult = cartJson.getBoolean("result");
         return postResult;
     }
 
+    /**
+     * 获取收货地址
+     * 发生网络错误时抛出异常
+     */
+    public List<GoodsAddressBean.ResultBean> getGoodsAddressList()throws Exception{
+        JSONObject json = new JSONObject();
+        json.put("userId", "2");
+        json.put("key","");
+        json.put("currentPage","1");
+        json.put("pageSize","30");
+
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_GET_ADDRESSINFO,json.toString());
+        Log.d("address",result);
+        Gson gson = new Gson();
+        GoodsAddressBean goodsAddressList = gson.fromJson(result,new TypeToken<GoodsAddressBean>(){}.getType());
+        List<GoodsAddressBean.ResultBean> resultList = goodsAddressList.getResult();
+        return resultList;
+    }
+
+    /**
+     * 新添加收货地址提交给服务器(用户id,GoodsAddressBean.ResultBean中各成员）
+     * 发生网络错误时抛出异常
+     */
+    public boolean postAddressInfo(String userId,GoodsAddressBean.ResultBean addressBean) throws Exception{
+        JSONObject info = new JSONObject();
+        info.put("userId",userId);
+        JSONObject address = new JSONObject();
+        address.put("receiver",addressBean.getReceiver());
+        address.put("phone",addressBean.getPhone());
+        address.put("province",addressBean.getProvince());
+        address.put("city",addressBean.getCity());
+        address.put("countyTown",addressBean.getCountyTown());
+        address.put("street",addressBean.getStreet());
+        address.put("detailsAddress",addressBean.getDetailsAddress());
+        address.put("defaultAddress",addressBean.isDefaultAddress());
+        info.put("address",address);
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_POST_NEWADDRESS,info.toString());
+        JSONObject resultJson = new JSONObject(result);
+        boolean postResult = resultJson.getBoolean("result");
+        Log.d("newaddress",String.valueOf(postResult));
+        return postResult;
+
+    }
+
+    /**
+     * 用户所删除的收货地址提交给服务器(用户id,地址id）
+     * 发生网络错误时抛出异常
+     */
+    public boolean postDeletedAddressInfo(String userId,String addressId) throws Exception{
+        JSONObject info = new JSONObject();
+        info.put("userId",userId);
+        info.put("addressId",addressId);
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_POST_DELETEDADDRESS,info.toString());
+        JSONObject resultJson = new JSONObject(result);
+        boolean postResult = resultJson.getBoolean("result");
+        return postResult;
+
+    }
+
+
+    /**
+     * 编辑的收货地址提交给服务器(用户id,GoodsAddressBean.ResultBean中各成员）
+     * 发生网络错误时抛出异常
+     */
+    public boolean postEditAddressInfo(String userId,GoodsAddressBean.ResultBean addressBean) throws Exception{
+        JSONObject info = new JSONObject();
+        info.put("userId",userId);
+        JSONObject address = new JSONObject();
+        address.put("id",addressBean.getId());
+        address.put("receiver",addressBean.getReceiver());
+        address.put("phone",addressBean.getPhone());
+        address.put("province",addressBean.getProvince());
+        address.put("city",addressBean.getCity());
+        info.put("address",addressBean.getCity());
+        address.put("countyTown",addressBean.getCountyTown());
+        address.put("street",addressBean.getStreet());
+        address.put("detailsAddress",addressBean.getDetailsAddress());
+        address.put("defaultAddress",addressBean.isDefaultAddress());
+        Log.d("default",String.valueOf(addressBean.isDefaultAddress()));
+        info.put("address",address);
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_POST_EDITADDRESS,info.toString());
+        JSONObject resultJson = new JSONObject(result);
+        boolean postResult = resultJson.getBoolean("result");
+        Log.d("newaddress",String.valueOf(postResult));
+        return postResult;
+
+    }
+
+    /**
+     * 搜索要求（搜索关键字key，排序方式sort，价格区间范围（left，right），当前页currentPage，每页的商品数pageSize）提交给服务器
+     * 发生网络错误时抛出异常
+     */
+    public List<SearchGoodsBean.ProductListBean> getSearchResult(String key,String sort,String left,String right,int currentPage,int pageSize)throws Exception{
+        JSONObject searchInfo = new JSONObject();
+        searchInfo.put("key",key);
+        searchInfo.put("sort",sort);
+        Log.d("sort",sort);
+        searchInfo.put("left",left);
+        Log.d("left",left);
+        searchInfo.put("right",right);
+        Log.d("right",right);
+        searchInfo.put("currentPage",currentPage);
+        searchInfo.put("pageSize",pageSize);
+        Log.d("pageSize",String.valueOf(pageSize));
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_GET_GOODS,searchInfo.toString());
+        Log.d("search",result);
+        Gson gson = new Gson();
+        SearchGoodsBean searchGoodsList = gson.fromJson(result,new TypeToken<SearchGoodsBean>(){}.getType());
+        List<SearchGoodsBean.ProductListBean> resultList = searchGoodsList.getProduct_list();
+        return resultList;
+
+    }
 
 
 

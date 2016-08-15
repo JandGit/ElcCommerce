@@ -49,4 +49,13 @@
     <string name="store_all">全部</string>
     <string name="store_sales">销量</string>
     <string name="store_grade">等级</string>
+    <string name="save">保存</string>
+    <string name="concrete_position">详细地址</string>
+    <string name="receiver_tel">联系方式</string>
+    <string name="receiver_position">收货地址</string>
+    <string name="select"><![CDATA[请选择 >]]></string>
+    <string name="set_default_address">设为默认地址</string>
+    <string name="money_mark">¥</string>
+    <string name="default_address">默认地址</string>
+    <string name="edit">编辑</string>
 </resources>
