@@ -10,7 +10,7 @@
         android:background="@color/colorPrimary"
         android:id="@+id/tb_meFrgToolbar"
         android:layout_width="match_parent"
-        android:layout_height="42dp">
+        android:layout_height="40dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -22,8 +22,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="@string/frgme_title"
-                android:textColor="@color/colorWhite"
-                android:textSize="20sp" />
+                android:textColor="@color/colorWhite" />
 
             <ImageView
                 android:layout_width="22dp"
@@ -56,6 +55,7 @@
             android:id="@+id/iv_frgMeUserIcon"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:scaleType="centerCrop"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"

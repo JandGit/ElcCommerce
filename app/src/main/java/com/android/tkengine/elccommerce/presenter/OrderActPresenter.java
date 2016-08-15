@@ -2,6 +2,7 @@ package com.android.tkengine.elccommerce.presenter;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +19,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.UI.DisplayActivity;
+import com.android.tkengine.elccommerce.UI.StoreDetailsActivity;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.OrderBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
@@ -152,6 +155,16 @@ public class OrderActPresenter {
             if(itemData.state != null){
                 tv_state.setText(itemData.state);
             }
+            //设置点击跳转到商铺
+            final String id = itemData.sellerId;
+            holder.getView(R.id.itemTitle).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, StoreDetailsActivity.class);
+                    intent.putExtra("storeID", id);
+                    mContext.startActivity(intent);
+                }
+            });
 
             int countSum = 0;
             float priceSum = 0;
@@ -171,10 +184,11 @@ public class OrderActPresenter {
                 temp.put("city", itemData.proItems.get(i).product.city);
                 //图片
                 temp.put("icon", itemData.proItems.get(i).product.picture);
+                //id
+                temp.put("id", itemData.proItems.get(i).product.id);
 
                 data.add(temp);
             }
-            Log.i("商品数目：", "" + data.size());
             lv.setAdapter(new BaseAdapter() {
                 ArrayList<Map<String, Object>> mData = data;
                 @Override
@@ -193,7 +207,7 @@ public class OrderActPresenter {
                 }
 
                 @Override
-                public View getView(int i, View view, ViewGroup viewGroup) {
+                public View getView(final int i, View view, ViewGroup viewGroup) {
                     if(null == view){
                         view = LayoutInflater.from(mContext).inflate(R.layout.activity_order_item_item, viewGroup, false);
                     }
@@ -207,6 +221,16 @@ public class OrderActPresenter {
                     tv.setText((CharSequence) mData.get(i).get("count"));
                     ImageView iv = (ImageView) view.findViewById(R.id.iv_goodIcon);
                     Picasso.with(mContext).load((String) mData.get(i).get("icon")).fit().into(iv);
+                    //点击商品跳转到详情
+                    final String id = (String) mData.get(i).get("id");
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(mContext, DisplayActivity.class);
+                            intent.putExtra("productID", id);
+                            mContext.startActivity(intent);
+                        }
+                    });
 
                     return view;
                 }
