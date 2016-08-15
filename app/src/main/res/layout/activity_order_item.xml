@@ -10,7 +10,7 @@
     android:clickable="true">
 
     <RelativeLayout
-        android:id="@+id/re1"
+        android:id="@+id/itemTitle"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:clickable="true"
@@ -53,14 +53,14 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/re1"
+        android:layout_below="@+id/itemTitle"
         android:background="@color/dividerColor" />
 
     <com.android.tkengine.elccommerce.utils.LongListView
         android:id="@+id/lv_orderProitems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/re1"
+        android:layout_below="@id/itemTitle"
         android:footerDividersEnabled="false"
         android:divider="@color/colorTransparent" />
 

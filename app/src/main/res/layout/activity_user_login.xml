@@ -20,6 +20,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:textColor="@color/colorBlack"
                 android:text="登录Elc"
                 android:layout_centerInParent="true"/>
 

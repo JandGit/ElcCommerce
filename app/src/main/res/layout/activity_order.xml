@@ -12,7 +12,7 @@
         <android.support.v7.widget.Toolbar
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:layout_width="match_parent"
-            android:layout_height="42dp">
+            android:layout_height="40dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -24,7 +24,6 @@
                     android:gravity="center"
                     android:textColor="@color/colorBlack"
                     android:text="@string/orderact_title"
-                    android:textSize="20sp"
                     android:layout_centerInParent="true" />
 
                 <ImageView
