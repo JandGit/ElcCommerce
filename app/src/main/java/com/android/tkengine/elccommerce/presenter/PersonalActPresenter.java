@@ -56,13 +56,16 @@ public class PersonalActPresenter {
             switch (msg.what) {
                 case MSG_UPDATE_INFO: {//用户信息更改，界面内容需要更新
                     mView.updateUserInfo();
+                    break;
                 }
                 case MSG_SHOWERROR: {
                     String s = (String) msg.obj;
                     mView.showToast(s);
+                    break;
                 }
                 case MSG_CHANGEPASSWORD_SUCCESS: {
                     mView.showToast("修改成功");
+                    break;
                 }
             }
             super.handleMessage(msg);
@@ -128,6 +131,7 @@ public class PersonalActPresenter {
                         if (info != null) {
                             sp.edit().putString("UserIcon", info.getUser_picture_url()).apply();
                             mHandler.sendEmptyMessage(mHandler.MSG_UPDATE_INFO);
+                            Log.i("presenter", "设置成功，更新头像");
                         }
                     } else {
                         //参数错误
@@ -227,7 +231,6 @@ public class PersonalActPresenter {
                                 public void run() {
                                     try {
                                         if (mModel.setPassword(sp.getString("UserId", null), s_old, s_new)) {
-                                            sp.edit().putString("password", s_new).apply();
                                             Message msg = mHandler.obtainMessage(mHandler.MSG_SHOWERROR);
                                             msg.obj = "修改成功";
                                             mHandler.sendMessage(msg);
