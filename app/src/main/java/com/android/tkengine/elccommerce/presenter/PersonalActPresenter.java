@@ -234,6 +234,15 @@ public class PersonalActPresenter {
                                             Message msg = mHandler.obtainMessage(mHandler.MSG_SHOWERROR);
                                             msg.obj = "修改成功";
                                             mHandler.sendMessage(msg);
+                                            SharedPreferences.Editor editor = sp.edit();
+                                            editor.putBoolean("isLogin", false)
+                                                    .remove("password")
+                                                    .apply();
+                                        }
+                                        else {
+                                            Message msg = mHandler.obtainMessage(mHandler.MSG_SHOWERROR);
+                                            msg.obj = "修改失败，旧密码错误";
+                                            mHandler.sendMessage(msg);
                                         }
                                     } catch (JSONException | IOException e) {
                                         e.printStackTrace();
