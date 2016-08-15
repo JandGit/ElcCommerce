@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal">
+
+<TextView
+    android:layout_width="0dp"
+    android:layout_height="0.001dp"
+    android:layout_weight="1"
+    android:visibility="invisible"/>
+
+<RelativeLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_weight="1">
+
+    <TextView
+        android:id="@+id/tv_priceUp"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:gravity="center"
+        android:textColor="@color/colorBlack"
+        android:background="@drawable/textview_background"
+        android:text="从低到高"/>
+
+
+    <TextView
+        android:id="@+id/tv_priceDown"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_below="@+id/tv_priceUp"
+        android:gravity="center"
+        android:textColor="@color/colorBlack"
+        android:background="@drawable/textview_background"
+        android:text="从高到低"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2.0px"
+        android:layout_below="@+id/tv_priceDown"
+        android:background="@color/colorPrimary" />
+
+</RelativeLayout>
+
+<TextView
+    android:layout_width="0dp"
+    android:layout_height="0.001dp"
+    android:layout_weight="1"
+    android:visibility="invisible"/>
+
+
+
+</LinearLayout>

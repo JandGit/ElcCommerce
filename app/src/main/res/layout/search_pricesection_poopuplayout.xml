@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0.001dp"
+        android:layout_weight="1"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="0.001dp"
+        android:layout_weight="1"
+        android:visibility="invisible"/>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_price1"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:background="@drawable/textview_background"
+            android:text="0--50"/>
+
+
+        <TextView
+            android:id="@+id/tv_price2"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_below="@+id/tv_price1"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:background="@drawable/textview_background"
+            android:text="50--100"/>
+
+        <TextView
+            android:id="@+id/tv_price3"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_below="@+id/tv_price2"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:background="@drawable/textview_background"
+            android:text="100--200"/>
+
+        <TextView
+            android:id="@+id/tv_price4"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_below="@+id/tv_price3"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:background="@drawable/textview_background"
+            android:text="200--500"/>
+
+        <TextView
+            android:id="@+id/tv_price5"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_below="@+id/tv_price4"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:background="@drawable/textview_background"
+            android:text="500以上"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2.0px"
+            android:layout_below="@+id/tv_price5"
+            android:background="@color/colorPrimary" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

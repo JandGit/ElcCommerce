@@ -1,5 +1,8 @@
 package com.android.tkengine.elccommerce.UI;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.DataSetObserver;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -16,6 +20,7 @@ import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +28,8 @@ import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.presenter.SearchPresenter;
 import com.android.tkengine.elccommerce.utils.DividerItemDecoration;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by 陈嘉shuo on 2016/8/11.
@@ -34,14 +41,16 @@ public class SearchActivity extends AppCompatActivity {
     private View searchView;
     private ArrayAdapter<String> searchAdapter;
     private AutoCompleteTextView autoMatchSearch;    //自动匹配历史记录
-    private Button search;    //搜索按钮
-    private ExpandableListView priceSortListView;    //价格排序
-    private ExpandableListView priceSectionAListView;    //价格区间选择
+    private TextView search;    //搜索按钮
     private TextView saleSort;   //销量优先
+    private LinearLayout priceSortLayout;    //价格排序
+    private LinearLayout priceSectionLayout;    //价位选择
     private RecyclerView searchRecyclerView;
     private SearchPresenter searchPresenter;
-    private String[] historyRecord  = new String[]{"abc", "abcd", "abcde","abcdef", "abcdefg", "hij", "hijk","hijkl","hijklm","hijklmn"};
-    private String lowPrice = "1",highPrice = "100000000";  //保存高低价位信息
+    private String[] historyRecord;
+    private PopupWindow priceSortPopupWindow;    //价格排序弹出框
+    private PopupWindow priceSectionPopupWindow;   //价位选择弹出框
+    private String lowPrice = "0",highPrice = "100000000";  //保存高低价位信息
     private String priceSortType = "";  // "price" 表示从低到高，"price desc" 表示从高到低，"sales"表示销量优先，""空字符串默认不排序
 
 
@@ -57,12 +66,20 @@ public class SearchActivity extends AppCompatActivity {
     private void initSearch(){
         searchView = getLayoutInflater().from(this).inflate(R.layout.activity_search,null);
 
+
+        // 获取搜索记录文件内容
+        SharedPreferences sp = getSharedPreferences("search_history",MODE_PRIVATE);
+        String history = sp.getString("history", "暂时没有搜索记录");
+        // 用逗号分割内容返回数组
+        historyRecord = history.split(",");
+
+
         //搜索框
         autoMatchSearch = (AutoCompleteTextView)findViewById(R.id.autotv_search);
-        search = (Button)findViewById(R.id.btn_search);
+        search = (TextView)findViewById(R.id.btn_search);
         searchAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,historyRecord);
         autoMatchSearch.setAdapter(searchAdapter);
-        autoMatchSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+       /* autoMatchSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 AutoCompleteTextView view = (AutoCompleteTextView) v;
@@ -70,13 +87,30 @@ public class SearchActivity extends AppCompatActivity {
                     view.showDropDown();
                 }
             }
-        });
+        });*/
+
+
+
 
         //搜索要求
-        priceSortListView = (ExpandableListView)findViewById(R.id.elv_priceSort);
+      /*  priceSortListView = (ExpandableListView)findViewById(R.id.elv_priceSort);
         priceSortListView.setAdapter(new PriceExpandableListAdapter(new String[]{"价格排序"},new String[][]{{"从低到高","从高到低"}}));
         priceSectionAListView = (ExpandableListView)findViewById(R.id.elv_priceSection);
-        priceSectionAListView.setAdapter(new PriceExpandableListAdapter(new String[]{"价位选择"},new String[][]{{"1--50","50--100","100--200","200以上","默认"}}));
+        priceSectionAListView.setAdapter(new PriceExpandableListAdapter(new String[]{"价位选择"},new String[][]{{"1--50","50--100","100--200","200以上","默认"}}));*/
+        priceSortLayout = (LinearLayout)findViewById(R.id.ll_priceSort);
+        priceSortLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPriceSortPopupWindow();
+            }
+        });
+        priceSectionLayout = (LinearLayout)findViewById(R.id.ll_priceSection);
+        priceSectionLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPriceSectiontPopupWindow();
+            }
+        });
 
 
 
@@ -93,7 +127,7 @@ public class SearchActivity extends AppCompatActivity {
                 super.onScrollStateChanged(recyclerView, newState);
                 if (lastVisibleItem + 1 ==searchPresenter.goodsRecycleViewAdapter.getItemCount()) {
                     currentPage = currentPage + 1;
-                    searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","1","100000000",currentPage,5);
+                    searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","0","100000000",currentPage,5);
                 }
                 }
 
@@ -108,7 +142,8 @@ public class SearchActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","1","100000000",1,5);
+                saveSearchRecord(autoMatchSearch.getText().toString());
+                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","0","100000000",1,5);
             }
         });
 
@@ -120,7 +155,7 @@ public class SearchActivity extends AppCompatActivity {
                 priceSortType = "sales";
                 searchPresenter.searchGoodsList.clear();
                 currentPage = 1;
-                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"sales","1","100000000",1,5);
+                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"sales","0","100000000",1,5);
             }
         });
 
@@ -129,7 +164,106 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-    class PriceExpandableListAdapter implements ExpandableListAdapter{
+    //将输入内容加到历史记录中
+    public void saveSearchRecord(String newRecord){
+        SharedPreferences pref = getSharedPreferences("search_history",MODE_PRIVATE);
+        String history = pref.getString("history","暂时没有搜索记录");
+
+        // 判断搜索内容是否已经存在于历史文件，已存在则不重复添加
+        if(!history.contains(newRecord)){
+            // 保留前50条数据
+            if (historyRecord.length == 50) {
+               int index = history.lastIndexOf(",");
+                String str = history.substring(0,index);
+                str = newRecord + "," + str;
+                pref.edit().putString("history",str).commit();
+            }
+            history = newRecord + "," + history;
+            pref.edit().putString("history",history).commit();
+        }
+    }
+
+    //删除所有的历史记录
+    public void clearHistory(){
+        SharedPreferences pref = getSharedPreferences("search_history",MODE_PRIVATE);
+        pref.edit().clear().commit();
+    }
+
+
+    public void showPriceSortPopupWindow(){
+        View contentView = LayoutInflater.from(SearchActivity.this).inflate(R.layout.search_pricesort_popuplayout, null);
+        priceSortPopupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        priceSortPopupWindow.setBackgroundDrawable(new BitmapDrawable());  //点击外部，弹出框消失
+        priceSortPopupWindow.setOutsideTouchable(true);
+        priceSortPopupWindow.showAsDropDown(findViewById(R.id.view_position_reference));
+        TextView priceUp = (TextView)contentView.findViewById(R.id.tv_priceUp);
+        TextView priceDown = (TextView)contentView.findViewById(R.id.tv_priceDown);
+        priceUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                priceSortType = "price";
+                searchPresenter.searchGoodsList.clear();
+                currentPage = 1;
+                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"price",lowPrice,highPrice,1,5);
+                priceSortPopupWindow.dismiss();
+            }
+        });
+        priceDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                priceSortType = "price desc";
+                searchPresenter.searchGoodsList.clear();
+                currentPage = 1;
+                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"price desc",lowPrice,highPrice,1,5);
+                priceSortPopupWindow.dismiss();
+            }
+        });
+    }
+
+    public void showPriceSectiontPopupWindow(){
+        View contentView = LayoutInflater.from(SearchActivity.this).inflate(R.layout.search_pricesection_poopuplayout, null);
+        priceSectionPopupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        priceSectionPopupWindow.setBackgroundDrawable(new BitmapDrawable());  //点击外部，弹出框消失
+        priceSectionPopupWindow.setOutsideTouchable(true);
+        priceSectionPopupWindow.setTouchable(true);
+        priceSectionPopupWindow.setFocusable(true);
+        priceSectionPopupWindow.showAsDropDown(findViewById(R.id.view_position_reference));
+        final TextView price1 = (TextView)contentView.findViewById(R.id.tv_price1);
+        TextView price2 = (TextView)contentView.findViewById(R.id.tv_price2);
+        TextView price3 = (TextView)contentView.findViewById(R.id.tv_price3);
+        TextView price4 = (TextView)contentView.findViewById(R.id.tv_price4);
+        TextView price5 = (TextView)contentView.findViewById(R.id.tv_price5);
+        price1.setOnClickListener(new PriceSectionOnClickListener());
+        price2.setOnClickListener(new PriceSectionOnClickListener());
+        price3.setOnClickListener(new PriceSectionOnClickListener());
+        price4.setOnClickListener(new PriceSectionOnClickListener());
+        price5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                searchPresenter.searchGoodsList.clear();
+                currentPage = 1;
+                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),priceSortType,"500","100000000",1,10);
+                priceSectionPopupWindow.dismiss();
+            }
+        });
+    }
+
+    public class  PriceSectionOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            String array[] = (((TextView)view).getText().toString()).split("--");
+            lowPrice = array[0];
+            highPrice = array[1];
+            searchPresenter.searchGoodsList.clear();
+            currentPage = 1;
+            searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),priceSortType,lowPrice,highPrice,1,10);
+            priceSectionPopupWindow.dismiss();
+        }
+    }
+
+
+
+   /* class PriceExpandableListAdapter implements ExpandableListAdapter{
 
         private String[] category;
         private String[][] subCategory;
@@ -283,17 +417,17 @@ public class SearchActivity extends AppCompatActivity {
             return 0;
         }
 
-     /*   private TextView getTextView() {
+       private TextView getTextView() {
             TextView textView = new TextView(SearchActivity.this);
            textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
             textView.setPadding(5, 0, 0, 0);
             textView.setTextSize(20);
             return textView;
-        }*/
+        }*
 
 
 
-    }
+    }*/
 
 
 }

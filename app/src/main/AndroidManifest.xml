@@ -25,7 +25,8 @@
         <activity android:name=".UI.DisplayActivity" />
         <activity android:name=".UI.UserLoginActivity" />
         <activity android:name=".UI.PayActivity" />
-        <activity android:name=".UI.SearchActivity" />
+        <activity android:name=".UI.SearchActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".UI.CommentsActivity" />
         <activity android:name=".UI.StoreDetailsActivity" />
         <activity android:name=".UI.OrderActivity" />

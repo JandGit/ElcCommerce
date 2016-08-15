@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="92dp"
+    android:layout_height="94dp"
     android:orientation="horizontal">
 
     <ImageView
@@ -25,10 +25,11 @@
             android:layout_marginTop="5dp">
 
             <TextView
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="4dp"
                 android:gravity="center_vertical"
                 android:textColor="@color/colorBlack"
                 android:textSize="13sp"
+                android:maxLines="2"
                 android:id="@+id/tv_search_goodsName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -37,12 +38,11 @@
         <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="30dp">
+            android:layout_height="25dp">
             <TextView
                 android:id="@+id/search_goods_mark"
                 android:gravity="center_vertical"
                 android:textColor="@color/colorPrimary"
-                android:textSize="15sp"
                 android:text="@string/price"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -50,7 +50,7 @@
             <TextView
                 android:gravity="center_vertical"
                 android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:text="20"
                 android:id="@+id/tv_search_goodsPrice"
                 android:layout_width="wrap_content"
@@ -75,16 +75,16 @@
             android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:textSize="15sp"
+                android:layout_height="25dp"
+                android:textSize="14sp"
                 android:gravity="center"
                 android:text="销量"/>
 
             <TextView
                 android:id="@+id/tv_search_goodsSale"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:textSize="15sp"
+                android:layout_height="25dp"
+                android:textSize="14sp"
                 android:gravity="center"
                 android:layout_marginLeft="5dp"
                 android:text="销量"/>
@@ -92,8 +92,8 @@
             <TextView
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:textSize="15sp"
+                android:layout_height="25dp"
+                android:textSize="14sp"
                 android:gravity="center"
                 android:text="库存"/>
 
@@ -101,8 +101,8 @@
                 android:id="@+id/tv_search_goodsStore"
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:textSize="15sp"
+                android:layout_height="25dp"
+                android:textSize="14sp"
                 android:gravity="center"
                 android:text="库存"/>
         </LinearLayout>
