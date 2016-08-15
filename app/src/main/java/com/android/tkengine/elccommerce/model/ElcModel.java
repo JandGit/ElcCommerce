@@ -498,7 +498,7 @@ public class ElcModel {
         user.put("userId", "402891815678675c015678717688014a");
         userId = user.toString();
 
-        String result = HttpUtil.sentHttpPost(Constants.SERVER_GET_CART,userId);
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_GET_CART, userId);
         Log.d("cartGet",result);
         JSONObject cartJson = new JSONObject(result);
         JSONArray storeArray = (JSONArray) cartJson.get("sellerItem");

@@ -53,23 +53,37 @@ public class PayActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay);
-        //获取从购物车传送过来的商品信息
-        payPresenter.receiverGoodsList = (List<GoodsBean>) this.getIntent().getSerializableExtra("receiver_goods_data");
+
+        // 1 表示由购物车结算跳转到支付页面， 2 表示由商品详情立即下单跳转到支付页面
+        int type = getIntent().getIntExtra("from",0);
+        if(type == 1){
+            //获取从购物车传送过来的商品信息
+            payPresenter.receiverGoodsList = (List<GoodsBean>) this.getIntent().getSerializableExtra("receiver_goods_data");
+        }else if(type == 2){
+
+        }
+
 
         initPayView();
     }
 
     private void initPayView() {
+
         payView = getLayoutInflater().from(this).inflate(R.layout.activity_pay, null);
         receiverName = (TextView) findViewById(R.id.tv_receiver_name);
         receiverAddress = (TextView) findViewById(R.id.tv_receiver_address);
         receiverTel = (TextView) findViewById(R.id.tv_receiver_tel);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("default_address", MODE_PRIVATE);
-        addressId = sharedPreferences.getString("address_id", "");
-        receiverName.setText(sharedPreferences.getString("receiver_name", ""));
-        receiverAddress.setText(sharedPreferences.getString("receiver_address", ""));
-        receiverTel.setText(sharedPreferences.getString("receiver_tel", ""));
+        try{
+            SharedPreferences sharedPreferences = getSharedPreferences("default_address", MODE_PRIVATE);
+            addressId = sharedPreferences.getString("address_id", "");
+            receiverName.setText(sharedPreferences.getString("receiver_name", ""));
+            receiverAddress.setText(sharedPreferences.getString("receiver_address", ""));
+            receiverTel.setText(sharedPreferences.getString("receiver_tel", ""));
+        }catch (Exception e){
+            receiverTel.setText("请选择 >");
+        }
+
 
 
         receiverGoodsRecyclerView = (RecyclerView) findViewById(R.id.rv_receiver_goods);

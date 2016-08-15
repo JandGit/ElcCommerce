@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -63,6 +64,7 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         cartView = inflater.inflate(R.layout.fragment_cart, container, false);
+
         initCartView();
         return cartView;
 
@@ -128,7 +130,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
                     Toast.makeText(cartView.getContext(),"你还没有选择商品哦",Toast.LENGTH_SHORT).show();
                 }else{
                     Intent intent = new Intent(cartView.getContext(),PayActivity.class);
-                   intent.putExtra("receiver_goods_data",(Serializable)cartFrgPresenter.getReceiverGoods());
+                    intent.putExtra("from",1);
+                    intent.putExtra("receiver_goods_data",(Serializable)cartFrgPresenter.getReceiverGoods());
                     startActivity(intent);
                 }
             }
@@ -328,6 +331,9 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     @Override
     public void onResume() {
         super.onResume();
+        cartSelectAll.setChecked(false);
+        cartPay.setText("结算");
+        cartGoodsSum.setText("0.00");
         cartFrgPresenter = new CartFrgPresenter(cartView.getContext());
         cartRecyclerView.setAdapter(cartFrgPresenter);
     }

@@ -29,7 +29,7 @@
                 android:id="@+id/rl_receiver_address"
                 android:background="@color/colorWhite"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="wrap_content"
                 >
                 <TextView
                     android:id="@+id/tv_receiver_label"
@@ -69,7 +69,6 @@
                     android:id="@+id/tv_receiver_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLines="2"
                     android:layout_below="@+id/tv_receiver_label"
                     android:layout_toRightOf="@+id/tv_address_label" />
 
