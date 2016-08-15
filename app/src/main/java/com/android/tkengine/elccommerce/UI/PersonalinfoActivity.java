@@ -63,11 +63,6 @@ public class PersonalinfoActivity extends AppCompatActivity implements PersonalA
         //显示用户信息
         updateUserInfo();
 
-        //实现沉浸式状态栏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
-
         //点击设置头像
         changeIcon.setOnClickListener(new View.OnClickListener() {
             @Override

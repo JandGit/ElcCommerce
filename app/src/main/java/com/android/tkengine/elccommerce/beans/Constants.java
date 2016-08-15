@@ -110,4 +110,8 @@ public class Constants {
      * result = boolean
      */
     public static final String SERVER_CHANGE_PASSWORD = SERVER_ADDRESS + "user/app/changePassword";
+    /**
+     * 注册用户
+     */
+    public static final String SERVER_SIGNUP = SERVER_ADDRESS + "user/app/regist";
 }

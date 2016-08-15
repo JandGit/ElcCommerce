@@ -47,6 +47,25 @@ public class ElcModel {
     }
 
     /**
+     * 注册新用户
+     * @param userPhone 用户名
+     * @param password 密码
+     * @return
+     */
+    public boolean signUp(String userPhone, String password) throws JSONException, IOException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("phone_number", userPhone);
+        jsonObject.put("user_password", password);
+        String params = jsonObject.toString();
+        Log.i("Model:signUp", "向服务器发送数据：" + params);
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_SIGNUP, params);
+        Log.i("Model:signUp", "服务器返回：" + result);
+        jsonObject = new JSONObject(result);
+
+        return jsonObject.getBoolean("result");
+    }
+
+    /**
      * 获取订单
      * 网络连接错误时抛出异常
      * @param userId 用户Id
@@ -104,8 +123,8 @@ public class ElcModel {
         jsonObject.put("old_password", oldpassword);
         jsonObject.put("new_password", newpassword);
         String params = jsonObject.toString();
-        Log.i("Model:setUserInfo", "向服务器发送数据：" + params);
-        String result = HttpUtil.sentHttpPost(Constants.SERVER_CHANGE_USERINFO, params);
+        Log.i("Model:setPassword", "向服务器发送数据：" + params);
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_CHANGE_PASSWORD, params);
         Log.i("Model:setPassword", "服务器返回：" + result);
         jsonObject = new JSONObject(result);
 

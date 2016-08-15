@@ -9,7 +9,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb"
         android:layout_width="match_parent"
-        android:layout_height="42dp">
+        android:layout_height="40dp">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -20,7 +20,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="个人信息"
-                android:textSize="20sp"
                 android:layout_centerInParent="true"/>
 
             <ImageView

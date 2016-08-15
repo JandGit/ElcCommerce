@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.android.tkengine.elccommerce.UI.SignupActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="注册到Elc"
+                android:layout_centerInParent="true"/>
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:clickable="true"
+                android:onClick="onBackClick"
+                android:background="?attr/selectableItemBackground"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:scaleType="centerInside"
+                android:src="@mipmap/title_back"
+                android:layout_alignTop="@+id/tv1"
+                android:layout_alignBottom="@+id/tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <EditText
+        android:id="@+id/et_userPhone"
+        android:inputType="number"
+        android:maxEms="15"
+        android:hint="输入你的手机号码"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="12"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="150dp"/>
+    <EditText
+        android:id="@+id/et_userpassword"
+        android:layout_below="@id/et_userPhone"
+        android:inputType="textPassword"
+        android:maxEms="15"
+        android:hint="输入密码"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="12"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
+    <EditText
+        android:id="@+id/et_userpassword1"
+        android:layout_below="@id/et_userpassword"
+        android:inputType="textPassword"
+        android:maxEms="15"
+        android:hint="再次输入密码确认"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="12"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btn_signUp"
+        android:onClick="onSignupClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="注册"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/loginbutton_background"
+        android:layout_below="@+id/et_userpassword1"
+        android:layout_alignLeft="@+id/et_userpassword1"
+        android:layout_alignStart="@+id/et_userpassword1"
+        android:layout_alignRight="@+id/et_userpassword1"
+        android:layout_alignEnd="@+id/et_userpassword1"
+        android:layout_marginTop="30dp" />
+
+
+</RelativeLayout>

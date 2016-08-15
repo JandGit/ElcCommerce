@@ -55,10 +55,6 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login);
 
-        //实现沉浸式状态栏
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
 
         mPresenter = new UserLoginActPresenter(this, this);
         mToast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
@@ -88,6 +84,12 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
             et_userName.setText(userPhone);
             et_userName.setVisibility(View.INVISIBLE);
             ((TextView)viewRight).setText("切换登录用户");
+            viewLeft.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showToast("忘记密码");
+                }
+            });
             viewRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -104,7 +106,8 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
                     viewRight.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            showToast("注册新用户");
+                            startActivity(new Intent(UserLoginActivity.this, SignupActivity.class));
+                            finish();
                         }
                     });
                 }
@@ -127,7 +130,8 @@ public class UserLoginActivity extends AppCompatActivity implements UserLoginAct
             viewRight.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showToast("注册新用户");
+                    startActivity(new Intent(UserLoginActivity.this, SignupActivity.class));
+                    finish();
                 }
             });
         }
