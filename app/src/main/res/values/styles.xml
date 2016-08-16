@@ -10,4 +10,9 @@
         <item name="android:windowEnterAnimation">@anim/cart_enter</item>
         <item name="android:windowExitAnimation">@anim/cart_close</item>
     </style>
+
+    <style name="searchPopupwindow">
+        <item name="android:windowEnterAnimation">@anim/search_popupwindow_enter</item>
+    </style>
+
 </resources>

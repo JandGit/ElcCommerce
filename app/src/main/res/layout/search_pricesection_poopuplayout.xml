@@ -27,8 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="25dp"
             android:gravity="center"
-            android:textColor="@color/colorBlack"
-            android:background="@drawable/textview_background"
+            android:textColor="@drawable/text_color"
+            android:background="@drawable/text_background_color"
             android:text="0--50"/>
 
 
@@ -38,8 +38,8 @@
             android:layout_height="25dp"
             android:layout_below="@+id/tv_price1"
             android:gravity="center"
-            android:textColor="@color/colorBlack"
-            android:background="@drawable/textview_background"
+            android:textColor="@drawable/text_color"
+            android:background="@drawable/text_background_color"
             android:text="50--100"/>
 
         <TextView
@@ -48,8 +48,8 @@
             android:layout_height="25dp"
             android:layout_below="@+id/tv_price2"
             android:gravity="center"
-            android:textColor="@color/colorBlack"
-            android:background="@drawable/textview_background"
+            android:textColor="@drawable/text_color"
+            android:background="@drawable/text_background_color"
             android:text="100--200"/>
 
         <TextView
@@ -58,8 +58,8 @@
             android:layout_height="25dp"
             android:layout_below="@+id/tv_price3"
             android:gravity="center"
-            android:textColor="@color/colorBlack"
-            android:background="@drawable/textview_background"
+            android:textColor="@drawable/text_color"
+            android:background="@drawable/text_background_color"
             android:text="200--500"/>
 
         <TextView
@@ -68,8 +68,8 @@
             android:layout_height="25dp"
             android:layout_below="@+id/tv_price4"
             android:gravity="center"
-            android:textColor="@color/colorBlack"
-            android:background="@drawable/textview_background"
+            android:textColor="@drawable/text_color"
+            android:background="@drawable/text_background_color"
             android:text="500以上"/>
 
         <View

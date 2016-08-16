@@ -21,8 +21,8 @@ android:orientation="horizontal">
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:gravity="center"
-        android:textColor="@color/colorBlack"
-        android:background="@drawable/textview_background"
+        android:textColor="@drawable/text_color"
+        android:background="@drawable/text_background_color"
         android:text="从低到高"/>
 
 
@@ -32,8 +32,8 @@ android:orientation="horizontal">
         android:layout_height="25dp"
         android:layout_below="@+id/tv_priceUp"
         android:gravity="center"
-        android:textColor="@color/colorBlack"
-        android:background="@drawable/textview_background"
+        android:textColor="@drawable/text_color"
+        android:background="@drawable/text_background_color"
         android:text="从高到低"/>
 
     <View

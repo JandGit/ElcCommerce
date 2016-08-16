@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.android.tkengine.elccommerce.R;
-import com.android.tkengine.elccommerce.beans.CommentsBean;
+import com.android.tkengine.elccommerce.beans.commentsBean;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.GoodsAddressBean;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
@@ -406,8 +406,8 @@ public class ElcModel {
      * 发生网络错误时抛出异常
      */
 
-    public List<CommentsBean.ResultBean> getCommentsDetails(String productID) throws Exception {
-        List<CommentsBean.ResultBean> resultBeen = new ArrayList<CommentsBean.ResultBean>();
+    public List<commentsBean.ResultBean> getCommentsDetails(String productID) throws Exception {
+        List<commentsBean.ResultBean> resultBeen = new ArrayList<commentsBean.ResultBean>();
         String productId = null;
         JSONObject product = new JSONObject();
         product.put("productId", productID);
@@ -416,8 +416,8 @@ public class ElcModel {
         productId = product.toString();
         String result = HttpUtil.sentHttpPost(Constants.SERVER_COMMENTS, productId);
         Gson gson = new Gson();
-        java.lang.reflect.Type type = new TypeToken<CommentsBean>() {}.getType();
-        CommentsBean commentsBean = gson.fromJson(result, type);
+        java.lang.reflect.Type type = new TypeToken<commentsBean>() {}.getType();
+        commentsBean commentsBean = gson.fromJson(result, type);
         resultBeen = commentsBean.getResult();
         return resultBeen;
     }

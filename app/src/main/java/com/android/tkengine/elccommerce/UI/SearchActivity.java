@@ -19,6 +19,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -101,6 +102,7 @@ public class SearchActivity extends AppCompatActivity {
         priceSortLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                cahngeTitleColor(2);
                 showPriceSortPopupWindow();
             }
         });
@@ -109,6 +111,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showPriceSectiontPopupWindow();
+                cahngeTitleColor(3);
             }
         });
 
@@ -156,6 +159,7 @@ public class SearchActivity extends AppCompatActivity {
                 searchPresenter.searchGoodsList.clear();
                 currentPage = 1;
                 searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"sales","0","100000000",1,5);
+                cahngeTitleColor(1);
             }
         });
 
@@ -195,6 +199,7 @@ public class SearchActivity extends AppCompatActivity {
         priceSortPopupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         priceSortPopupWindow.setBackgroundDrawable(new BitmapDrawable());  //点击外部，弹出框消失
         priceSortPopupWindow.setOutsideTouchable(true);
+      /*  priceSortPopupWindow.setAnimationStyle(R.style.searchPopupwindow);*/
         priceSortPopupWindow.showAsDropDown(findViewById(R.id.view_position_reference));
         TextView priceUp = (TextView)contentView.findViewById(R.id.tv_priceUp);
         TextView priceDown = (TextView)contentView.findViewById(R.id.tv_priceDown);
@@ -225,8 +230,7 @@ public class SearchActivity extends AppCompatActivity {
         priceSectionPopupWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         priceSectionPopupWindow.setBackgroundDrawable(new BitmapDrawable());  //点击外部，弹出框消失
         priceSectionPopupWindow.setOutsideTouchable(true);
-        priceSectionPopupWindow.setTouchable(true);
-        priceSectionPopupWindow.setFocusable(true);
+       /* priceSectionPopupWindow.setAnimationStyle(R.style.searchPopupwindow);*/
         priceSectionPopupWindow.showAsDropDown(findViewById(R.id.view_position_reference));
         final TextView price1 = (TextView)contentView.findViewById(R.id.tv_price1);
         TextView price2 = (TextView)contentView.findViewById(R.id.tv_price2);
@@ -262,6 +266,48 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
+    private void cahngeTitleColor(int title){
+        TextView priceSortText = (TextView)findViewById(R.id.tv_priceSort);
+        TextView priceSectionText = (TextView)findViewById(R.id.tv_priceSection);
+        ImageView priceSortImg = (ImageView)findViewById(R.id.iv_priceSort);
+        ImageView priceSectionImg = (ImageView)findViewById(R.id.iv_priceSection);
+        switch (title){
+            case 1:
+                saleSort.setBackgroundResource(R.color.colorPrimary);
+                saleSort.setTextColor(getResources().getColor(R.color.colorWhite));
+                priceSortLayout.setBackgroundResource(R.color.colorWhite);
+                priceSortText.setTextColor(getResources().getColor(R.color.colorBlack));
+                priceSortImg.setImageResource(R.drawable.down_mark);
+                priceSectionLayout.setBackgroundResource(R.color.colorWhite);
+                priceSectionText.setTextColor(getResources().getColor(R.color.colorBlack));
+                priceSectionImg.setImageResource(R.drawable.down_mark);
+                break;
+            case 2:
+                saleSort.setBackgroundResource(R.color.colorWhite);
+                saleSort.setTextColor(getResources().getColor(R.color.colorBlack));
+                priceSortLayout.setBackgroundResource(R.color.colorPrimary);
+                priceSortText.setTextColor(getResources().getColor(R.color.colorWhite));
+                priceSortImg.setImageResource(R.drawable.down_mark_1);
+                priceSectionLayout.setBackgroundResource(R.color.colorWhite);
+                priceSectionText.setTextColor(getResources().getColor(R.color.colorBlack));
+                priceSectionImg.setImageResource(R.drawable.down_mark);
+                break;
+            case 3:
+                saleSort.setBackgroundResource(R.color.colorWhite);
+                saleSort.setTextColor(getResources().getColor(R.color.colorBlack));
+                priceSortLayout.setBackgroundResource(R.color.colorWhite);
+                priceSortText.setTextColor(getResources().getColor(R.color.colorBlack));
+                priceSortImg.setImageResource(R.drawable.down_mark);
+                priceSectionLayout.setBackgroundResource(R.color.colorPrimary);
+                priceSectionText.setTextColor(getResources().getColor(R.color.colorWhite));
+                priceSectionImg.setImageResource(R.drawable.down_mark_1);
+                break;
+            default:
+                break;
+
+        }
+
+    }
 
    /* class PriceExpandableListAdapter implements ExpandableListAdapter{
 
