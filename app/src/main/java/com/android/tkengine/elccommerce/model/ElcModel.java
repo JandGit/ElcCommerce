@@ -503,7 +503,7 @@ public class ElcModel {
         for (int i = 0; i < storeArray.length(); i++) {
             JSONObject storeItem = (JSONObject) storeArray.get(i);
             GoodsBean shopItem = new GoodsBean();
-            shopItem.setGoodsId(storeItem.getString("id"));
+            shopItem.setId(storeItem.getString("sellerId"));
             shopItem.setGoodsName(storeItem.getString("shopName"));
             shopItem.setGoodsPrice(0);
             cartShopList.add(shopItem);

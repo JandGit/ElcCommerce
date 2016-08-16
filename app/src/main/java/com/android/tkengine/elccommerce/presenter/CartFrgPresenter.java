@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
@@ -169,6 +170,12 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 onRecyclerViewItemClickListener.onGroupCheckboxClick(holder);
             }
         });
+        holder.store.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onRecyclerViewItemClickListener.onGroupClick(holder);
+            }
+        });
     }
 
     public void addItem(final List<GoodsBean> newGoodsList){
@@ -314,10 +321,12 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public static class StoreViewHolder extends  RecyclerView.ViewHolder{
         public CheckBox storeSelected;
         protected TextView storeName;
+        public LinearLayout  store;
         public StoreViewHolder(View view) {
               super(view);
              storeName=(TextView)view.findViewById(R.id.tv_cart_storeName);
             storeSelected = (CheckBox)view.findViewById(R.id.chk_cart_selectPart);
+            store = (LinearLayout)view.findViewById(R.id.ll_cart_store);
         }
     }
 

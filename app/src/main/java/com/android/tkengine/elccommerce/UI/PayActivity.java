@@ -178,8 +178,6 @@ public class PayActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 payPopupWindow.dismiss();
-                Intent intent = new Intent(PayActivity.this, AddressActivity.class);
-                startActivity(intent);
 
             }
         });

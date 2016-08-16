@@ -275,6 +275,16 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
 
     }
 
+    //点击商店进入店铺
+    public void onGroupClick(CartFrgPresenter.StoreViewHolder holder){
+        Intent intent = new Intent(cartView.getContext(),StoreDetailsActivity.class);
+        intent.putExtra("storeID",cartFrgPresenter.cartGoodsList.get(holder.getPosition()).getId());
+        startActivity(intent);
+
+
+    }
+
+
     //点击选择一组商品
     public void onGroupCheckboxClick(CartFrgPresenter.StoreViewHolder holder){
         if(holder.storeSelected.isChecked()){
