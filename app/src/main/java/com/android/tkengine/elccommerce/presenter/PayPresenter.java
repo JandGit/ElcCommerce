@@ -61,7 +61,8 @@ public class PayPresenter {
             Picasso.with(context).load(cartGoodsItem.getGoodsIcon()).fit().into(((ReceiverGoodsViewHolder) holder).receiverGoodsIcon);
             ((ReceiverGoodsViewHolder) holder).receiverGoodsPrice.setText(String.valueOf(cartGoodsItem.getGoodsPrice()));
             ((ReceiverGoodsViewHolder) holder).receiverGoodsNumber.setFocusable(false);
-            ((ReceiverGoodsViewHolder) holder).receiverGoodsNumber.setText(String.valueOf(cartGoodsItem.getGoodsNum()));
+            ((ReceiverGoodsViewHolder) holder).receiverGoodsNumber.setText("× " + String.valueOf(cartGoodsItem.getGoodsNum()));
+            ((ReceiverGoodsViewHolder) holder).receiverGoodsNumber.setBackgroundResource(R.color.colorWhite);
             ((ReceiverGoodsViewHolder) holder).receiverGoodsSelected.setVisibility(View.GONE);
             ((ReceiverGoodsViewHolder) holder).receiverGoodsNumReduce.setVisibility(View.INVISIBLE);
             ((ReceiverGoodsViewHolder) holder).receiverGoodsNumAdd.setVisibility(View.INVISIBLE);

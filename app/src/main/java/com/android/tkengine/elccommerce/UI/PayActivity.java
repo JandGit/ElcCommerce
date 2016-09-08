@@ -29,6 +29,7 @@ import com.android.tkengine.elccommerce.presenter.PayPresenter;
 import com.android.tkengine.elccommerce.utils.DividerItemDecoration;
 import com.android.tkengine.elccommerce.utils.HttpCallbackListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,7 +61,13 @@ public class PayActivity extends AppCompatActivity {
             //获取从购物车传送过来的商品信息
             payPresenter.receiverGoodsList = (List<GoodsBean>) this.getIntent().getSerializableExtra("receiver_goods_data");
         }else if(type == 2){
-
+            //获取从商店详情传送过来的商品信息
+            GoodsBean goodsBean = (GoodsBean)this.getIntent().getSerializableExtra("product");
+            Log.d("goodsBean",goodsBean.getGoodsName());
+            Log.d("goodsBean",String.valueOf(goodsBean.getGoodsPrice()));
+            List<GoodsBean> goodsList = new ArrayList<GoodsBean>();
+            goodsList.add(goodsBean);
+            payPresenter.receiverGoodsList = goodsList;
         }
 
 

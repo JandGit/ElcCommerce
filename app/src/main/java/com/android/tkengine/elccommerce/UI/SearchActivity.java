@@ -145,8 +145,13 @@ public class SearchActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveSearchRecord(autoMatchSearch.getText().toString());
-                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","0","100000000",1,5);
+            /*    if(autoMatchSearch.getText().toString() != null && autoMatchSearch.getText().toString() != ""){
+                    saveSearchRecord(autoMatchSearch.getText().toString());
+                    searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","0","100000000",1,5);
+                }else{
+                    Toast.makeText(view.getContext(),"请输入关键字搜索",Toast.LENGTH_SHORT).show();
+                }*/
+
             }
         });
 
