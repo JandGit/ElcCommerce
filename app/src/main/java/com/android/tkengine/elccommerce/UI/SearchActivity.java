@@ -1,5 +1,6 @@
 package com.android.tkengine.elccommerce.UI;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.graphics.drawable.BitmapDrawable;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,7 +37,7 @@ import org.w3c.dom.Text;
 /**
  * Created by 陈嘉shuo on 2016/8/11.
  */
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity implements SearchPresenter.callBackListener {
 
     private int currentPage = 1;   //当前页，用于从服务器加载搜索结果
     public int lastVisibleItem = 0;  //判断是否滑到底部，加载更多数据
@@ -43,6 +45,7 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayAdapter<String> searchAdapter;
     private AutoCompleteTextView autoMatchSearch;    //自动匹配历史记录
     private TextView search;    //搜索按钮
+    private TextView tip;    //搜索无结果提示
     private TextView saleSort;   //销量优先
     private LinearLayout priceSortLayout;    //价格排序
     private LinearLayout priceSectionLayout;    //价位选择
@@ -67,6 +70,7 @@ public class SearchActivity extends AppCompatActivity {
     private void initSearch(){
         searchView = getLayoutInflater().from(this).inflate(R.layout.activity_search,null);
 
+        tip = (TextView)findViewById(R.id.tv_tip);
 
         // 获取搜索记录文件内容
         SharedPreferences sp = getSharedPreferences("search_history",MODE_PRIVATE);
@@ -80,24 +84,7 @@ public class SearchActivity extends AppCompatActivity {
         search = (TextView)findViewById(R.id.btn_search);
         searchAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,historyRecord);
         autoMatchSearch.setAdapter(searchAdapter);
-       /* autoMatchSearch.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                AutoCompleteTextView view = (AutoCompleteTextView) v;
-                if (hasFocus) {
-                    view.showDropDown();
-                }
-            }
-        });*/
 
-
-
-
-        //搜索要求
-      /*  priceSortListView = (ExpandableListView)findViewById(R.id.elv_priceSort);
-        priceSortListView.setAdapter(new PriceExpandableListAdapter(new String[]{"价格排序"},new String[][]{{"从低到高","从高到低"}}));
-        priceSectionAListView = (ExpandableListView)findViewById(R.id.elv_priceSection);
-        priceSectionAListView.setAdapter(new PriceExpandableListAdapter(new String[]{"价位选择"},new String[][]{{"1--50","50--100","100--200","200以上","默认"}}));*/
         priceSortLayout = (LinearLayout)findViewById(R.id.ll_priceSort);
         priceSortLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,15 +109,15 @@ public class SearchActivity extends AppCompatActivity {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(searchView.getContext());
         searchRecyclerView.setLayoutManager(linearLayoutManager);
         searchRecyclerView.addItemDecoration(new DividerItemDecoration(searchView.getContext(),LinearLayoutManager.VERTICAL));
-        searchPresenter = new SearchPresenter(searchView.getContext());
+        searchPresenter = new SearchPresenter(this,searchView.getContext());
         searchRecyclerView.setAdapter(searchPresenter.goodsRecycleViewAdapter);
-        searchRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {     //上拉加载
+        searchRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {     //上拉加载
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {     //判断是否滑到底部
                 super.onScrollStateChanged(recyclerView, newState);
                 if (lastVisibleItem + 1 ==searchPresenter.goodsRecycleViewAdapter.getItemCount()) {
                     currentPage = currentPage + 1;
-                    searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","0","100000000",currentPage,5);
+                    searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","0","100000000",currentPage,8);
                 }
                 }
 
@@ -145,12 +132,14 @@ public class SearchActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            /*    if(autoMatchSearch.getText().toString() != null && autoMatchSearch.getText().toString() != ""){
+              if(! TextUtils.isEmpty(autoMatchSearch.getText().toString())){
+                  tip.setVisibility(View.GONE);
+                    searchPresenter.searchGoodsList.clear();
                     saveSearchRecord(autoMatchSearch.getText().toString());
-                    searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","0","100000000",1,5);
+                    searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","0","100000000",1,8);
                 }else{
                     Toast.makeText(view.getContext(),"请输入关键字搜索",Toast.LENGTH_SHORT).show();
-                }*/
+                }
 
             }
         });
@@ -163,7 +152,7 @@ public class SearchActivity extends AppCompatActivity {
                 priceSortType = "sales";
                 searchPresenter.searchGoodsList.clear();
                 currentPage = 1;
-                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"sales","0","100000000",1,5);
+                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"sales","0","100000000",1,8);
                 cahngeTitleColor(1);
             }
         });
@@ -214,7 +203,7 @@ public class SearchActivity extends AppCompatActivity {
                 priceSortType = "price";
                 searchPresenter.searchGoodsList.clear();
                 currentPage = 1;
-                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"price",lowPrice,highPrice,1,5);
+                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"price","0","100000000",1,8);
                 priceSortPopupWindow.dismiss();
             }
         });
@@ -224,7 +213,7 @@ public class SearchActivity extends AppCompatActivity {
                 priceSortType = "price desc";
                 searchPresenter.searchGoodsList.clear();
                 currentPage = 1;
-                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"price desc",lowPrice,highPrice,1,5);
+                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"price desc","0","100000000",1,8);
                 priceSortPopupWindow.dismiss();
             }
         });
@@ -251,11 +240,13 @@ public class SearchActivity extends AppCompatActivity {
             public void onClick(View view) {
                 searchPresenter.searchGoodsList.clear();
                 currentPage = 1;
-                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),priceSortType,"500","100000000",1,10);
+                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","500","100000000",1,8);
                 priceSectionPopupWindow.dismiss();
             }
         });
     }
+
+
 
     public class  PriceSectionOnClickListener implements View.OnClickListener {
         @Override
@@ -265,7 +256,7 @@ public class SearchActivity extends AppCompatActivity {
             highPrice = array[1];
             searchPresenter.searchGoodsList.clear();
             currentPage = 1;
-            searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),priceSortType,lowPrice,highPrice,1,10);
+            searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"",lowPrice,highPrice,1,8);
             priceSectionPopupWindow.dismiss();
         }
     }
@@ -314,171 +305,16 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-   /* class PriceExpandableListAdapter implements ExpandableListAdapter{
 
-        private String[] category;
-        private String[][] subCategory;
+    //点击商品跳转到商品详情页面
+    @Override
+    public void startDisplayActivity(String productId) {
+        Intent intent = new Intent(this,DisplayActivity.class);
+        intent.putExtra("productID",productId);
+        Log.d("productId",productId);
+       /* startActivity(intent);*/
+    }
 
-        public PriceExpandableListAdapter(String[] category,String[][] subCategory){
-            this.category = category;
-            this.subCategory = subCategory;
-        }
-
-        @Override
-        public void registerDataSetObserver(DataSetObserver dataSetObserver) {
-
-        }
-
-        @Override
-        public void unregisterDataSetObserver(DataSetObserver dataSetObserver) {
-
-        }
-
-        @Override
-        public int getGroupCount() {
-            return category.length;
-        }
-
-        @Override
-        public int getChildrenCount(int i) {
-            return subCategory[i].length;
-        }
-
-        @Override
-        public Object getGroup(int i) {
-            return category[i];
-        }
-
-        @Override
-        public Object getChild(int i, int i1) {
-            return subCategory[i][i1];
-        }
-
-        @Override
-        public long getGroupId(int i) {
-            return i;
-        }
-
-        @Override
-        public long getChildId(int i, int i1) {
-            return i1;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
-        @Override
-        public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
-            LinearLayout ll = new LinearLayout(SearchActivity.this);
-            TextView textView = new TextView(SearchActivity.this);
-            textView.setText(getGroup(i).toString());
-            ll.addView(textView);
-            return ll;
-        }
-
-        @Override
-        public View getChildView(final int i, final int i1, boolean b, View view, ViewGroup viewGroup) {
-            TextView textView = new TextView(SearchActivity.this);
-            textView.setText(getChild(i,i1).toString());
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("search","ok");
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {    //判断用户进行哪种排序
-                                    if ((getChild(i, i1).toString()).equalsIgnoreCase("从低到高")){
-                                        priceSortType = "price";
-                                        searchPresenter.searchGoodsList.clear();
-                                        currentPage = 1;
-                                        searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"price",lowPrice,highPrice,1,5);
-                                    }else if((getChild(i, i1).toString()).equalsIgnoreCase("从高到低")){
-                                        priceSortType = "price desc";
-                                        searchPresenter.searchGoodsList.clear();
-                                        currentPage = 1;
-                                        searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"price desc",lowPrice,highPrice,1,5);
-                                    }else {
-                                        if((getChild(i, i1).toString()).equalsIgnoreCase("200以上")){
-                                            searchPresenter.searchGoodsList.clear();
-                                            currentPage = 1;
-                                            searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),priceSortType,"200","100000000",1,10);
-                                        }else if((getChild(i, i1).toString()).equalsIgnoreCase("默认")){
-                                            lowPrice = "1";
-                                            highPrice = "1000000000";
-                                            searchPresenter.searchGoodsList.clear();
-                                            currentPage = 1;
-                                            searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),priceSortType,"1","100000000",1,10);
-                                        }else{
-                                            String array[] = (getChild(i, i1).toString()).split("--");
-                                            lowPrice = array[0];
-                                            highPrice = array[1];
-                                            searchPresenter.searchGoodsList.clear();
-                                            currentPage = 1;
-                                            searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),priceSortType,lowPrice,highPrice,1,10);
-                                        }
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }).start();
-
-                    Toast.makeText(SearchActivity.this,"点击成功",Toast.LENGTH_SHORT).show();
-                }
-            });
-            return textView;
-
-        }
-
-        @Override
-        public boolean isChildSelectable(int i, int i1) {
-            return true;
-        }
-
-        @Override
-        public boolean areAllItemsEnabled() {
-            return false;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public void onGroupExpanded(int i) {
-
-        }
-
-        @Override
-        public void onGroupCollapsed(int i) {
-
-        }
-
-        @Override
-        public long getCombinedChildId(long l, long l1) {
-            return 0;
-        }
-
-        @Override
-        public long getCombinedGroupId(long l) {
-            return 0;
-        }
-
-       private TextView getTextView() {
-            TextView textView = new TextView(SearchActivity.this);
-           textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-            textView.setPadding(5, 0, 0, 0);
-            textView.setTextSize(20);
-            return textView;
-        }*
-
-
-
-    }*/
 
 
 }

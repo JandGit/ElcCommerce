@@ -46,9 +46,18 @@
         android:layout_alignParentTop="true"
         android:background="@color/colorPrimary" />
 
+   <TextView
+       android:id="@+id/tv_tip"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:gravity="center"
+       android:textSize="25sp"
+       android:textColor="@color/colorGray"
+       android:text="暂无商品"/>
 
 
     <LinearLayout
+        android:id="@+id/ll_searchRequire"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:orientation="horizontal">

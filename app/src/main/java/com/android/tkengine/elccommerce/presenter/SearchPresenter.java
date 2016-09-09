@@ -1,6 +1,7 @@
 package com.android.tkengine.elccommerce.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.UI.DisplayActivity;
 import com.android.tkengine.elccommerce.beans.SearchGoodsBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
 import com.squareup.picasso.Picasso;
@@ -24,6 +26,7 @@ import java.util.List;
 public class SearchPresenter {
 
     private static final int SUCCESS = 1;
+    private callBackListener callBackActivity;
     private Context context;
     public GoodsRecycleViewAdapter goodsRecycleViewAdapter = new GoodsRecycleViewAdapter();
     public  List<SearchGoodsBean.ProductListBean> searchGoodsList = new ArrayList<SearchGoodsBean.ProductListBean>();
@@ -38,7 +41,8 @@ public class SearchPresenter {
     };
 
 
-    public SearchPresenter(Context context) {
+    public SearchPresenter(callBackListener callBackActivity,Context context) {
+        this.callBackActivity = callBackActivity;
         this.context = context;
     }
 
@@ -69,13 +73,19 @@ public class SearchPresenter {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            SearchGoodsBean.ProductListBean searchGoodsItem = searchGoodsList.get(position);
+            final SearchGoodsBean.ProductListBean searchGoodsItem = searchGoodsList.get(position);
             Picasso.with(context).load(searchGoodsItem.getPicture_url()).fit().into(((viewHolder) holder).searchGoodsIcon);
             ((viewHolder) holder).searchGoodsName.setText(searchGoodsItem.getProduct_description());
             ((viewHolder) holder).searchGoodsPrice.setText(String.valueOf(searchGoodsItem.getProduct_price()));
             ((viewHolder) holder).searchGoodsPlace.setText(searchGoodsItem.getProduct_city());
             ((viewHolder) holder).searchGoodsSale.setText(String.valueOf(searchGoodsItem.getProduct_sales()));
             ((viewHolder) holder).searchGoodsStore.setText(String.valueOf(searchGoodsItem.getProduct_store()));
+             ((viewHolder) holder).view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    callBackActivity.startDisplayActivity(searchGoodsItem.getProduct_id());
+                }
+            });
         }
 
         @Override
@@ -96,6 +106,7 @@ public class SearchPresenter {
 
         public viewHolder(View view) {
             super(view);
+            this.view = view;
             searchGoodsName = (TextView)view.findViewById(R.id.tv_search_goodsName);
             searchGoodsPrice = (TextView)view.findViewById(R.id.tv_search_goodsPrice);
             searchGoodsPlace = (TextView)view.findViewById(R.id.tv_search_goodsPlace);
@@ -104,6 +115,10 @@ public class SearchPresenter {
             searchGoodsIcon = (ImageView)view.findViewById(R.id.iv_search_goodsIcon);
         }
 
+    }
+
+    public interface callBackListener{
+        void startDisplayActivity(String productId);
     }
 
 
