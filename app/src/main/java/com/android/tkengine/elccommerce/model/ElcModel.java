@@ -73,7 +73,7 @@ public class ElcModel {
      * @return 若无信息返回null,其他情况为数组
      */
     public OrderBean[] getOrder(String userId, int page, int from) throws Exception{
-        userId = "1";
+        //userId = "1";
         String url = Constants.SERVER_GETORDER_SPC;
         String params;
         switch (page){

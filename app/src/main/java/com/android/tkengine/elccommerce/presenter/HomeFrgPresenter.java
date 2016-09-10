@@ -317,7 +317,7 @@ public class HomeFrgPresenter {
                         tv_city = holder.getView(R.id.tv_city2);
                         tv_sales = holder.getView(R.id.tv_goodSales2);
                         Picasso.with(mContext).load((String) itemData.data.get("icon2"))
-                                .fit().error(R.mipmap.ic_launcher).into(iv_goodsIcon);
+                                .fit().into(iv_goodsIcon);
                         tv_goodsName.setText((String) itemData.data.get("name2"));
                         tv_city.setText(((String) itemData.data.get("city2")));
                         tv_sales.setText(((Integer) itemData.data.get("sales2")).toString());
