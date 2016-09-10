@@ -176,6 +176,9 @@ public class PayActivity extends AppCompatActivity {
                                         startActivity(intent);
                                         Toast.makeText(PayActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
                                     }
+                                    else{
+                                        Toast.makeText(PayActivity.this, "支付失败，请稍后再试", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
 
                                 @Override

@@ -195,11 +195,11 @@ public class HomeFrgPresenter {
                 public int getViewItemLayoutId(int viewType) {
                     switch (viewType) {
                         case HomePageItemBean.TYPE_HEAD:
-                            return R.layout.homefrg_headview;
+                            return R.layout.fragment_home_headview;
                         case HomePageItemBean.TYPE_GROUP:
-                            return R.layout.homefrg_goodgroup;
+                            return R.layout.fragment_home_goodgroup;
                         case HomePageItemBean.TYPE_GOODS:
-                            return R.layout.homefrg_gooditem;
+                            return R.layout.fragment_home_gooditem;
                         default:
                             Log.e("homepresenter:", "在getViewItemLayoutId处发生错误，未知viewType!");
                     }
