@@ -17,7 +17,7 @@ public class OrderBean {
     /**
      * 订单金额
      */
-    public int money;
+    public double money;
     /**
      * 商家标识ID
      */

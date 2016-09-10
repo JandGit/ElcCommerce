@@ -133,6 +133,7 @@ public class HomeFrgPresenter {
             msg.obj = mHomepageAdapter;
             mHandler.sendMessage(msg);
         }
+        loadMoreOnHomePage();
     }
 
     //加载首页更多数据

@@ -19,6 +19,7 @@ import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.UserInfoBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
+import com.android.tkengine.elccommerce.model.MeFrgModel;
 import com.android.tkengine.elccommerce.utils.BadgeView;
 import com.squareup.picasso.Picasso;
 
@@ -27,6 +28,8 @@ import java.util.Set;
 
 
 public class MeFragment extends Fragment {
+
+    MeFrgModel mModel;
 
     View mView;
     TextView tv_userName;
@@ -112,6 +115,8 @@ public class MeFragment extends Fragment {
             }
         });
 
+        mModel = new MeFrgModel(getContext());
+
         return mView;
     }
 
@@ -123,15 +128,20 @@ public class MeFragment extends Fragment {
 
     @Override
     public void onResume() {
-        //若用户已登录,展示信息
+        final SharedPreferences sp = getActivity().getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
         if (isUserLogined()) {
-            SharedPreferences sp = getActivity().getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
-            tv_userName.setText(sp.getString("UserName", "null"));
-            Picasso.with(getContext()).load(sp.getString("UserIcon", null)).fit()
-                    .placeholder(R.drawable.frgme_userunlogin)
-                    .into(iv_userIcon);
-            TextView tv_money = (TextView) mView.findViewById(R.id.tv_money);
-            tv_money.setText("余额" + sp.getFloat("UserMoney", 0));
+            //更新用户信息
+            mModel.loadUserInfo(sp.getString("UserId", null), new MeFrgModel.ResponseListener(){
+                @Override
+                public void onResponse() {
+                    tv_userName.setText(sp.getString("UserName", "null"));
+                    Picasso.with(getContext()).load(sp.getString("UserIcon", null)).fit()
+                            .placeholder(R.drawable.frgme_userunlogin)
+                            .into(iv_userIcon);
+                    TextView tv_money = (TextView) mView.findViewById(R.id.tv_money);
+                    tv_money.setText("余额" + sp.getFloat("UserMoney", 0));
+                }
+            });
         }
         else {
             tv_userName.setText("点击登录");

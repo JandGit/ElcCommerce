@@ -33,17 +33,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initView();
-        //启动时载入用户信息，自动登录
+
+        if (savedInstanceState != null) {
+            isFirstOpen = savedInstanceState.getBoolean("flag");
+            switch (savedInstanceState.getInt("selected")) {
+                case 0:
+                    findViewById(R.id.tag_home).performClick();
+                    break;
+                case 1:
+                    findViewById(R.id.tag_shop).performClick();
+                    break;
+                case 2:
+                    findViewById(R.id.tag_cart).performClick();
+                    break;
+                case 3:
+                    findViewById(R.id.tag_my).performClick();
+                    break;
+            }
+        }
+    }
+
+    //启动时自动登录
+    private void autoLogin() {
         final SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
         final String phone = sp.getString("UserPhone", null);
         final String password = sp.getString("password", null);
-        if(phone != null && !phone.isEmpty() && password != null && !password.isEmpty()){
-            new Thread(){
+        if(phone != null && !phone.isEmpty() && password != null && !password.isEmpty()) {
+            new Thread() {
                 @Override
                 public void run() {
                     try {
                         UserInfoBean info = new ElcModel(MainActivity.this).login(phone, password);
-                        if(info != null){
+                        if (info != null) {
                             SharedPreferences.Editor editor = sp.edit();
                             editor.putBoolean("isLogin", true)
                                     .putString("UserPhone", info.getUser_phone())
@@ -61,29 +82,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }.start();
-
-            //
-            if(savedInstanceState != null){
-                isFirstOpen = savedInstanceState.getBoolean("flag");
-                switch (savedInstanceState.getInt("selected")){
-                    case 0:
-                        findViewById(R.id.tag_home).performClick();
-                        break;
-                    case 1:
-                        findViewById(R.id.tag_shop).performClick();
-                        break;
-                    case 2:
-                        findViewById(R.id.tag_cart).performClick();
-                        break;
-                    case 3:
-                        findViewById(R.id.tag_my).performClick();
-                        break;
-                }
-            }
         }
     }
 
-    private void initView(){
+    private void initView() {
         tv_tagHome = (TextView) findViewById(R.id.tv_tagHome);
         tv_tagShop = (TextView) findViewById(R.id.tv_tagShop);
         tv_tagCart = (TextView) findViewById(R.id.tv_tagCart);
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tagClick("Home");
-                if(null == mFM.findFragmentByTag("Home")){
+                if (null == mFM.findFragmentByTag("Home")) {
                     mFM.beginTransaction().add(R.id.frm_whatPage, frgHome, "Home")
                             .commit();
                 }
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tagClick("Shop");
-                if(null == mFM.findFragmentByTag("Shop")){
+                if (null == mFM.findFragmentByTag("Shop")) {
                     mFM.beginTransaction().add(R.id.frm_whatPage, frgShop, "Shop")
                             .commit();
                 }
@@ -133,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tagClick("Cart");
-                if(null == mFM.findFragmentByTag("Cart")){
+                if (null == mFM.findFragmentByTag("Cart")) {
                     mFM.beginTransaction().add(R.id.frm_whatPage, frgCart, "Cart")
                             .commit();
                 }
@@ -144,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 tagClick("My");
-                if(null == mFM.findFragmentByTag("My")){
+                if (null == mFM.findFragmentByTag("My")) {
                     mFM.beginTransaction().add(R.id.frm_whatPage, frgMe, "My")
                             .commit();
                 }
@@ -153,10 +155,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void tagClick(String tag){
-        switch (tag){
+    public void tagClick(String tag) {
+        switch (tag) {
             case "Home":
-                tv_tagHome.setTextColor(Color.rgb(0xEA,0x4f, 0x38));
+                tv_tagHome.setTextColor(Color.rgb(0xEA, 0x4f, 0x38));
                 iv_tagHome.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.home_fill));
                 tv_tagShop.setTextColor(Color.BLACK);
                 iv_tagShop.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.shop));
@@ -168,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
             case "Shop":
                 tv_tagHome.setTextColor(Color.BLACK);
                 iv_tagHome.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.home));
-                tv_tagShop.setTextColor(Color.rgb(0xEA,0x4f, 0x38));
+                tv_tagShop.setTextColor(Color.rgb(0xEA, 0x4f, 0x38));
                 iv_tagShop.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.shop_fill));
                 tv_tagCart.setTextColor(Color.BLACK);
                 iv_tagCart.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.cart));
@@ -180,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 iv_tagHome.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.home));
                 tv_tagShop.setTextColor(Color.BLACK);
                 iv_tagShop.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.shop));
-                tv_tagCart.setTextColor(Color.rgb(0xEA,0x4f, 0x38));
+                tv_tagCart.setTextColor(Color.rgb(0xEA, 0x4f, 0x38));
                 iv_tagCart.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.cart_fill));
                 tv_tagMy.setTextColor(Color.BLACK);
                 iv_tagMy.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.my));
@@ -192,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 iv_tagShop.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.shop));
                 tv_tagCart.setTextColor(Color.BLACK);
                 iv_tagCart.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.cart));
-                tv_tagMy.setTextColor(Color.rgb(0xEA,0x4f, 0x38));
+                tv_tagMy.setTextColor(Color.rgb(0xEA, 0x4f, 0x38));
                 iv_tagMy.setImageBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.my_fill));
         }
     }
@@ -210,16 +212,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState) {
         outState.putBoolean("flag", isFirstOpen);
         int i = 5;
-        if(!frgHome.isHidden()){
-           i = 0;
-        }
-        else if(!frgShop.isHidden()){
+        if (!frgHome.isHidden()) {
+            i = 0;
+        } else if (!frgShop.isHidden()) {
             i = 1;
-        }
-        else if(!frgCart.isHidden()){
+        } else if (!frgCart.isHidden()) {
             i = 2;
-        }
-        else if(!frgMe.isHidden()){
+        } else if (!frgMe.isHidden()) {
             i = 3;
         }
         outState.putInt("selected", i);

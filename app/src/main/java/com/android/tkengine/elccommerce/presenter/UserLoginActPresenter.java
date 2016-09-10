@@ -11,6 +11,7 @@ import android.util.Log;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.UserInfoBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
+import com.android.tkengine.elccommerce.model.UserLoginActModel;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
@@ -19,71 +20,27 @@ import java.io.InputStream;
 public class UserLoginActPresenter {
 
     CallbackOfView mView;
-    ElcModel mModel;
+    UserLoginActModel mModel;
     Context mContext;
-
-    private MyHandler mHandler;
-
-    private static class MyHandler extends Handler {
-        final int MSG_LOGINOK = 0;
-        final int MSG_LOGINFAILED = 1;
-        final int MSG_NETWORKERROR = 2;
-
-        private CallbackOfView mView;
-
-        public MyHandler(CallbackOfView mView) {
-            this.mView = mView;
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_LOGINOK:
-                    mView.showToast("登录成功");
-                    UserInfoBean info = (UserInfoBean) msg.obj;
-                    mView.onLoginSuccess(info);
-                    break;
-                case MSG_LOGINFAILED:
-                    mView.showToast("用户名或密码错误");
-                    mView.onLoginFailed();
-                    break;
-                case MSG_NETWORKERROR:
-                    mView.showToast("网络连接错误");
-                    mView.onLoginFailed();
-                    break;
-            }
-            super.handleMessage(msg);
-        }
-    }
 
     //由UserLoginAcitivity实现的接口
     public interface CallbackOfView {
-        //登录成功后的操作
-        void onLoginSuccess(UserInfoBean info);
-
         //在Acitivity展示消息
         void showToast(String text);
-
         //在页面显示用户头像
         void setUserIcon(Bitmap icon);
-
         //显示正在登录
         void showLogining();
-        //登录错误
+        //登录成功
+        void onLoginSuccess();
+        //登录失败
         void onLoginFailed();
-    }
-
-    //ElcModel接口,接口操作不开启新线程访问网络,注意调用时在子线程调用
-    public interface CallbackOfModel {
-        //用户登录，登录成功返回true
-        UserInfoBean login(String userName, String password) throws Exception;
     }
 
     public UserLoginActPresenter(CallbackOfView mView, Context context) {
         this.mView = mView;
         this.mContext = context;
-        this.mModel = new ElcModel(mContext);
-        this.mHandler = new MyHandler(mView);
+        this.mModel = new UserLoginActModel(mContext);
     }
 
     public void login(final String userName, final String password) {
@@ -95,26 +52,25 @@ public class UserLoginActPresenter {
             mView.showToast("手机号码格式不正确");
             return;
         }
+
         mView.showLogining();
-        new Thread(){
+        mModel.login(userName, password, new UserLoginActModel.ResponseListener() {
             @Override
-            public void run() {
-                try {
-                    UserInfoBean info = mModel.login(userName, password);
-                    if(info != null){
-                        Message msg = mHandler.obtainMessage(mHandler.MSG_LOGINOK);
-                        msg .obj = info;
-                        mHandler.sendMessage(msg);
-                    }
-                    else{
-                        mHandler.sendEmptyMessage(mHandler.MSG_LOGINFAILED);
-                    }
-                } catch (Exception e) {
-                    mHandler.sendEmptyMessage(mHandler.MSG_NETWORKERROR);
+            public void onLoginResponse(boolean result) {
+                if(result){
+                    mView.onLoginSuccess();
+                }
+                else{
+                    mView.showToast("登录失败，帐号或密码错误");
+                    mView.onLoginFailed();
                 }
             }
-        }.start();
-
+            @Override
+            public void onError() {
+                mView.showToast("网络错误，请稍后尝试");
+                mView.onLoginFailed();
+            }
+        });
     }
 
     public void loadUserIcon(String userName) {
