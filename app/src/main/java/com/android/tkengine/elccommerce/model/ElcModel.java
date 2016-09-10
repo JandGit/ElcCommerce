@@ -427,11 +427,11 @@ public class ElcModel {
      * 发生网络错误时抛出异常
      */
 
-    public boolean addInCart(String productID, String num) throws Exception {
+    public boolean addInCart(String userId,String productID, String num) throws Exception {
         String productId = null;
         JSONObject product = new JSONObject();
         product.put("productId", productID);
-        product.put("userId", "402891815678675c015678717688014a");
+        product.put("userId", userId);
         product.put("num", num);
         productId = product.toString();
         String result = HttpUtil.sentHttpPost(Constants.SERVER_ADDCART, productId);
@@ -488,12 +488,11 @@ public class ElcModel {
      * 得到购物车列表，注意在非UI线程调用此接口
      * 发生网络错误时抛出异常
      */
-    public List<GoodsBean> getCartGoodsList() throws Exception {
+    public List<GoodsBean> getCartGoodsList(String userId) throws Exception {
         final List<GoodsBean> cartShopList = new ArrayList<>();
 
-        String userId = null;
         JSONObject user = new JSONObject();
-        user.put("userId", "402891815678675c015678717688014a");
+        user.put("userId",userId);
         userId = user.toString();
 
         String result = HttpUtil.sentHttpPost(Constants.SERVER_GET_CART, userId);
@@ -530,10 +529,10 @@ public class ElcModel {
      * 提交购物车信息（用户id,商品id以及对应的数量），在非UI线程调用此接口
      * 发生网络错误时抛出异常
      */
-    public boolean postCartInfo(List<GoodsBean>cartGoodsList,String postUrl) throws Exception {
+    public boolean postCartInfo(String userId,List<GoodsBean>cartGoodsList,String postUrl) throws Exception {
         JSONObject cartInfo = new JSONObject();
         //用户ID
-        cartInfo.put("userId","402891815678675c015678717688014a");
+        cartInfo.put("userId",userId);
         //各商品ID
         JSONArray productId = new JSONArray();
         for(GoodsBean cartGoodsItem:cartGoodsList){

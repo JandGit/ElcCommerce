@@ -169,8 +169,11 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
             @Override
             public void onClick(View view) {
                cartFrgPresenter.deleteItem(cartFrgPresenter.getSelectedItem());
+                cartSelectAll.setChecked(false);
             }
         });
+
+
 
 
     }
@@ -345,6 +348,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
         cartSelectAll.setChecked(false);
         cartPay.setText("结算");
         cartGoodsSum.setText("0.00");
+        cartSum = 0;
+        goodsNumber = 0;
         cartFrgPresenter = new CartFrgPresenter(cartView.getContext());
         cartRecyclerView.setAdapter(cartFrgPresenter);
     }

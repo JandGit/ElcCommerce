@@ -1,6 +1,7 @@
 package com.android.tkengine.elccommerce.presenter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
@@ -42,6 +43,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final int GET_SUCCESS = 3;
     private static final int POST_SUCCESS = 4;
     private static final int POST_FAIL = 5;
+    public String userId;    //用户id，用于网络请求
 
     private Handler handler = new Handler(){
 
@@ -61,6 +63,8 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public CartFrgPresenter(Context context) {
         this.context = context;
+        SharedPreferences sp = context.getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
+        userId = sp.getString("UserId", null);
         initCartGoodsList();
     }
 
@@ -117,7 +121,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             @Override
             public void run() {
                 try{
-                    cartGoodsList = new ElcModel(context).getCartGoodsList();
+                    cartGoodsList = new ElcModel(context).getCartGoodsList(userId);
                     Message message = new Message();
                     message.what = GET_SUCCESS;
                     handler.sendMessage(message);
@@ -201,17 +205,8 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void deleteItem( List<GoodsBean> selectedGoodsList){
-      /* new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if(selectedGoodsList != null){
-                    for(GoodsBean selectedGoodsItem:selectedGoodsList){
-                        cartGoodsList.remove(selectedGoodsItem);
-                    }
-                }
-                notifyDataSetChanged();
-            }
-        }).start();*/
+
+
         postCartGoodsList(selectedGoodsList,Constants.SERVER_DELETE_CARTGOODS);
         if(selectedGoodsList != null){
             for(GoodsBean selectedGoodsItem:selectedGoodsList){
@@ -224,16 +219,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public List<GoodsBean> getSelectedItem(){
         final List<GoodsBean> goodsSelectedList = new ArrayList<GoodsBean>();
-       /* new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for(GoodsBean cartGoodsItem:cartGoodsList){
-                    if(cartGoodsItem.getGoodsSelected()){
-                        goodsSelectedList.add(cartGoodsItem);
-                    }
-                }
-            }
-        }).start();*/
+
         for(GoodsBean cartGoodsItem:cartGoodsList){
             if(cartGoodsItem.getGoodsSelected()){
                 goodsSelectedList.add(cartGoodsItem);
@@ -279,7 +265,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             @Override
             public void run() {
                 try{
-                     boolean result = new ElcModel(context).postCartInfo(goodsList,postUrl);
+                     boolean result = new ElcModel(context).postCartInfo(userId,goodsList,postUrl);
                     if(result){
                         Message message = new Message();
                         message.what = POST_SUCCESS;
