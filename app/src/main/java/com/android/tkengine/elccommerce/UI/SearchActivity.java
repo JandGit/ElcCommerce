@@ -63,7 +63,18 @@ public class SearchActivity extends AppCompatActivity implements SearchPresenter
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        String type = getIntent().getStringExtra("type");
+        Log.d("type",type);
         initSearch();
+        if(! TextUtils.isEmpty(type)){
+            autoMatchSearch.setText(type);
+            tip.setVisibility(View.GONE);
+            priceSortType = "";
+            lowPrice = "0";
+            highPrice = "100000000";
+            searchPresenter.getGoodsList(type,"","0","100000000",1,8);
+        }
+
     }
 
 
