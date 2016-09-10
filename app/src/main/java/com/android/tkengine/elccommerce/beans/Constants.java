@@ -79,7 +79,7 @@ public class Constants {
     /**
      * 用户充值钱包接口
      * Json格式:
-     * user_idd = 用户ID,String
+     * user_id = 用户ID,String
      * user_password = 密码,String
      * charge_money = 重置金额, double
      * 返回数据：

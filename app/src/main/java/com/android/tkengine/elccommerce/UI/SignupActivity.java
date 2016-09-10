@@ -100,4 +100,8 @@ public class SignupActivity extends AppCompatActivity {
             }
         }.start();
     }
+
+    public void onBackClick(View view){
+        finish();
+    }
 }
