@@ -58,6 +58,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mView.getContext(),SearchActivity.class);
+                intent.putExtra("type","");
                 startActivity(intent);
             }
         });

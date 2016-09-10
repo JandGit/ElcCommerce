@@ -713,21 +713,5 @@ public class ElcModel {
     }
 
 
-    /**
-     * 充值金额时提交信息（用户user_id,用户密码user_password，充值金额charge_money）给服务器
-     * 发生网络错误时抛出异常
-     */
-    public boolean addMoneyAmount(String userId,String password,String money)throws Exception{
-        JSONObject chargeInfo = new JSONObject();
-        chargeInfo.put("user_id",userId);
-        chargeInfo.put("user_password",password);
-        chargeInfo.put("charge_money",money);
-        String result = HttpUtil.sentHttpPost(Constants.SERVER_POST_MONEY,chargeInfo.toString());
-        JSONObject resultJson = new JSONObject(result);
-        boolean postResult = resultJson.getBoolean("result");
-        return postResult;
-    }
-
-
 
 }

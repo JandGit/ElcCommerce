@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.UI.DisplayActivity;
+import com.android.tkengine.elccommerce.UI.SearchActivity;
 import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
@@ -214,6 +215,43 @@ public class HomeFrgPresenter {
         public void convert(ViewHolder holder, HomePageItemBean itemData) {
             switch (holder.getItemViewType()) {
                 case HomePageItemBean.TYPE_HEAD:
+                    /*View advise = holder.getView(R.id.ll_advise);*/
+                    View north = holder.getView(R.id.ll_north);
+                    View south = holder.getView(R.id.ll_south);
+                    View west = holder.getView(R.id.ll_west);
+                   /* advise.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(mContext, SearchActivity.class);
+                            intent.putExtra("type","专属推荐");
+                            mContext.startActivity(intent);
+                        }
+                    });*/
+                    north.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(mContext, SearchActivity.class);
+                            intent.putExtra("type","北果风光");
+                            mContext.startActivity(intent);
+                        }
+                    });
+                    south.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(mContext, SearchActivity.class);
+                            intent.putExtra("type","南果缤纷");
+                            mContext.startActivity(intent);
+                        }
+                    });
+                    west.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(mContext, SearchActivity.class);
+                            intent.putExtra("type","西域果情");
+                            mContext.startActivity(intent);
+                        }
+                    });
+
                     //设置首页广告
                     ViewPager vp = holder.getView(R.id.vp_homeAD);
                     final Bitmap[] imgs = (Bitmap[]) itemData.data.get("AD");
