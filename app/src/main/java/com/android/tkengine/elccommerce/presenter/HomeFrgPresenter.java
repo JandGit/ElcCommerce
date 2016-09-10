@@ -294,11 +294,13 @@ public class HomeFrgPresenter {
                     TextView tv_goodsName = holder.getView(R.id.tv_goodname1);
                     TextView tv_city = holder.getView(R.id.tv_city1);
                     TextView tv_sales = holder.getView(R.id.tv_goodSales1);
+                    TextView tv_goodPrice = holder.getView(R.id.tv_goodPrice1);
                     Picasso.with(mContext).load((String) itemData.data.get("icon1"))
                             .fit().error(R.mipmap.ic_launcher).into(iv_goodsIcon);
                     tv_goodsName.setText((String) itemData.data.get("name1"));
                     tv_city.setText(((String) itemData.data.get("city1")));
                     tv_sales.setText(((Integer) itemData.data.get("sales1")).toString());
+                    tv_goodPrice.setText(((Double)itemData.data.get("price1")).toString());
                     //设置首页商品点击事件
                     final String id1 = (String) itemData.data.get("id1");
                     View view1 = holder.getView(R.id.layout_itemleft);
@@ -316,11 +318,13 @@ public class HomeFrgPresenter {
                         tv_goodsName = holder.getView(R.id.tv_goodname2);
                         tv_city = holder.getView(R.id.tv_city2);
                         tv_sales = holder.getView(R.id.tv_goodSales2);
+                        tv_goodPrice = holder.getView(R.id.tv_goodPrice2);
                         Picasso.with(mContext).load((String) itemData.data.get("icon2"))
                                 .fit().into(iv_goodsIcon);
                         tv_goodsName.setText((String) itemData.data.get("name2"));
                         tv_city.setText(((String) itemData.data.get("city2")));
                         tv_sales.setText(((Integer) itemData.data.get("sales2")).toString());
+                        tv_goodPrice.setText(((Double)itemData.data.get("price2")).toString());
                         //设置首页商品点击事件
                         final String id2 = (String) itemData.data.get("id2");
                         View view2 = holder.getView(R.id.layout_itemright);
