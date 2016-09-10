@@ -21,8 +21,7 @@ public class Constants {
     /**
      * 后台服务器地址
      */
-    /*public static final String SERVER_ADDRESS = "http://qq84429406.eicp.net/TKBaas/";*/
-    public static final String SERVER_ADDRESS = "http://192.168.1.118:8080/TKBaas/";
+    public static final String SERVER_ADDRESS = "http://qq84429406.eicp.net/TKBaas/";
     /**
      * 后台用户登录接口
      */

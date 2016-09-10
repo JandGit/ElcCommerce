@@ -39,7 +39,6 @@ public class HomeFrgModel {
         imgs[2] = BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.advertise3);
         headitem.data.put("AD", imgs);
         allData.add(headitem);
-        allData.addAll(getGoods(0));
 
         return allData;
     }
