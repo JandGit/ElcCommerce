@@ -128,7 +128,7 @@ public class MeFragment extends Fragment {
             SharedPreferences sp = getActivity().getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
             tv_userName.setText(sp.getString("UserName", "null"));
             Picasso.with(getContext()).load(sp.getString("UserIcon", null)).fit()
-                    .error(R.drawable.frgme_userunlogin)
+                    .placeholder(R.drawable.frgme_userunlogin)
                     .into(iv_userIcon);
             TextView tv_money = (TextView) mView.findViewById(R.id.tv_money);
             tv_money.setText("余额" + sp.getFloat("UserMoney", 0));
