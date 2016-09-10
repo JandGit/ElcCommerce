@@ -101,7 +101,7 @@ public class HomeFrgModel {
             e.printStackTrace();
             return;
         }
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constants.SERVER_CHARGEMONEY, jsonParam,
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, Constants.SERVER_HOMEPAGE, jsonParam,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
@@ -153,6 +153,7 @@ public class HomeFrgModel {
                         callback.onError();
                     }
                 });
+        mQueue.add(request);
     }
 
 }

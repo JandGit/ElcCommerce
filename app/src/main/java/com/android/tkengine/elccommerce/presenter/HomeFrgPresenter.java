@@ -20,6 +20,7 @@ import com.android.tkengine.elccommerce.UI.DisplayActivity;
 import com.android.tkengine.elccommerce.UI.SearchActivity;
 import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
+import com.android.tkengine.elccommerce.model.HomeFrgModel;
 import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
 import com.android.tkengine.elccommerce.utils.MyIndicator;
 import com.squareup.picasso.Picasso;
@@ -30,13 +31,14 @@ import java.util.List;
 public class HomeFrgPresenter {
 
     CallbackOfHomefrg mView;
-    ElcModel mModel;
+    //ElcModel mModel;
+    HomeFrgModel mModel;
     Context mContext;
 
     //首页RecyclerView的数据源
-    List<HomePageItemBean> homePageData;
+    List<HomePageItemBean> mHomepageData;
     //首页Adapter
-    HomeAdapter homepageAdapter;
+    HomeAdapter mHomepageAdapter;
     //首页标记
     int nowType;
 
@@ -113,33 +115,24 @@ public class HomeFrgPresenter {
     public HomeFrgPresenter(CallbackOfHomefrg mView, Context context) {
         this.mView = mView;
         this.mContext = context;
-        this.mModel = new ElcModel(context);
+        //this.mModel = new ElcModel(context);
+        this.mModel = new HomeFrgModel(mContext);
         mHandler = new HomeFrgHandler(mView);
     }
 
     //加载首页
     public void initHomePage() {
         mView.showLoadingHomePage();
-        nowType = 1;
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    homePageData = mModel.getHomePageData();
-                    if (null == homePageData) {
-                        mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);
-                    } else {
-                        Message msg = mHandler.obtainMessage(mHandler.MSG_SETADAPTER);
-                        homepageAdapter = new HomeAdapter(homePageData, mContext);
-                        msg.obj = homepageAdapter;
-                        mHandler.sendMessage(msg);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);
-                }
-            }
-        }.start();
+        nowType = 0;
+        mHomepageData = mModel.getHomePageData();
+        if (null == mHomepageData) {
+            mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);
+        } else {
+            Message msg = mHandler.obtainMessage(mHandler.MSG_SETADAPTER);
+            mHomepageAdapter = new HomeAdapter(mHomepageData, mContext);
+            msg.obj = mHomepageAdapter;
+            mHandler.sendMessage(msg);
+        }
     }
 
     //加载首页更多数据
@@ -148,34 +141,30 @@ public class HomeFrgPresenter {
             return;
         }
         mView.showLoadingMore();
-
-        new Thread() {
+        mModel.getGoods(nowType++, new HomeFrgModel.ResponseListener(){
             @Override
-            public void run() {
-                try {
-                    List<HomePageItemBean> data = mModel.getGoods(nowType++);
-                    if (null != data) {
-                        Message msg = mHandler.obtainMessage(mHandler.MSG_ADD_MORE_DATA);
-                        msg.obj = data;
-                        mHandler.sendMessage(msg);
-                    }
-                    else {
-                        mHandler.sendEmptyMessage(mHandler.MSG_SHOW_NOMORE_DATA);
-                        nowType--;
-                    }
-                } catch (Exception e) {
-                    mHandler.sendEmptyMessage(mHandler.MSG_NETWORK_ERROR);
+            public void onResponse(List<HomePageItemBean> result) {
+                if (null != result) {
+                    Message msg = mHandler.obtainMessage(mHandler.MSG_ADD_MORE_DATA);
+                    msg.obj = result;
+                    mHandler.sendMessage(msg);
+                }
+                else {
+                    mHandler.sendEmptyMessage(mHandler.MSG_SHOW_NOMORE_DATA);
+                    nowType--;
                 }
             }
-        }.start();
-
+            @Override
+            public void onError() {
+                mHandler.sendEmptyMessage(mHandler.MSG_NETWORK_ERROR);
+            }
+        });
     }
 
     public static class HomeAdapter extends MultiItemAdapter<HomePageItemBean> {
 
         Context mContext;
         List<HomePageItemBean> mData;
-
 
         public void addItem(List<HomePageItemBean> data){
             for(HomePageItemBean temp : data){
