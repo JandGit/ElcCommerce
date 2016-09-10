@@ -14,8 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.UserInfoBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
+import com.android.tkengine.elccommerce.model.UserLoginActModel;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initView();
+        autoLogin();
 
         if (savedInstanceState != null) {
             isFirstOpen = savedInstanceState.getBoolean("flag");
@@ -55,33 +58,21 @@ public class MainActivity extends AppCompatActivity {
 
     //启动时自动登录
     private void autoLogin() {
-        final SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
+        final SharedPreferences sp = getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
         final String phone = sp.getString("UserPhone", null);
         final String password = sp.getString("password", null);
         if(phone != null && !phone.isEmpty() && password != null && !password.isEmpty()) {
-            new Thread() {
+            UserLoginActModel model = new UserLoginActModel(this);
+            model.login(phone, password, new UserLoginActModel.ResponseListener() {
                 @Override
-                public void run() {
-                    try {
-                        UserInfoBean info = new ElcModel(MainActivity.this).login(phone, password);
-                        if (info != null) {
-                            SharedPreferences.Editor editor = sp.edit();
-                            editor.putBoolean("isLogin", true)
-                                    .putString("UserPhone", info.getUser_phone())
-                                    .putString("password", password)
-                                    .putString("UserName", info.getUser_name())
-                                    .putString("UserId", info.getUserId())
-                                    .putString("UserIcon", info.getUser_picture_url())
-                                    .putString("UserSex", info.getUser_sex())
-                                    .putFloat("UserMoney", (float) info.getUser_money())
-                                    .apply();
-                            Log.i("main", "自动登录");
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                public void onLoginResponse(boolean result) {
+
                 }
-            }.start();
+                @Override
+                public void onError() {
+
+                }
+            });
         }
     }
 
@@ -228,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         //退出程序时，清空用户登录信息
-        SharedPreferences sp = getSharedPreferences("LoginInfo", Context.MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.putBoolean("isLogin", false).apply();
 

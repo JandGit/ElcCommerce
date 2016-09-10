@@ -170,20 +170,36 @@ public class PayActivity extends AppCompatActivity {
                             new HttpCallbackListener() {
                                 @Override
                                 public void onFinish(String result) {
-                                    if (result.equalsIgnoreCase("true")) {
+                                    if (result.equals("true")) {
                                         Log.d("true", "true");
                                         Intent intent = new Intent(PayActivity.this, OrderActivity.class);
                                         startActivity(intent);
-                                        Toast.makeText(PayActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(PayActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                        finish();
                                     }
                                     else{
-                                        Toast.makeText(PayActivity.this, "支付失败，请稍后再试", Toast.LENGTH_SHORT).show();
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(PayActivity.this, "账户余额不足", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                     }
                                 }
 
                                 @Override
                                 public void onError(Exception e) {
-                                    Toast.makeText(PayActivity.this, "支付失败，请稍后再试", Toast.LENGTH_SHORT).show();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(PayActivity.this, "支付失败，请稍后再试", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                             });
                     payPopupWindow.dismiss();

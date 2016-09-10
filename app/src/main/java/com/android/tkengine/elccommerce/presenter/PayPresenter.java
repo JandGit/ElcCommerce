@@ -36,8 +36,7 @@ public class PayPresenter {
     public List<GoodsBean> receiverGoodsList = new ArrayList<GoodsBean>();
     //商品价格精确度
     DecimalFormat decimalFormat = new DecimalFormat("0.00");
-   public ReceiverGoodsRecyclerViewAdapter receiverGoodsRecyclerViewAdapter = new ReceiverGoodsRecyclerViewAdapter();
-
+    public ReceiverGoodsRecyclerViewAdapter receiverGoodsRecyclerViewAdapter = new ReceiverGoodsRecyclerViewAdapter();
 
 
     public PayPresenter(Context context) {
@@ -45,10 +44,7 @@ public class PayPresenter {
     }
 
 
-
-
-
-    public class ReceiverGoodsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    public class ReceiverGoodsRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -76,46 +72,45 @@ public class PayPresenter {
             return receiverGoodsList.size();
         }
     }
-    class ReceiverGoodsViewHolder extends RecyclerView.ViewHolder{
+
+    class ReceiverGoodsViewHolder extends RecyclerView.ViewHolder {
         public TextView receiverGoodsName;
-        public   TextView receiverGoodsPrice;
+        public TextView receiverGoodsPrice;
         public ImageView receiverGoodsIcon;
         public EditText receiverGoodsNumber;
         public TextView receiverGoodsNumAdd;
-        public   TextView receiverGoodsNumReduce;
+        public TextView receiverGoodsNumReduce;
         public CheckBox receiverGoodsSelected;
 
         public ReceiverGoodsViewHolder(View view) {
             super(view);
-            receiverGoodsName = (TextView)view.findViewById(R.id.tv_cart_goodsName);
-            receiverGoodsPrice = (TextView)view.findViewById(R.id.tv_cart_goodsPrice);
-            receiverGoodsIcon = (ImageView)view.findViewById(R.id.iv_cart_goodsIcon);
+            receiverGoodsName = (TextView) view.findViewById(R.id.tv_cart_goodsName);
+            receiverGoodsPrice = (TextView) view.findViewById(R.id.tv_cart_goodsPrice);
+            receiverGoodsIcon = (ImageView) view.findViewById(R.id.iv_cart_goodsIcon);
             receiverGoodsNumber = (EditText) view.findViewById(R.id.et_cart_goodsNum);
-            receiverGoodsNumAdd = (TextView)view.findViewById(R.id.tv_cart_goodsAdd);
-            receiverGoodsNumReduce = (TextView)view.findViewById(R.id.tv_cart_goodsReduce);
-            receiverGoodsSelected = (CheckBox)view.findViewById(R.id.chk_cart_select);
+            receiverGoodsNumAdd = (TextView) view.findViewById(R.id.tv_cart_goodsAdd);
+            receiverGoodsNumReduce = (TextView) view.findViewById(R.id.tv_cart_goodsReduce);
+            receiverGoodsSelected = (CheckBox) view.findViewById(R.id.chk_cart_select);
         }
     }
 
 
     //提交订单,并将结果回调给PayActivity
     public void postOrder(final List<GoodsBean> receiverGoodsList, final String addressId, final String moneyAmount,
-                            final HttpCallbackListener callBacklistener){
+                          final HttpCallbackListener callBacklistener) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
+                try {
                     SharedPreferences sp = context.getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
                     String userId = sp.getString("UserId", null);
-                    boolean result = new ElcModel(context).postOrderInfo(userId,receiverGoodsList,addressId,moneyAmount);
-                    Log.d("result",String.valueOf(result));
-                    if(result){
-                        if(callBacklistener != null){
-                            callBacklistener.onFinish(String.valueOf(result));
-                        }
+                    boolean result = new ElcModel(context).postOrderInfo(userId, receiverGoodsList, addressId, moneyAmount);
+                    Log.d("result", String.valueOf(result));
+                    if (callBacklistener != null) {
+                        callBacklistener.onFinish(String.valueOf(result));
                     }
-                }catch (Exception e){
-                    if(callBacklistener == null){
+                } catch (Exception e) {
+                    if (callBacklistener == null) {
                         callBacklistener.onError(e);
                     }
                 }
@@ -126,14 +121,13 @@ public class PayPresenter {
     }
 
     //获取订单总额
-    public String getOrderCost(){
+    public String getOrderCost() {
         double totalCost = 0;
-        for(GoodsBean receiverGoodsItem:receiverGoodsList){
+        for (GoodsBean receiverGoodsItem : receiverGoodsList) {
             totalCost = totalCost + receiverGoodsItem.getGoodsPrice() * receiverGoodsItem.getGoodsNum();
         }
         return String.valueOf(decimalFormat.format(totalCost));
     }
-
 
 
 }
