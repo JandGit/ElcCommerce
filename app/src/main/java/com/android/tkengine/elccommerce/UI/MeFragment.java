@@ -94,7 +94,21 @@ public class MeFragment extends Fragment {
         mView.findViewById(R.id.rl_myWallet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MywalletActivity.class));
+                startActivity(new Intent(getActivity(), WalletActivity.class));
+            }
+        });
+
+        mView.findViewById(R.id.rl_myComment).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), MyCommentsActivity.class));
+            }
+        });
+
+        mView.findViewById(R.id.rl_myInfo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), PersonalinfoActivity.class));
             }
         });
 

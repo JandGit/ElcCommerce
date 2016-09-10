@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.UI.NewAddressActivity;
+import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.GoodsAddressBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.utils.CallbackActivityListener;
@@ -80,11 +81,13 @@ public class AddressPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     // //从服务器获取收货地址信息
     public void initGoodsAddressList(){
+        SharedPreferences sp = context.getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
+        final String userId = sp.getString("UserId", null);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
-                    goodsAddressList = new ElcModel(context).getGoodsAddressList();
+                    goodsAddressList = new ElcModel(context).getGoodsAddressList(userId);
                     Message message = new Message();
                     message.what = GET_ADDRESSINFO_SUCCESS;
                     handler.sendMessage(message);
@@ -151,7 +154,9 @@ public class AddressPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             public void onClick(View view) {
                 String addressId = goodsAddressList.get(holder.getPosition()).getId();
                 goodsAddressList.remove(holder.getPosition());
-                deleteAddress("2",addressId);
+                SharedPreferences sp = context.getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
+                String userId = sp.getString("UserId", null);
+                deleteAddress(userId,addressId);
             }
         });
 

@@ -1,6 +1,7 @@
 package com.android.tkengine.elccommerce.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -39,7 +40,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     //提示首页加载状态的页面
     TextView tv_tips;
     //搜索框
-    TextView toolbarSearch;
+    TextView toolbarSearch, toolbarCity;
 
 
     @Override
@@ -60,6 +61,16 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
                 startActivity(intent);
             }
         });
+        toolbarCity = (TextView) mView.findViewById(R.id.tv_toolbarUserLocation);
+        toolbarCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mView.getContext(),ProvinceInfoActivity.class);
+                intent.putExtra("type", "2");
+                startActivity(intent);
+            }
+        });
+
 
         //设置首页商品列表
         rv_mainView = (RecyclerView) mView.findViewById(R.id.rv_goodsList);
@@ -141,6 +152,8 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
         mSwipeRefreshLayout.setRefreshing(false);
         tv_tips.setVisibility(View.GONE);
         rv_mainView.setVisibility(View.VISIBLE);
+
+
     }
 
     @Override
@@ -157,5 +170,14 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
 
     public void addMoreItem(List<HomePageItemBean> data){
         mRvAdapter.addItem(data);
+    }
+
+    @Override
+    public void onResume(){     //获取用户新添加的地址（省/市/区）
+        super.onResume();
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("position",getContext().MODE_PRIVATE);
+        String address = sharedPreferences.getString("position","广州");
+        toolbarCity.setText(address);
+
     }
 }

@@ -1,5 +1,6 @@
 package com.android.tkengine.elccommerce.UI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.BitmapDrawable;
@@ -17,11 +18,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.presenter.AddressPresenter;
@@ -159,24 +162,31 @@ public class PayActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(PayActivity.this,"密码错误，请重新输入！",Toast.LENGTH_SHORT).show();
                 }*/
-                payPresenter.postOrder(payPresenter.receiverGoodsList, addressId, moneyAmount.getText().toString(),
-                        new HttpCallbackListener() {
-                            @Override
-                            public void onFinish(String result) {
-                                if (result.equalsIgnoreCase("true")) {
-                                    Log.d("true", "true");
-                                    Intent intent = new Intent(PayActivity.this, OrderActivity.class);
-                                    startActivity(intent);
-                                    Toast.makeText(PayActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                SharedPreferences sp = getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
+                String password = sp.getString("password", null);
+                Log.d("password",password);
+                if(payPassword.getText().toString().equals(password)){
+                    payPresenter.postOrder(payPresenter.receiverGoodsList, addressId, moneyAmount.getText().toString(),
+                            new HttpCallbackListener() {
+                                @Override
+                                public void onFinish(String result) {
+                                    if (result.equalsIgnoreCase("true")) {
+                                        Log.d("true", "true");
+                                        Intent intent = new Intent(PayActivity.this, OrderActivity.class);
+                                        startActivity(intent);
+                                        Toast.makeText(PayActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onError(Exception e) {
-                                Toast.makeText(PayActivity.this, "支付失败，请稍后再试", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                payPopupWindow.dismiss();
+                                @Override
+                                public void onError(Exception e) {
+                                    Toast.makeText(PayActivity.this, "支付失败，请稍后再试", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                    payPopupWindow.dismiss();
+                }else{
+                    Toast.makeText(PayActivity.this,"密码错误，请重新输入！",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

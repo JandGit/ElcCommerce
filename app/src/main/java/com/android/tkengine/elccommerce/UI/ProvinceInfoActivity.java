@@ -61,6 +61,7 @@ public class ProvinceInfoActivity extends AppCompatActivity {
                 String cityUrl = Constants.HTTP_GET_POSITIONINFO + dataList.get(i).getProvinceCode() + ".xml";
                 Intent intent = new Intent(ProvinceInfoActivity.this,CityInfoActivity.class);
                 intent.putExtra("cityUrl",cityUrl);
+                intent.putExtra("type",getIntent().getStringExtra("type"));
                 Log.d("cityUrl",cityUrl);
                 intent.putExtra("position",provinceList.get(i) + "|");
                 startActivity(intent);

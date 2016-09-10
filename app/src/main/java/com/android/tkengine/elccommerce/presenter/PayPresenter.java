@@ -2,6 +2,7 @@ package com.android.tkengine.elccommerce.presenter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.utils.HttpCallbackListener;
@@ -103,8 +105,9 @@ public class PayPresenter {
             @Override
             public void run() {
                 try{
-                    boolean result = new ElcModel(context).postOrderInfo(receiverGoodsList,addressId,moneyAmount);
-
+                    SharedPreferences sp = context.getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
+                    String userId = sp.getString("UserId", null);
+                    boolean result = new ElcModel(context).postOrderInfo(userId,receiverGoodsList,addressId,moneyAmount);
                     Log.d("result",String.valueOf(result));
                     if(result){
                         if(callBacklistener != null){

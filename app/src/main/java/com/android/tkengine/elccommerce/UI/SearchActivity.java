@@ -115,9 +115,9 @@ public class SearchActivity extends AppCompatActivity implements SearchPresenter
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {     //判断是否滑到底部
                 super.onScrollStateChanged(recyclerView, newState);
-                if (lastVisibleItem + 1 ==searchPresenter.goodsRecycleViewAdapter.getItemCount()) {
+                if (RecyclerView.SCROLL_STATE_IDLE == newState && lastVisibleItem + 1 ==searchPresenter.goodsRecycleViewAdapter.getItemCount()) {
                     currentPage = currentPage + 1;
-                    searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","0","100000000",currentPage,8);
+                    searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),priceSortType,lowPrice,highPrice,currentPage,8);
                 }
                 }
 
@@ -133,7 +133,10 @@ public class SearchActivity extends AppCompatActivity implements SearchPresenter
             @Override
             public void onClick(View view) {
               if(! TextUtils.isEmpty(autoMatchSearch.getText().toString())){
-                  tip.setVisibility(View.GONE);
+                     tip.setVisibility(View.GONE);
+                     priceSortType = "";
+                    lowPrice = "0";
+                    highPrice = "100000000";
                     searchPresenter.searchGoodsList.clear();
                     saveSearchRecord(autoMatchSearch.getText().toString());
                     searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","0","100000000",1,8);
@@ -149,10 +152,12 @@ public class SearchActivity extends AppCompatActivity implements SearchPresenter
         saleSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                priceSortType = "sales";
+                priceSortType = "sales desc";
                 searchPresenter.searchGoodsList.clear();
                 currentPage = 1;
-                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"sales","0","100000000",1,8);
+                lowPrice = "0";
+                highPrice = "100000000";
+                searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"sales desc","0","100000000",1,8);
                 cahngeTitleColor(1);
             }
         });
@@ -203,6 +208,8 @@ public class SearchActivity extends AppCompatActivity implements SearchPresenter
                 priceSortType = "price";
                 searchPresenter.searchGoodsList.clear();
                 currentPage = 1;
+                lowPrice = "0";
+                highPrice = "100000000";
                 searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"price","0","100000000",1,8);
                 priceSortPopupWindow.dismiss();
             }
@@ -213,6 +220,8 @@ public class SearchActivity extends AppCompatActivity implements SearchPresenter
                 priceSortType = "price desc";
                 searchPresenter.searchGoodsList.clear();
                 currentPage = 1;
+                lowPrice = "0";
+                highPrice = "100000000";
                 searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"price desc","0","100000000",1,8);
                 priceSortPopupWindow.dismiss();
             }
@@ -240,6 +249,9 @@ public class SearchActivity extends AppCompatActivity implements SearchPresenter
             public void onClick(View view) {
                 searchPresenter.searchGoodsList.clear();
                 currentPage = 1;
+                priceSortType = "";
+                lowPrice = "500";
+                highPrice = "100000000";
                 searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"","500","100000000",1,8);
                 priceSectionPopupWindow.dismiss();
             }
@@ -256,6 +268,7 @@ public class SearchActivity extends AppCompatActivity implements SearchPresenter
             highPrice = array[1];
             searchPresenter.searchGoodsList.clear();
             currentPage = 1;
+            priceSortType = "";
             searchPresenter.getGoodsList(autoMatchSearch.getText().toString(),"",lowPrice,highPrice,1,8);
             priceSectionPopupWindow.dismiss();
         }
@@ -312,7 +325,7 @@ public class SearchActivity extends AppCompatActivity implements SearchPresenter
         Intent intent = new Intent(this,DisplayActivity.class);
         intent.putExtra("productID",productId);
         Log.d("productId",productId);
-       /* startActivity(intent);*/
+        startActivity(intent);
     }
 
 

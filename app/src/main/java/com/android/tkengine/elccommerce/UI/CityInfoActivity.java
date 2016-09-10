@@ -1,6 +1,7 @@
 package com.android.tkengine.elccommerce.UI;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -61,10 +62,20 @@ public class CityInfoActivity  extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String cityUrl = Constants.HTTP_GET_POSITIONINFO + codeList.get(i) + ".xml";
-                Intent intent = new Intent(CityInfoActivity.this,CountyInfoActivity.class);
-                intent.putExtra("countyUrl",cityUrl);
-                intent.putExtra("position", position + cityList.get(i) + "|");
-                startActivity(intent);
+                switch (getIntent().getStringExtra("type")){
+                    case "1":
+                        Intent intent = new Intent(CityInfoActivity.this,CountyInfoActivity.class);
+                        intent.putExtra("countyUrl",cityUrl);
+                        intent.putExtra("position", position + cityList.get(i) + "|");
+                        startActivity(intent);
+                        break;
+                    case "2":
+                        SharedPreferences.Editor editor = getSharedPreferences("position",MODE_PRIVATE).edit();
+                        editor.putString("position",cityList.get(i));
+                        editor.commit();
+                        break;
+                }
+
                 finish();
 
             }

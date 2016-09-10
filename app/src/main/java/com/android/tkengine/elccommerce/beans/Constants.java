@@ -164,7 +164,11 @@ public class Constants {
      * 调用时向服务器Post数据:user_id = XXX
      */
     public static final String SERVER_POST_ORDER = SERVER_ADDRESS + "order/app/submitOrder";
-
+    /**
+     * 钱包充值
+     * 调用时向服务器Post数据:user_id = XXX
+     */
+    public static final String SERVER_POST_MONEY = SERVER_ADDRESS + "user/app/changeMoney";
 
 
 

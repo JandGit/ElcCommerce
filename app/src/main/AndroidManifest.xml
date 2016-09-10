@@ -31,7 +31,6 @@
         <activity android:name=".UI.StoreDetailsActivity" />
         <activity android:name=".UI.OrderActivity" />
         <activity android:name=".UI.PersonalinfoActivity" />
-        <activity android:name=".UI.MywalletActivity" />
         <activity android:name=".UI.SignupActivity" />
         <activity android:name=".UI.CategoryActivity"></activity>
         <activity android:name=".UI.AddressActivity"/>
@@ -39,6 +38,9 @@
         <activity android:name=".UI.ProvinceInfoActivity"/>
         <activity android:name=".UI.CityInfoActivity"/>
         <activity android:name=".UI.CountyInfoActivity"/>
+        <activity android:name=".UI.WalletActivity"/>
+        <activity android:name=".UI.AddWalletActivity"/>
+        <activity android:name=".UI.MyCommentsActivity"/>
 
     </application>
 

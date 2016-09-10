@@ -1,5 +1,6 @@
 package com.android.tkengine.elccommerce.UI;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -111,6 +112,7 @@ public class NewAddressActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(NewAddressActivity.this, ProvinceInfoActivity.class);
+                intent.putExtra("type", "1");
                 startActivity(intent);
             }
         });
@@ -141,13 +143,17 @@ public class NewAddressActivity extends AppCompatActivity {
                         addressBean.setDefaultAddress(setDefaultAddress.isChecked());
                         try {
                             if(handleType == 1){   //创建新地址
-                                if(new ElcModel(newAddressView.getContext()).postAddressInfo("2",addressBean)){
+                                SharedPreferences sp = getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
+                                String userId = sp.getString("UserId", null);
+                                if(new ElcModel(newAddressView.getContext()).postAddressInfo(userId,addressBean)){
                                     Message message = new Message();
                                     message.what = NEW_SUCCESS;
                                     handler.sendMessage(message);
                                 }
                             }else{    //编辑地址
-                                if(new ElcModel(newAddressView.getContext()).postEditAddressInfo("2",addressBean)){
+                                SharedPreferences sp = getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
+                                String userId = sp.getString("UserId", null);
+                                if(new ElcModel(newAddressView.getContext()).postEditAddressInfo(userId,addressBean)){
                                     Message message = new Message();
                                     message.what = EDIT_SUCCESS;
                                     handler.sendMessage(message);

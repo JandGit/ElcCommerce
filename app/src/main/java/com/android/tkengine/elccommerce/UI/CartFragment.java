@@ -271,6 +271,7 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     //点击各商品进入商品详情
     public void onItemViewClick(CartFrgPresenter.GoodsViewHolder holder){
         Intent intent = new Intent(cartView.getContext(),DisplayActivity.class);
+        intent.putExtra("productID",cartFrgPresenter.cartGoodsList.get(holder.getPosition()).getGoodsId());
         startActivity(intent);
 
     }

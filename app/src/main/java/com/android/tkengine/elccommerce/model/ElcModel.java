@@ -564,10 +564,10 @@ public class ElcModel {
      * 提交订单信息（用户id,收货人地址id，订单总额，商品goodsId以及商品id），在非UI线程调用此接口
      * 发生网络错误时抛出异常
      */
-    public boolean postOrderInfo(List<GoodsBean> receiverGoodsList,String addressId,String moneyAmount) throws Exception {
+    public boolean postOrderInfo(String userId,List<GoodsBean> receiverGoodsList,String addressId,String moneyAmount) throws Exception {
         JSONObject goodsInfo = new JSONObject();
         //用户ID
-        goodsInfo.put("userId","2");
+        goodsInfo.put("userId",userId);
         //收货人地址
         goodsInfo.put("addressId",addressId);
         //订单总额
@@ -589,6 +589,7 @@ public class ElcModel {
         }
         goodsInfo.put("proItemIds", ids);
         //发送到服务器
+        Log.d("json",goodsInfo.toString());
         String result = HttpUtil.sentHttpPost(Constants.SERVER_POST_ORDER, goodsInfo.toString());
         Log.d("json",result);
         JSONObject cartJson = new JSONObject(result);
@@ -600,9 +601,9 @@ public class ElcModel {
      * 获取收货地址
      * 发生网络错误时抛出异常
      */
-    public List<GoodsAddressBean.ResultBean> getGoodsAddressList()throws Exception{
+    public List<GoodsAddressBean.ResultBean> getGoodsAddressList(String userId)throws Exception{
         JSONObject json = new JSONObject();
-        json.put("userId", "2");
+        json.put("userId",userId);
         json.put("key","");
         json.put("currentPage","1");
         json.put("pageSize","30");
@@ -631,6 +632,7 @@ public class ElcModel {
         address.put("street",addressBean.getStreet());
         address.put("detailsAddress",addressBean.getDetailsAddress());
         address.put("defaultAddress",addressBean.isDefaultAddress());
+        Log.d("defaultAddress",String.valueOf(addressBean.isDefaultAddress()));
         info.put("address",address);
         String result = HttpUtil.sentHttpPost(Constants.SERVER_POST_NEWADDRESS,info.toString());
         JSONObject resultJson = new JSONObject(result);
@@ -700,13 +702,30 @@ public class ElcModel {
         searchInfo.put("currentPage",currentPage);
         searchInfo.put("pageSize",pageSize);
         Log.d("pageSize",String.valueOf(pageSize));
+        Log.d("search1",searchInfo.toString());
         String result = HttpUtil.sentHttpPost(Constants.SERVER_GET_GOODS,searchInfo.toString());
-        Log.d("search",result);
+        Log.d("search2",result);
         Gson gson = new Gson();
         SearchGoodsBean searchGoodsList = gson.fromJson(result,new TypeToken<SearchGoodsBean>(){}.getType());
         List<SearchGoodsBean.ProductListBean> resultList = searchGoodsList.getProduct_list();
         return resultList;
 
+    }
+
+
+    /**
+     * 充值金额时提交信息（用户user_id,用户密码user_password，充值金额charge_money）给服务器
+     * 发生网络错误时抛出异常
+     */
+    public boolean addMoneyAmount(String userId,String password,String money)throws Exception{
+        JSONObject chargeInfo = new JSONObject();
+        chargeInfo.put("user_id",userId);
+        chargeInfo.put("user_password",password);
+        chargeInfo.put("charge_money",money);
+        String result = HttpUtil.sentHttpPost(Constants.SERVER_POST_MONEY,chargeInfo.toString());
+        JSONObject resultJson = new JSONObject(result);
+        boolean postResult = resultJson.getBoolean("result");
+        return postResult;
     }
 
 
