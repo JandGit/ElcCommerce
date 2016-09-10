@@ -90,6 +90,14 @@ public class MeFragment extends Fragment {
             }
         });
 
+        //我的钱包
+        mView.findViewById(R.id.rl_myWallet).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MywalletActivity.class));
+            }
+        });
+
         return mView;
     }
 
@@ -108,6 +116,8 @@ public class MeFragment extends Fragment {
             Picasso.with(getContext()).load(sp.getString("UserIcon", null)).fit()
                     .error(R.drawable.frgme_userunlogin)
                     .into(iv_userIcon);
+            TextView tv_money = (TextView) mView.findViewById(R.id.tv_money);
+            tv_money.setText("余额" + sp.getFloat("UserMoney", 0));
         }
         else {
             tv_userName.setText("点击登录");

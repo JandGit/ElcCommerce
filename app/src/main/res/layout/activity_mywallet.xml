@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dividerColor"
     tools:context="com.android.tkengine.elccommerce.UI.MywalletActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/tb"
+        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="42dp">
         <RelativeLayout
@@ -38,4 +40,69 @@
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
+    <LinearLayout
+        android:id="@+id/l1"
+        android:layout_below="@+id/tb"
+        android:background="@color/colorWhite"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/money"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/colorBlack"
+            android:text="余额"
+            android:textSize="20sp"
+            android:id="@+id/tv_money" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/colorWhite"
+        android:layout_below="@id/l1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="充值"
+            android:textSize="20sp"
+            />
+
+        <EditText
+            android:layout_marginTop="80dp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="输入要充值的金额"
+            android:inputType="number"
+            android:ems="10"
+            />
+
+        <Button
+            android:layout_marginTop="20dp"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="充值"
+            android:background="@drawable/actorder_button"/>
+    </LinearLayout>
 </RelativeLayout>
