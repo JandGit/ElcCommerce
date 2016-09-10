@@ -82,6 +82,14 @@ public class MeFragment extends Fragment {
         mView.findViewById(R.id.unsentOrder).setOnClickListener(listener);
         mView.findViewById(R.id.unrecievedOrder).setOnClickListener(listener);
 
+        //收货地址管理点击事件
+        mView.findViewById(R.id.rl_myAddress).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), AddressActivity.class));
+            }
+        });
+
         return mView;
     }
 

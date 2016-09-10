@@ -296,7 +296,8 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:id="@+id/rl_myWallet">
                 <ImageView
                     android:id="@+id/iv1"
                     android:scaleType="centerCrop"
@@ -329,7 +330,8 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:id="@+id/rl_myComment">
                 <ImageView
                     android:id="@+id/iv2"
                     android:scaleType="centerCrop"
@@ -362,7 +364,8 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:id="@+id/rl_myAddress">
                 <ImageView
                     android:id="@+id/iv3"
                     android:scaleType="centerCrop"
@@ -395,7 +398,8 @@
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:id="@+id/rl_myInfo">
                 <ImageView
                     android:id="@+id/iv4"
                     android:scaleType="centerCrop"

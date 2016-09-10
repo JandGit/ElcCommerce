@@ -27,4 +27,5 @@ dependencies {
     compile files('libs/picasso-2.5.2.jar')
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/plexus-utils-3.0.22.jar')
+    compile files('libs/volly-1.0.11.jar')
 }
