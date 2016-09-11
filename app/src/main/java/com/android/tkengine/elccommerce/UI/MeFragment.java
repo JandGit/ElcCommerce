@@ -52,6 +52,7 @@ public class MeFragment extends Fragment {
             public void onClick(View view) {
                 if (!isUserLogined()) {
                     showToast("请先登录");
+                    return;
                 }
 
                 switch (view.getId()) {

@@ -266,7 +266,7 @@ public class OrderActPresenter {
                 btn_urge.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mModel.updateOrder(itemData.id, "unrecieved", new OrderActModel.ResponseListener() {
+                        mModel.updateOrder(itemData.id, "unreceived", new OrderActModel.ResponseListener() {
                             @Override
                             public void onResponse(OrderBean[] orders) {
                                 mView.updata();
