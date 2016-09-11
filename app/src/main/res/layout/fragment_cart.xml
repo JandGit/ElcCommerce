@@ -138,6 +138,12 @@
         android:layout_below="@id/cart_title"
         android:layout_above="@id/cart_footer">
 
+            <ViewStub
+                android:id="@+id/vs_badNetwork"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout="@layout/viewstub_network"/>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_cart_goodsList"
                 android:layout_width="match_parent"

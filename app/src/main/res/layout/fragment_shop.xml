@@ -31,7 +31,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="mat">
+        android:layout_height="30dp">
         <TextView
             android:id="@+id/store_list_add_all"
             android:background="@color/colorPrimary"
