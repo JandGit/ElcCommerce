@@ -47,7 +47,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
-            android:text="交易状态" />
+            android:text="待发货" />
     </RelativeLayout>
 
     <View
@@ -92,7 +92,7 @@
         android:background="@color/dividerColor" />
 
     <TextView
-        android:id="@+id/btn_comment"
+        android:id="@+id/btn_urge"
         android:gravity="center"
         android:layout_width="80dp"
         android:layout_height="30dp"
@@ -104,31 +104,31 @@
         android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/actorder_button"
-        android:text="评价" />
+        android:text="提醒发货" />
 
     <TextView
-        android:id="@+id/btn_delete"
+        android:id="@+id/btn_cancel"
         android:gravity="center"
         android:layout_width="80dp"
         android:layout_height="30dp"
-        android:layout_alignTop="@+id/btn_comment"
+        android:layout_alignTop="@+id/btn_urge"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@+id/btn_comment"
-        android:layout_toStartOf="@+id/btn_comment"
+        android:layout_toLeftOf="@+id/btn_urge"
+        android:layout_toStartOf="@+id/btn_urge"
         android:background="@drawable/actorder_button"
-        android:text="删除订单" />
+        android:text="取消订单" />
 
     <TextView
         android:id="@+id/btn_detail"
         android:gravity="center"
         android:layout_width="80dp"
         android:layout_height="30dp"
-        android:layout_alignTop="@+id/btn_delete"
+        android:layout_alignTop="@+id/btn_cancel"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="10dp"
-        android:layout_toLeftOf="@+id/btn_delete"
-        android:layout_toStartOf="@+id/btn_delete"
+        android:layout_toLeftOf="@+id/btn_cancel"
+        android:layout_toStartOf="@+id/btn_cancel"
         android:background="@drawable/actorder_button"
         android:text="查看详情" />
 </RelativeLayout>

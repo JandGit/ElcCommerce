@@ -89,7 +89,12 @@ public class MeFragment extends Fragment {
         mView.findViewById(R.id.rl_myAddress).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), AddressActivity.class));
+                if (isUserLogined()) {
+                    startActivity(new Intent(getActivity(), AddressActivity.class));
+                }
+                else{
+                    Toast.makeText(getContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -97,21 +102,36 @@ public class MeFragment extends Fragment {
         mView.findViewById(R.id.rl_myWallet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), WalletActivity.class));
+                if (isUserLogined()) {
+                    startActivity(new Intent(getActivity(), WalletActivity.class));
+                }
+                else{
+                    Toast.makeText(getContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         mView.findViewById(R.id.rl_myComment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MyCommentsActivity.class));
+                if (isUserLogined()) {
+                    startActivity(new Intent(getActivity(), MyCommentsActivity.class));
+                }
+                else{
+                    Toast.makeText(getContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         mView.findViewById(R.id.rl_myInfo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), PersonalinfoActivity.class));
+                if (isUserLogined()) {
+                    startActivity(new Intent(getActivity(), PersonalinfoActivity.class));
+                }
+                else{
+                    Toast.makeText(getContext(), "请先登录", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
