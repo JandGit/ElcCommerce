@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
     TextView tv_tips;
     //搜索框
     TextView toolbarSearch, toolbarCity;
+    LinearLayout toolbarLocation;
 
 
     @Override
@@ -63,7 +65,8 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
             }
         });
         toolbarCity = (TextView) mView.findViewById(R.id.tv_toolbarUserLocation);
-        toolbarCity.setOnClickListener(new View.OnClickListener() {
+        toolbarLocation = (LinearLayout) mView.findViewById(R.id.tv_toolbarLocation);
+        toolbarLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mView.getContext(),ProvinceInfoActivity.class);

@@ -12,4 +12,7 @@ public interface OnRecyclerViewItemClickListener {
     void onItemViewClick(CartFrgPresenter.GoodsViewHolder viewHolder);
     void onGroupCheckboxClick(CartFrgPresenter. StoreViewHolder viewHolder);
     void onGroupClick(CartFrgPresenter. StoreViewHolder viewHolder);
+    void showViewStub();
+    void showData();
+
 }

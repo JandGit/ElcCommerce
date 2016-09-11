@@ -43,6 +43,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final int GET_SUCCESS = 3;
     private static final int POST_SUCCESS = 4;
     private static final int POST_FAIL = 5;
+    private static final int GET_FAIL = 6;
     public String userId;    //用户id，用于网络请求
 
     private class MyHandler extends Handler{
@@ -50,9 +51,14 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             switch (msg.what){
                 case GET_SUCCESS:
                     notifyDataSetChanged();
+                    onRecyclerViewItemClickListener.showData();
                     break;
                 case POST_SUCCESS:
                     Log.d("ok","ok");
+                    break;
+                case GET_FAIL:
+                    onRecyclerViewItemClickListener.showViewStub();
+                    break;
                 default:
                     break;
             }
@@ -122,11 +128,17 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             public void run() {
                 try{
                     cartGoodsList = new ElcModel(context).getCartGoodsList(userId);
+                    if(cartGoodsList.size() == 0){
+
+                    }
                     Message message = new Message();
                     message.what = GET_SUCCESS;
                     handler.sendMessage(message);
                 }catch (Exception e){
-                    e.printStackTrace();
+                    Message message = new Message();
+                    message.what = GET_FAIL;
+                    handler.sendMessage(message);
+
                 }
             }
         }).start();

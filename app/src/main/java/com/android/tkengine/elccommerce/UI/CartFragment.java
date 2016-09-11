@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +60,9 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     //删除
     Button cartDelete;
     //网络状态不好时加载
-    ViewStub network;
+    ImageView networkUnconnected;
+    TextView tv_networkUnconnected;
+    SwipeRefreshLayout  refreshCartData;
 
 
     CartFrgPresenter cartFrgPresenter;
@@ -81,6 +84,17 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
         cartSelectAll = (CheckBox)cartView.findViewById(R.id.chk_cart_selectAll);
         cartGoodsSum = (TextView)cartView.findViewById(R.id.tv_cart_goodsSum);
         cartRecyclerView = (RecyclerView)cartView.findViewById(R.id.rv_cart_goodsList);
+        networkUnconnected = (ImageView) cartView.findViewById(R.id.iv_networkUnconnected);
+        tv_networkUnconnected = (TextView)cartView.findViewById(R.id.tv_networkUnconnected);
+        refreshCartData = (SwipeRefreshLayout) cartView.findViewById(R.id.cart_fresh);
+        refreshCartData.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                onResume();
+            }
+        });
+
+
 
 
         //初始化购物列表控件
@@ -292,6 +306,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     }
 
 
+
+
     //点击选择一组商品
     public void onGroupCheckboxClick(CartFrgPresenter.StoreViewHolder holder){
         if(holder.storeSelected.isChecked()){
@@ -338,6 +354,22 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
 
         }
     }
+
+    //网络状态不好时，点击再次加载数据
+    @Override
+    public void showViewStub() {
+        networkUnconnected.setVisibility(View.VISIBLE);
+        tv_networkUnconnected.setVisibility(View.VISIBLE);
+        refreshCartData.setRefreshing(false);
+    }
+
+    @Override
+    public void showData() {
+        networkUnconnected.setVisibility(View.GONE);
+        tv_networkUnconnected.setVisibility(View.GONE);
+        refreshCartData.setRefreshing(false);
+    }
+
 
     @Override
     public void onPause() {

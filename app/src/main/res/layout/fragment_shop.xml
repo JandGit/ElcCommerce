@@ -31,7 +31,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp">
+        android:layout_height="40dp">
         <TextView
             android:id="@+id/store_list_add_all"
             android:background="@color/colorPrimary"
@@ -63,31 +63,44 @@
         android:layout_height="1.0px"
         android:background="@android:color/darker_gray" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/shop_rlv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </android.support.v7.widget.RecyclerView>
-
-    <LinearLayout
-        android:layout_marginTop="170dp"
-        android:id="@+id/shop_nonet"
-        android:visibility="invisible"
-        android:orientation="vertical"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/store_fresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ImageView
-            android:layout_gravity="center"
-            android:src="@mipmap/nonet"
-            android:layout_width="80dp"
-            android:layout_height="80dp" />
-        <TextView
-            android:textSize="18sp"
-            android:text="下拉刷新"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            />
-    </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <ImageView
+                android:id="@+id/shop_networkUnconnected"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="140dp"
+                android:layout_gravity="center"
+                android:src="@mipmap/nonet"
+                android:visibility="gone"
+
+                />
+            <TextView
+                android:id="@+id/shop_tv_networkUnconnected"
+                android:layout_marginTop="290dp"
+                android:textSize="18sp"
+                android:text="下拉刷新"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/shop_rlv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+        </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>
