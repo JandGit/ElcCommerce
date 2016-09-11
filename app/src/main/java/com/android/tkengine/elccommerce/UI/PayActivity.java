@@ -173,6 +173,7 @@ public class PayActivity extends AppCompatActivity {
                                     if (result.equals("true")) {
                                         Log.d("true", "true");
                                         Intent intent = new Intent(PayActivity.this, OrderActivity.class);
+                                        intent.putExtra("flag",2);
                                         startActivity(intent);
                                         runOnUiThread(new Runnable() {
                                             @Override

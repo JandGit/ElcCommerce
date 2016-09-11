@@ -4,7 +4,6 @@ package com.android.tkengine.elccommerce.model;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.commentsBean;
@@ -56,9 +55,7 @@ public class ElcModel {
         jsonObject.put("phone_number", userPhone);
         jsonObject.put("user_password", password);
         String params = jsonObject.toString();
-        Log.i("Model:signUp", "向服务器发送数据：" + params);
         String result = HttpUtil.sentHttpPost(Constants.SERVER_SIGNUP, params);
-        Log.i("Model:signUp", "服务器返回：" + result);
         jsonObject = new JSONObject(result);
 
         return jsonObject.getBoolean("result");
@@ -96,13 +93,10 @@ public class ElcModel {
             default:
                 throw new Exception("错误的page参数");
         }
-        Log.i("ElcModel:", "向服务器:" + url + "发送POST请求，\n参数：" + params);
         String result = HttpUtil.sentHttpPost(url, params);
-        Log.i("ElcModel:", "服务器返回数据：" + result);
         if (result != null && !result.isEmpty()) {
             JSONObject jsonObject = new JSONObject(result);
             result = jsonObject.getJSONArray("result").toString();
-            Log.i("ElcModel:", "开始解析JSON：" + result);
             if (result != null && !result.isEmpty()) {
                 Gson gson = new Gson();
                 Type type = new TypeToken<OrderBean[]>(){}.getType();
@@ -122,9 +116,7 @@ public class ElcModel {
         jsonObject.put("old_password", oldpassword);
         jsonObject.put("new_password", newpassword);
         String params = jsonObject.toString();
-        Log.i("Model:setPassword", "向服务器发送数据：" + params);
         String result = HttpUtil.sentHttpPost(Constants.SERVER_CHANGE_PASSWORD, params);
-        Log.i("Model:setPassword", "服务器返回：" + result);
         jsonObject = new JSONObject(result);
 
         return jsonObject.getBoolean("result");
@@ -175,9 +167,7 @@ public class ElcModel {
         jsonObject.put("user_sex", sex);
         jsonObject.put("user_name", userName);
         String params = jsonObject.toString();
-        Log.i("Model:setUserInfo", "向服务器发送数据：" + params);
         String result = HttpUtil.sentHttpPost(Constants.SERVER_CHANGE_USERINFO, params);
-        Log.i("Model:setUserInfo", "服务器返回：" + result);
         jsonObject = new JSONObject(result);
 
         return jsonObject.getBoolean("result");
@@ -326,9 +316,7 @@ public class ElcModel {
         jsonObject = new JSONObject();
         jsonObject.put("user_id", userId);
         params = jsonObject.toString();
-        Log.i("mModel:", "发送请求：" + params);
         result = HttpUtil.sentHttpPost(Constants.SERVER_GETUSERINFO, params);
-        Log.i("mModel:", "服务器返回：" + result);
         jsonObject = new JSONObject(result);
         if (jsonObject.has("user_name")) {
             info.setUser_name(jsonObject.getString("user_name"));
@@ -359,9 +347,7 @@ public class ElcModel {
         jsonObject = new JSONObject();
         jsonObject.put("user_id", userId);
         params = jsonObject.toString();
-        Log.i("mModel:", "发送请求：" + params);
         result = HttpUtil.sentHttpPost(Constants.SERVER_GETUSERINFO, params);
-        Log.i("mModel:", "服务器返回：" + result);
         jsonObject = new JSONObject(result);
         if (jsonObject.has("user_name")) {
             info.setUser_name(jsonObject.getString("user_name"));
@@ -514,7 +500,6 @@ public class ElcModel {
         userId = user.toString();
 
         String result = HttpUtil.sentHttpPost(Constants.SERVER_GET_CART, userId);
-        Log.d("cartGet",result);
         JSONObject cartJson = new JSONObject(result);
         JSONArray storeArray = (JSONArray) cartJson.get("sellerItem");
         for (int i = 0; i < storeArray.length(); i++) {
@@ -556,7 +541,6 @@ public class ElcModel {
         for(GoodsBean cartGoodsItem:cartGoodsList){
             if(cartGoodsItem.getGoodsPrice() != 0){
                 productId.put(cartGoodsItem.getGoodsId());
-                Log.d("shop",cartGoodsItem.getGoodsId());
             }
         }
         cartInfo.put("productId", productId);
@@ -565,7 +549,6 @@ public class ElcModel {
         for(GoodsBean cartGoodsItem:cartGoodsList){
             if(cartGoodsItem.getGoodsPrice() != 0){
                 num.put(cartGoodsItem.getGoodsNum());
-                Log.d("shop",String.valueOf(cartGoodsItem.getGoodsNum()));
             }
         }
         cartInfo.put("num", num);
@@ -606,9 +589,7 @@ public class ElcModel {
         }
         goodsInfo.put("proItemIds", ids);
         //发送到服务器
-        Log.d("json",goodsInfo.toString());
         String result = HttpUtil.sentHttpPost(Constants.SERVER_POST_ORDER, goodsInfo.toString());
-        Log.d("json",result);
         JSONObject cartJson = new JSONObject(result);
         boolean postResult = cartJson.getBoolean("result");
         return postResult;
@@ -626,7 +607,6 @@ public class ElcModel {
         json.put("pageSize","30");
 
         String result = HttpUtil.sentHttpPost(Constants.SERVER_GET_ADDRESSINFO,json.toString());
-        Log.d("address",result);
         Gson gson = new Gson();
         GoodsAddressBean goodsAddressList = gson.fromJson(result,new TypeToken<GoodsAddressBean>(){}.getType());
         List<GoodsAddressBean.ResultBean> resultList = goodsAddressList.getResult();
@@ -649,12 +629,10 @@ public class ElcModel {
         address.put("street",addressBean.getStreet());
         address.put("detailsAddress",addressBean.getDetailsAddress());
         address.put("defaultAddress",addressBean.isDefaultAddress());
-        Log.d("defaultAddress",String.valueOf(addressBean.isDefaultAddress()));
         info.put("address",address);
         String result = HttpUtil.sentHttpPost(Constants.SERVER_POST_NEWADDRESS,info.toString());
         JSONObject resultJson = new JSONObject(result);
         boolean postResult = resultJson.getBoolean("result");
-        Log.d("newaddress",String.valueOf(postResult));
         return postResult;
 
     }
@@ -693,12 +671,10 @@ public class ElcModel {
         address.put("street",addressBean.getStreet());
         address.put("detailsAddress",addressBean.getDetailsAddress());
         address.put("defaultAddress",addressBean.isDefaultAddress());
-        Log.d("default",String.valueOf(addressBean.isDefaultAddress()));
         info.put("address",address);
         String result = HttpUtil.sentHttpPost(Constants.SERVER_POST_EDITADDRESS,info.toString());
         JSONObject resultJson = new JSONObject(result);
         boolean postResult = resultJson.getBoolean("result");
-        Log.d("newaddress",String.valueOf(postResult));
         return postResult;
 
     }
@@ -711,17 +687,11 @@ public class ElcModel {
         JSONObject searchInfo = new JSONObject();
         searchInfo.put("key",key);
         searchInfo.put("sort",sort);
-        Log.d("sort",sort);
         searchInfo.put("left",left);
-        Log.d("left",left);
         searchInfo.put("right",right);
-        Log.d("right",right);
         searchInfo.put("currentPage",currentPage);
         searchInfo.put("pageSize",pageSize);
-        Log.d("pageSize",String.valueOf(pageSize));
-        Log.d("search1",searchInfo.toString());
         String result = HttpUtil.sentHttpPost(Constants.SERVER_GET_GOODS,searchInfo.toString());
-        Log.d("search2",result);
         Gson gson = new Gson();
         SearchGoodsBean searchGoodsList = gson.fromJson(result,new TypeToken<SearchGoodsBean>(){}.getType());
         List<SearchGoodsBean.ProductListBean> resultList = searchGoodsList.getProduct_list();

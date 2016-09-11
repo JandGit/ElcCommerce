@@ -26,12 +26,14 @@
                 android:textColor="@color/colorWhite" />
 
             <ImageView
+                android:visibility="gone"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:layout_centerVertical="true"
                 android:src="@drawable/message" />
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/iv_frgMeConfig"
                 android:layout_width="22dp"
                 android:layout_height="22dp"

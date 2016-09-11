@@ -82,6 +82,8 @@
             <EditText
                 android:layout_marginLeft="5dp"
                 android:background="@color/colorLightGray"
+                android:inputType="numberDecimal"
+                android:imeOptions="actionDone"
                 android:layout_gravity="center_vertical"
                 android:textSize="15sp"
                 android:gravity="center"

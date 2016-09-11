@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     int goodsNumber;
     //购物车状态（编辑/完成）
     TextView cartStatus;
+    // 0表示完成状态，1表示编辑状态
+    public static int editStatus = 0;
     //不同购物车状态下页面底部对应的布局（结算/删除）
     RelativeLayout payLayout;
     RelativeLayout deleteLayout;
@@ -162,10 +165,12 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
                 String status = cartStatus.getText().toString();
                 if(status.equals("编辑")){
                     cartStatus.setText("完成");
+                    editStatus = 1;
                     payLayout.setVisibility(View.GONE);
                     deleteLayout.setVisibility(View.VISIBLE);
                 }else if(status.equals("完成")){
                     cartStatus.setText("编辑");
+                    editStatus = 0;
                     payLayout.setVisibility(View.VISIBLE);
                     deleteLayout.setVisibility(View.GONE);
                     for(GoodsBean cartGoodsItem:cartFrgPresenter.cartGoodsList){
@@ -295,6 +300,45 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
         startActivity(intent);
 
     }
+
+    //点击确定按钮修改购物车的商品数量
+    /*@Override
+    public void onNumberChangeSuccessful(CartFrgPresenter.GoodsViewHolder holder) {
+        if(TextUtils.isEmpty(holder.goodsNumber.getText().toString())){
+            Toast.makeText(cartView.getContext(),"非法输入",Toast.LENGTH_SHORT).show();
+            holder.goodsNumber.setText(String.valueOf(cartFrgPresenter.cartGoodsList.get(holder.getPosition()).getGoodsNum()));
+            holder.goodsNumber.setSelection((String.valueOf(cartFrgPresenter.cartGoodsList.get(holder.getPosition()).getGoodsNum())).length());
+        }else{
+            if((holder.goodsNumber.getText().toString().contains("."))){
+                Toast.makeText(cartView.getContext(),"非法数据",Toast.LENGTH_SHORT).show();
+                holder.goodsNumber.setText(String.valueOf(cartFrgPresenter.cartGoodsList.get(holder.getPosition()).getGoodsNum()));
+                holder.goodsNumber.setSelection((String.valueOf(cartFrgPresenter.cartGoodsList.get(holder.getPosition()).getGoodsNum())).length());
+            }else{
+                if(Integer.parseInt(holder.goodsNumber.getText().toString()) < 1){
+                    Toast.makeText(cartView.getContext(),"非法数据",Toast.LENGTH_SHORT).show();
+                    holder.goodsNumber.setText(String.valueOf(cartFrgPresenter.cartGoodsList.get(holder.getPosition()).getGoodsNum()));
+                    holder.goodsNumber.setSelection((String.valueOf(cartFrgPresenter.cartGoodsList.get(holder.getPosition()).getGoodsNum())).length());
+                }else{
+                    if(holder.goodsSelected.isChecked()){
+                        cartSum = cartSum - Double.parseDouble(holder.goodsPrice.getText().toString()) * cartFrgPresenter.cartGoodsList.get(holder.getPosition()).getGoodsNum() +
+                                Double.parseDouble(holder.goodsPrice.getText().toString()) * Integer.parseInt(holder.goodsNumber.getText().toString());
+                        cartGoodsSum.setText(String.valueOf(decimalFormat.format(cartSum)));
+                        goodsNumber = goodsNumber - cartFrgPresenter.cartGoodsList.get(holder.getPosition()).getGoodsNum() + Integer.parseInt(holder.goodsNumber.getText().toString());
+                        cartPay.setText("结算（"+String.valueOf(goodsNumber) +"）");
+                    }
+                    cartFrgPresenter.cartGoodsList.get(holder.getPosition()).setGoodsNum(Integer.parseInt(holder.goodsNumber.getText().toString()));
+                }
+            }
+        }
+
+    }
+
+    //点击其他按钮修改购物车的商品数量
+    @Override
+    public void onNumberChangeFail(CartFrgPresenter.GoodsViewHolder holder) {
+        holder.goodsNumber.setText(String.valueOf(cartFrgPresenter.cartGoodsList.get(holder.getPosition()).getGoodsNum()));
+        holder.goodsNumber.setSelection((String.valueOf(cartFrgPresenter.cartGoodsList.get(holder.getPosition()).getGoodsNum())).length());
+    }*/
 
     //点击商店进入店铺
     public void onGroupClick(CartFrgPresenter.StoreViewHolder holder){

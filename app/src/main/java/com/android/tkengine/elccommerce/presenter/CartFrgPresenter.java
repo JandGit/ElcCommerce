@@ -6,9 +6,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
+import com.android.tkengine.elccommerce.UI.CartFragment;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.GoodsBean;
 import com.android.tkengine.elccommerce.model.ElcModel;
@@ -57,6 +60,10 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     Log.d("ok","ok");
                     break;
                 case GET_FAIL:
+                    if(cartGoodsList != null){
+                        cartGoodsList.clear();
+                    }
+                    notifyDataSetChanged();
                     onRecyclerViewItemClickListener.showViewStub();
                     break;
                 default:
@@ -93,6 +100,8 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
             Picasso.with(context).load(cartGoodsItem.getGoodsIcon()).fit().into(((GoodsViewHolder) holder).goodsIcon);
             ((GoodsViewHolder) holder).goodsPrice.setText(String.valueOf(cartGoodsItem.getGoodsPrice()));
             ((GoodsViewHolder) holder).goodsNumber.setText(String.valueOf(cartGoodsItem.getGoodsNum()));
+            ((GoodsViewHolder) holder).goodsNumber.setFocusable(false);
+            ((GoodsViewHolder) holder).goodsNumber.setSelection(String.valueOf(cartGoodsItem.getGoodsNum()).length());
             ((GoodsViewHolder) holder).goodsSelected.setChecked(cartGoodsItem.getGoodsSelected());
             setOnListtener((GoodsViewHolder) holder);
             holder.itemView.setTag(position);
@@ -177,6 +186,24 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
 
+            //判断是否为编辑状态
+           /* if(CartFragment.editStatus == 0){
+                holder.goodsNumber.setFocusable(false);
+            }else{
+                holder.goodsNumber.setFocusable(true);
+                holder.goodsNumber.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                        if (actionId== EditorInfo.IME_ACTION_DONE || (keyEvent != null && keyEvent.getKeyCode()== KeyEvent.KEYCODE_ENTER)){
+                            onRecyclerViewItemClickListener.onNumberChangeSuccessful(holder);
+                        }else{
+                            onRecyclerViewItemClickListener.onNumberChangeFail(holder);
+                        }
+                        return false;
+                    }
+                });
+            }*/
+
     }
 
     protected void setOnGroupListner(final StoreViewHolder holder){
@@ -217,7 +244,6 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void deleteItem( List<GoodsBean> selectedGoodsList){
-
 
         postCartGoodsList(selectedGoodsList,Constants.SERVER_DELETE_CARTGOODS);
         if(selectedGoodsList != null){
