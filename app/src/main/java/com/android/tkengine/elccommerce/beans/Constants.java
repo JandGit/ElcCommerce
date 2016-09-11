@@ -23,6 +23,14 @@ public class Constants {
      */
     public static final String SERVER_ADDRESS = "http://qq84429406.eicp.net/TKBaas/";
     //public static final String SERVER_ADDRESS = "http://192.168.1.118:8080/TKBaas/";
+
+    /**
+     * 更新订单状态
+     * 发送：{"id":订单ID, "state":状态}
+     * 返回：{result:boolean}
+     */
+    public static final String SERVER_ADDRESS_UPDATEORDER = SERVER_ADDRESS + "order/app/updateOrderParam";
+
     /**
      * 后台用户登录接口
      */
@@ -66,6 +74,11 @@ public class Constants {
      * 获取商店列表
      */
     public static final String SERVER_STORE = SERVER_ADDRESS + "seller/app/queryList";
+
+    /**
+     * 提交评论
+     */
+    public static final String POST_COMMENTS = SERVER_ADDRESS + "comment/app/update";
 
     /**
      * 订单接口

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dividerColor"
+    android:orientation="vertical"
+    tools:context="com.android.tkengine.elccommerce.UI.OrderDetailActivity">
+
+    <RelativeLayout
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/orderDetail"
+            android:textColor="@color/colorBlack" />
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:onClick="onBackClick"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/backarrow" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_receiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收货人：XXX"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/colorBlack"/>
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="收货地址:XXXXXXXXXXX"
+            android:layout_below="@+id/tv_receiver"
+            android:layout_alignLeft="@+id/tv_receiver"
+            android:layout_alignStart="@+id/tv_receiver"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/colorBlack"/>
+
+        <TextView
+            android:id="@+id/tv_orderTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下单时间"
+            android:layout_below="@+id/tv_address"
+            android:layout_alignLeft="@+id/tv_address"
+            android:layout_alignStart="@+id/tv_address"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/colorBlack"/>
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="订单状态"
+            android:layout_below="@+id/tv_orderTime"
+            android:layout_alignLeft="@+id/tv_orderTime"
+            android:layout_alignStart="@+id/tv_orderTime"
+            android:layout_marginTop="15dp"
+            android:textColor="@color/colorBlack"/>
+
+        <TextView
+            android:id="@+id/tv_orderId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="订单Id"
+            android:layout_below="@+id/tv_status"
+            android:layout_alignLeft="@+id/tv_status"
+            android:layout_alignStart="@+id/tv_status"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/colorBlack"/>
+    </RelativeLayout>
+</LinearLayout>
