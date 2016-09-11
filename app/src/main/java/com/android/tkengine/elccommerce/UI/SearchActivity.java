@@ -41,6 +41,7 @@ public class SearchActivity extends AppCompatActivity implements SearchPresenter
 
     private int currentPage = 1;   //当前页，用于从服务器加载搜索结果
     public int lastVisibleItem = 0;  //判断是否滑到底部，加载更多数据
+    private ImageView back;
     private View searchView;
     private ArrayAdapter<String> searchAdapter;
     private AutoCompleteTextView autoMatchSearch;    //自动匹配历史记录
@@ -68,6 +69,7 @@ public class SearchActivity extends AppCompatActivity implements SearchPresenter
         initSearch();
         if(! TextUtils.isEmpty(type)){
             autoMatchSearch.setText(type);
+            autoMatchSearch.setSelection(autoMatchSearch.getText().length());
             tip.setVisibility(View.GONE);
             priceSortType = "";
             lowPrice = "0";
@@ -89,9 +91,18 @@ public class SearchActivity extends AppCompatActivity implements SearchPresenter
         // 用逗号分割内容返回数组
         historyRecord = history.split(",");
 
+        back = (ImageView) findViewById(R.id.search_back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
 
         //搜索框
         autoMatchSearch = (AutoCompleteTextView)findViewById(R.id.autotv_search);
+        autoMatchSearch.setSelection(autoMatchSearch.getText().length());
         search = (TextView)findViewById(R.id.btn_search);
         searchAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,historyRecord);
         autoMatchSearch.setAdapter(searchAdapter);
