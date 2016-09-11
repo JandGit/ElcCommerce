@@ -143,14 +143,15 @@ public class HomeFrgPresenter {
                 if (null != result) {
                     mHomepageAdapter.removeLastItem();
                     mHomepageAdapter.addItem(result);
-                    mView.stopLoading();
                 }
+                mView.stopLoading();
                 isLoading = false;
             }
             @Override
             public void onError() {
                 mHomepageAdapter.removeLastItem();
                 mView.showToast("网络访问失败，请重试");
+                mView.stopLoading();
                 isLoading = false;
                 nowType--;
             }
