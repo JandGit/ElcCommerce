@@ -441,6 +441,24 @@ public class ElcModel {
     }
 
     /**
+     * 提交评论，注意在非UI线程调用此接口
+     * 发生网络错误时抛出异常
+     */
+
+    public boolean postEvaluation(String Id, String content, String grade) throws Exception {
+        String productId = null;
+        JSONObject product = new JSONObject();
+        product.put("id", Id);
+        product.put("comment", content);
+        product.put("grade", grade);
+        productId = product.toString();
+        String result = HttpUtil.sentHttpPost(Constants.POST_COMMENTS, productId);
+        JSONObject addCartResult = new JSONObject(result);
+        boolean callback= addCartResult.getBoolean("result");
+        return callback;
+    }
+
+    /**
      * 得到商铺信息，注意在非UI线程调用此接口
      * 发生网络错误时抛出异常
      */

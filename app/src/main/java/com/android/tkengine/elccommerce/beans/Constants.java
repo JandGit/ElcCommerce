@@ -68,6 +68,11 @@ public class Constants {
     public static final String SERVER_STORE = SERVER_ADDRESS + "seller/app/queryList";
 
     /**
+     * 提交评论
+     */
+    public static final String POST_COMMENTS = SERVER_ADDRESS + "comment/app/update";
+
+    /**
      * 订单接口
      * 访问参数json数据格式,{"userId":?, "currentPage":?, "pageSize":?}
      */
