@@ -13,8 +13,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.UI.DisplayActivity;
 import com.android.tkengine.elccommerce.UI.OrderDetailActivity;
@@ -25,7 +23,6 @@ import com.android.tkengine.elccommerce.beans.OrderBean;
 import com.android.tkengine.elccommerce.model.OrderActModel;
 import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,15 +35,17 @@ public class OrderActPresenter {
 
     public interface CallbackOfView{
         //当前页面显示正在读取数据
-        void showNowLoading();
+        void showNowLoading(int position);
         //网络连接错误
-        void showLoadingFailed();
+        void showLoadingFailed(int position);
         //当前页面无数据
-        void showNodata();
+        void showNodata(int position);
         //页面加载成功
-        void onLoadingSuccess();
+        void onLoadingSuccess(int position);
         //更新当前页面
-        void updata();
+        void updata(int position);
+        //显示toast
+        void showToast(String str);
     }
 
     CallbackOfView mView;
@@ -63,40 +62,49 @@ public class OrderActPresenter {
      * 读取指定订单页面的内容，读取完成后设置RecyclerView
      * @param page 0为全部，1为待付款，2为待发货，3为待收货，4为待评价
      */
-    public void setPage(final RecyclerView view, int page){
-        mView.showNowLoading();
+    public void setPage(final RecyclerView view, final int page){
+        mView.showNowLoading(page);
         SharedPreferences sp = mContext.getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
         final String userId = sp.getString("UserId", null);
         mModel.getOrder(userId, page, 1, new OrderActModel.ResponseListener() {
             @Override
             public void onResponse(OrderBean[] orders) {
+                if(null == mView){
+                    return;
+                }
                 if(0 == orders.length){
-                    mView.showNodata();
+                    mView.showNodata(page);
                 }
                 else{
                     List<OrderBean> data = Arrays.asList(orders);
-                    MultiItemAdapter<OrderBean> adapter = new OrderAdapter(data, mContext);
+                    MultiItemAdapter<OrderBean> adapter = new OrderAdapter(data, mContext, page);
                     view.setAdapter(adapter);
-                    mView.onLoadingSuccess();
+                    mView.onLoadingSuccess(page);
                 }
             }
 
             @Override
             public void onError() {
-                mView.showLoadingFailed();
+                if(null == mView){
+                    return;
+                }
+                mView.showLoadingFailed(page);
             }
         });
     }
 
     public class OrderAdapter extends MultiItemAdapter<OrderBean>{
 
-        public OrderAdapter(final List<OrderBean> mData, final Context mContext) {
+        final int mPage;
+
+        public OrderAdapter(final List<OrderBean> mData, final Context mContext, int page) {
+
             super(mData, mContext, new MultiItemSupport() {
                 @Override
                 public int getViewItemType(int position) {
                     String status = mData.get(position).state;
                     if(null == status){
-                        Log.e(TAG, "未预料的订单状态！status = " + status);
+                        Log.e(TAG, "未预料的订单状态！status = ");
                         return 0;
                     }
                     switch (status){
@@ -113,7 +121,6 @@ public class OrderActPresenter {
                             return 0;
                     }
                 }
-
                 @Override
                 public int getViewItemLayoutId(int viewType) {
                     switch (viewType){
@@ -130,12 +137,13 @@ public class OrderActPresenter {
                     }
                 }
             });
+
+            this.mPage = page;
         }
 
         @Override
         public void convert(ViewHolder holder, final OrderBean itemData) {
             TextView tv_shopName = holder.getView(R.id.tv_shopName);
-            TextView tv_state = holder.getView(R.id.tv_state);
             ListView lv = holder.getView(R.id.lv_orderProitems);
             TextView tv_sum = holder.getView(R.id.tv_sum);
 
@@ -247,13 +255,13 @@ public class OrderActPresenter {
                 btn_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(mContext, "取消订单", Toast.LENGTH_SHORT).show();
+                        mView.showToast("取消订单");
                     }
                 });
                 btn_pay.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(mContext, "付款", Toast.LENGTH_SHORT).show();
+                        mView.showToast("付款");
                     }
                 });
             }
@@ -261,7 +269,7 @@ public class OrderActPresenter {
                 btn_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(mContext, "取消订单", Toast.LENGTH_SHORT).show();
+                        mView.showToast("取消订单");
                     }
                 });
                 btn_urge.setOnClickListener(new View.OnClickListener() {
@@ -270,11 +278,17 @@ public class OrderActPresenter {
                         mModel.updateOrder(itemData.id, "unreceived", new OrderActModel.ResponseListener() {
                             @Override
                             public void onResponse(OrderBean[] orders) {
-                                mView.updata();
+                                if(null == mView){
+                                    return;
+                                }
+                                mView.updata(mPage);
                             }
                             @Override
                             public void onError() {
-                                Toast.makeText(mContext, "网络错误，请稍后再试", Toast.LENGTH_SHORT).show();
+                                if(null == mView){
+                                    return;
+                                }
+                                mView.showToast("网络错误，请稍后再试");
                             }
                         });
                     }
@@ -284,7 +298,7 @@ public class OrderActPresenter {
                 btn_checkSending.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(mContext, "查看物流", Toast.LENGTH_SHORT).show();
+                        mView.showToast("查看物流");
                     }
                 });
                 btn_receive.setOnClickListener(new View.OnClickListener() {
@@ -293,11 +307,17 @@ public class OrderActPresenter {
                         mModel.updateOrder(itemData.id, "uncomment", new OrderActModel.ResponseListener() {
                             @Override
                             public void onResponse(OrderBean[] orders) {
-                                mView.updata();
+                                if(null == mView){
+                                    return;
+                                }
+                                mView.updata(mPage);
                             }
                             @Override
                             public void onError() {
-                                Toast.makeText(mContext, "网络错误，请稍后再试", Toast.LENGTH_SHORT).show();
+                                if(null == mView){
+                                    return;
+                                }
+                                mView.showToast("网络错误，请稍候再试");
                             }
                         });
                     }
@@ -315,7 +335,7 @@ public class OrderActPresenter {
                 btn_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(mContext, "删除", Toast.LENGTH_SHORT).show();
+                        mView.showToast("删除订单");
                     }
                 });
             }

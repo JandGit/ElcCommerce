@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -14,22 +13,15 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.tkengine.elccommerce.R;
-import com.android.tkengine.elccommerce.beans.HomePageItemBean;
 import com.android.tkengine.elccommerce.presenter.HomeFrgPresenter;
-import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
-
-import java.util.List;
 
 public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackOfHomefrg{
 
     //本页面的View对象
     View mView;
     //主页面RecyclerView
-    RecyclerView rv_mainView;
-    //RecyclerViewAdapter
-    HomeFrgPresenter.HomeAdapter mRvAdapter;
+    RecyclerView mRv;
     //标题栏toolbar
     Toolbar mToolbar;
     //下拉刷新
@@ -75,105 +67,64 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
             }
         });
 
-
-        //设置首页商品列表
-        rv_mainView = (RecyclerView) mView.findViewById(R.id.rv_goodsList);
-        rv_mainView.setLayoutManager(new LinearLayoutManager(getContext()));
-        rv_mainView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            int lastVisibleItem = 0;
-            LinearLayoutManager llManager = (LinearLayoutManager) rv_mainView.getLayoutManager();
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                lastVisibleItem = llManager.findLastVisibleItemPosition();
-                super.onScrolled(recyclerView, dx, dy);
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if(RecyclerView.SCROLL_STATE_IDLE == newState && mRvAdapter.getItemCount() - 1 == lastVisibleItem
-                        && !mSwipeRefreshLayout.isRefreshing()){
-                    mPresenter.loadMoreOnHomePage();
-                }
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
-
-        tv_tips = (TextView) mView.findViewById(R.id.tv_frghome_tips);
-
+        mRv = (RecyclerView) mView.findViewById(R.id.rv_goodsList);
+        mPresenter = new HomeFrgPresenter(this, getContext());
+        //设置下拉刷新
         mSwipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipRefresh_main);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.initHomePage();
+                mPresenter.controlRecyclerView(mRv);
             }
         });
-
         //设置网络错误重新加载按钮
+        tv_tips = (TextView) mView.findViewById(R.id.tv_frghome_tips);
         tv_tips.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!mSwipeRefreshLayout.isRefreshing()){
-                    mPresenter.initHomePage();
+                    mPresenter.controlRecyclerView(mRv);
                 }
             }
         });
-
-        mToast = Toast.makeText(getContext(), null, Toast.LENGTH_SHORT);
-
-        mPresenter = new HomeFrgPresenter(this, getContext());
-        mPresenter.initHomePage();
+        mPresenter.controlRecyclerView(mRv);
     }
 
-    @Override
-    public void setRvAdapter(RecyclerView.Adapter adapter) {
-        mRvAdapter = (HomeFrgPresenter.HomeAdapter) adapter;
-        rv_mainView.setAdapter(adapter);
-    }
-
-    @Override
-    public void showLoadingHomePage() {
-        mSwipeRefreshLayout.setRefreshing(true);
-        rv_mainView.setVisibility(View.INVISIBLE);
-        tv_tips.setText("正在努力加载......");
-        tv_tips.setVisibility(View.VISIBLE);
-        tv_tips.setClickable(false);
-    }
-
-    @Override
-    public void showLoadingfailed() {
-        mSwipeRefreshLayout.setRefreshing(false);
-        tv_tips.setText("首页加载失败，点击重试");
-        tv_tips.setClickable(true);
-    }
-
-    @Override
-    public void showLoadingMore() {
-        mSwipeRefreshLayout.setRefreshing(true);
-    }
-
-    @Override
-    public void showLoadingHomeCompleted() {
-        mSwipeRefreshLayout.setRefreshing(false);
-        tv_tips.setVisibility(View.GONE);
-        rv_mainView.setVisibility(View.VISIBLE);
-
-
-    }
-
-    @Override
-    public void showLoadingMoreCompleted() {
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void showNetworkError(){
-        mSwipeRefreshLayout.setRefreshing(false);
-        mToast.setText("网络连接错误，请重试");
+    public void showToast(String str) {
+        if(null == mToast){
+            mToast = Toast.makeText(getContext(), str, Toast.LENGTH_SHORT);
+        }
+        mToast.setText(str);
         mToast.show();
     }
 
-    public void addMoreItem(List<HomePageItemBean> data){
-        mRvAdapter.addItem(data);
+    @Override
+    public void stopLoading() {
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void showLoadingHomeFailed() {
+        mSwipeRefreshLayout.setRefreshing(false);
+        tv_tips.setText("首页加载失败，点击重试");
+    }
+
+    @Override
+    public void showLoadingHome() {
+        tv_tips.setText("正在加载首页...");
+        tv_tips.setVisibility(View.VISIBLE);
+        mSwipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void showLoading() {
+        mSwipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void hideHomeLoading() {
+        tv_tips.setVisibility(View.INVISIBLE);
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -182,6 +133,5 @@ public class HomeFragment extends Fragment implements HomeFrgPresenter.CallbackO
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("position",getContext().MODE_PRIVATE);
         String address = sharedPreferences.getString("position","广州");
         toolbarCity.setText(address);
-
     }
 }

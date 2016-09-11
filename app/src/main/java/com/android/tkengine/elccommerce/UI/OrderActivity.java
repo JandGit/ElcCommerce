@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.presenter.OrderActPresenter;
 
@@ -29,7 +29,7 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
     //RootView
     View mRootView;
 
-    boolean isLoading;
+    Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +114,7 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
                 if (null == view.getAdapter()) {
                     mPresenter.setPage(view, position);
                 } else {
-                    onLoadingSuccess();
+                    onLoadingSuccess(position);
                 }
             }
 
@@ -135,45 +135,60 @@ public class OrderActivity extends AppCompatActivity implements OrderActPresente
         tv_tips.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updata();
+                updata(mViewPager.getCurrentItem());
             }
         });
     }
 
     @Override
-    public void showNowLoading() {
-        tv_tips.setText("正在努力加载...");
-        tv_tips.setVisibility(View.VISIBLE);
-        tv_tips.setClickable(false);
-        isLoading = true;
+    public void showNowLoading(int position) {
+        if (position == mViewPager.getCurrentItem()) {
+            tv_tips.setText("正在努力加载...");
+            tv_tips.setVisibility(View.VISIBLE);
+            tv_tips.setClickable(false);
+        }
     }
 
     @Override
-    public void showLoadingFailed() {
-        tv_tips.setText("网络连接错误，点击重试");
-        tv_tips.setVisibility(View.VISIBLE);
-        tv_tips.setClickable(true);
-        isLoading = false;
+    public void showLoadingFailed(int position) {
+        if (position == mViewPager.getCurrentItem()) {
+            tv_tips.setText("网络连接错误，点击重试");
+            tv_tips.setVisibility(View.VISIBLE);
+            tv_tips.setClickable(true);
+        }
     }
 
     @Override
-    public void showNodata() {
-        tv_tips.setText("空空如也...");
-        tv_tips.setVisibility(View.VISIBLE);
-        tv_tips.setClickable(false);
-        isLoading = false;
+    public void showNodata(int position) {
+        if (position == mViewPager.getCurrentItem()) {
+            tv_tips.setText("空空如也...");
+            tv_tips.setVisibility(View.VISIBLE);
+            tv_tips.setClickable(false);
+        }
     }
 
     @Override
-    public void onLoadingSuccess() {
-        tv_tips.setVisibility(View.INVISIBLE);
-        isLoading = false;
+    public void onLoadingSuccess(int position) {
+        if (position == mViewPager.getCurrentItem()) {
+            tv_tips.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
-    public void updata() {
-        int position = mViewPager.getCurrentItem();
-        RecyclerView rview = mAllPages[position];
-        mPresenter.setPage(rview, position);
+    public void updata(int position) {
+        if (position == mViewPager.getCurrentItem()) {
+            int i = mViewPager.getCurrentItem();
+            RecyclerView rview = mAllPages[i];
+            mPresenter.setPage(rview, i);
+        }
+    }
+
+    @Override
+    public void showToast(String str) {
+        if(null == mToast){
+            mToast = Toast.makeText(this, str, Toast.LENGTH_SHORT);
+        }
+        mToast.setText(str);
+        mToast.show();
     }
 }

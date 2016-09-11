@@ -15,6 +15,8 @@ public class HomePageItemBean {
     public static final int TYPE_GOODS = 2;
     //广告
     public static final int TYPE_AD = 3;
+    //提示
+    public static final int TYPE_TIPS = 4;
 
     //Bean代表的首页Item类型
     public int type = -1;

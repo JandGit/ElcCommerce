@@ -108,7 +108,7 @@ public abstract class MultiItemAdapter<T> extends RecyclerView.Adapter<MultiItem
     }
 
     Context mContext;
-    List<T> mData;
+    public List<T> mData;
     MultiItemSupport mMultiItemSupport;
 
     @Override

@@ -26,6 +26,9 @@ import java.util.List;
  * 首页Model
  */
 public class HomeFrgModel {
+
+    static final String TAG = "HomeFrgModel";
+
     Context mContext;
     RequestQueue mQueue = null;
 
