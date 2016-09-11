@@ -4,156 +4,151 @@ package com.android.tkengine.elccommerce.presenter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Message;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.UI.DisplayActivity;
+import com.android.tkengine.elccommerce.UI.OrderDetailActivity;
 import com.android.tkengine.elccommerce.UI.StoreDetailsActivity;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.OrderBean;
-import com.android.tkengine.elccommerce.model.ElcModel;
+import com.android.tkengine.elccommerce.model.OrderActModel;
 import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.Inflater;
 
 public class OrderActPresenter {
 
+    private static final String TAG = "OrderActPresenter";
+
     public interface CallbackOfView{
-        //设置当前页面RecyclerView的内容
-        void setAdapter(MultiItemAdapter adapter);
         //当前页面显示正在读取数据
         void showNowLoading();
-        //当前页面显示读取失败
+        //网络连接错误
         void showLoadingFailed();
         //当前页面无数据
         void showNodata();
-        //添加更多数据到RecyclerView末尾
-        void addMoreItem(List<OrderBean> data);
+        //页面加载成功
+        void onLoadingSuccess();
+        //更新当前页面
+        void updata();
     }
 
     CallbackOfView mView;
-    ElcModel mModel;
+    OrderActModel mModel;
     Context mContext;
-    MyHandler mHandler;
-
-
-    private static class MyHandler extends Handler{
-        final int MSG_SETADAPTER = 0;
-        final int MSG_NODATA = 1;
-        final int MSG_NETWORK_ERROR = 2;
-
-        CallbackOfView mView;
-
-        public MyHandler(CallbackOfView view) {
-            this.mView = view;
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case MSG_SETADAPTER:{
-                    OrderAdapter adapter = (OrderAdapter) msg.obj;
-                    mView.setAdapter(adapter);
-                    break;
-                }
-                case MSG_NODATA:{
-                    mView.showNodata();
-                    break;
-                }
-                case MSG_NETWORK_ERROR:{
-                    mView.showLoadingFailed();
-                    break;
-                }
-            }
-            super.handleMessage(msg);
-        }
-    }
 
     public OrderActPresenter(CallbackOfView mView, Context context) {
         this.mView = mView;
         mContext = context;
-        this.mModel = new ElcModel(mContext);
-        this.mHandler = new MyHandler(mView);
+        this.mModel = new OrderActModel(mContext);
     }
 
     /**
      * 读取指定订单页面的内容，读取完成后设置RecyclerView
      * @param page 0为全部，1为待付款，2为待发货，3为待收货，4为待评价
      */
-    public void loadPage(final int page){
+    public void setPage(final RecyclerView view, int page){
         mView.showNowLoading();
         SharedPreferences sp = mContext.getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
         final String userId = sp.getString("UserId", null);
-        if(null == userId){
-            //用户尚未登录时的操作
-            Toast.makeText(mContext, "请先登录", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        new Thread(){
+        mModel.getOrder(userId, page, 1, new OrderActModel.ResponseListener() {
             @Override
-            public void run() {
-                try {
-                    OrderBean[] orders = mModel.getOrder(userId, page, 1);
-                    if(orders != null && orders.length != 0){
-                        List<OrderBean> data = Arrays.asList(orders);
-                        MultiItemAdapter<OrderBean> adapter = new OrderAdapter(data, mContext, R.layout.activity_order_item);
-                        Message msg = mHandler.obtainMessage(mHandler.MSG_SETADAPTER);
-                        msg.obj = adapter;
-                        mHandler.sendMessage(msg);
-                    }
-                    else {
-                        mHandler.sendEmptyMessage(mHandler.MSG_NODATA);
-                    }
-                } catch (Exception e) {
-                    mHandler.sendEmptyMessage(mHandler.MSG_NETWORK_ERROR);
-                    e.printStackTrace();
+            public void onResponse(OrderBean[] orders) {
+                if(0 == orders.length){
+                    mView.showNodata();
+                }
+                else{
+                    List<OrderBean> data = Arrays.asList(orders);
+                    MultiItemAdapter<OrderBean> adapter = new OrderAdapter(data, mContext);
+                    view.setAdapter(adapter);
+                    mView.onLoadingSuccess();
                 }
             }
-        }.start();
+
+            @Override
+            public void onError() {
+                mView.showLoadingFailed();
+            }
+        });
     }
 
-    public static class OrderAdapter extends MultiItemAdapter<OrderBean>{
+    public class OrderAdapter extends MultiItemAdapter<OrderBean>{
 
-        Context mContext;
+        public OrderAdapter(final List<OrderBean> mData, final Context mContext) {
+            super(mData, mContext, new MultiItemSupport() {
+                @Override
+                public int getViewItemType(int position) {
+                    String status = mData.get(position).state;
+                    if(null == status){
+                        Log.e(TAG, "未预料的订单状态！status = " + status);
+                        return 0;
+                    }
+                    switch (status){
+                        case "unpaid":
+                            return 1;
+                        case "unsent":
+                            return 2;
+                        case "unreceived":
+                            return 3;
+                        case "uncomment":
+                            return 4;
+                        default:
+                            Log.e(TAG, "未预料的订单状态！status = " + status);
+                            return 0;
+                    }
+                }
 
-        public OrderAdapter(List<OrderBean> mData, Context mContext, int layoutId) {
-            super(mData, mContext, layoutId);
-            this.mContext = mContext;
+                @Override
+                public int getViewItemLayoutId(int viewType) {
+                    switch (viewType){
+                        case 1://未付款
+                            return R.layout.activity_order_item_unpaid;
+                        case 2://未发货
+                            return R.layout.activity_order_item_unsent;
+                        case 3://待收货
+                            return R.layout.activity_order_item_unreceived;
+                        case 4://待评价
+                            return R.layout.activity_order_item_uncomment;
+                        default:
+                            throw new RuntimeException("未预料的订单状态");
+                    }
+                }
+            });
         }
 
         @Override
-        public void convert(ViewHolder holder, OrderBean itemData) {
+        public void convert(ViewHolder holder, final OrderBean itemData) {
             TextView tv_shopName = holder.getView(R.id.tv_shopName);
             TextView tv_state = holder.getView(R.id.tv_state);
             ListView lv = holder.getView(R.id.lv_orderProitems);
             TextView tv_sum = holder.getView(R.id.tv_sum);
+
             View btn_delete = holder.getView(R.id.btn_delete);
             View btn_detail = holder.getView(R.id.btn_detail);
             View btn_comment = holder.getView(R.id.btn_comment);
+            View btn_cancel = holder.getView(R.id.btn_cancel);
+            View btn_pay = holder.getView(R.id.btn_pay);
+            View btn_checkSending = holder.getView(R.id.btn_checkSending);
+            View btn_receive = holder.getView(R.id.btn_receive);
+            View btn_urge = holder.getView(R.id.btn_urge);
+
             if(itemData.shopName != null){
                 tv_shopName.setText(itemData.shopName);
-            }
-            if(itemData.state != null){
-                tv_state.setText(itemData.state);
             }
             //设置点击跳转到商铺
             final String id = itemData.sellerId;
@@ -209,7 +204,7 @@ public class OrderActPresenter {
                 @Override
                 public View getView(final int i, View view, ViewGroup viewGroup) {
                     if(null == view){
-                        view = LayoutInflater.from(mContext).inflate(R.layout.activity_order_item_item, viewGroup, false);
+                        view = LayoutInflater.from(mContext).inflate(R.layout.activity_order_item_goods, viewGroup, false);
                     }
                     TextView tv = (TextView) view.findViewById(R.id.tv_goodName);
                     tv.setText((CharSequence) mData.get(i).get("name"));
@@ -235,30 +230,92 @@ public class OrderActPresenter {
                     return view;
                 }
             });
-           /* lv.setAdapter(new SimpleAdapter(mContext, data, R.layout.activity_order_item_item,
-                    new String[]{"icon", "name", "city", "price", "count"}, new int[]{R.id.iv_goodIcon,
-                        R.id.tv_goodName, R.id.tv_city, R.id.tv_goodPrice, R.id.tv_count}));*/
 
             tv_sum.setText("共" + countSum + "件商品 合计￥" + priceSum + "元");
 
             btn_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(mContext, "详情", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext, OrderDetailActivity.class);
+                    intent.putExtra("data", itemData);
+                    mContext.startActivity(intent);
                 }
             });
-            btn_comment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(mContext, "评价", Toast.LENGTH_SHORT).show();
-                }
-            });
-            btn_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(mContext, "删除", Toast.LENGTH_SHORT).show();
-                }
-            });
+            String status = itemData.state;
+            if(status.equals("unpaid")){
+                btn_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "取消订单", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                btn_pay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "付款", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            else if(status.equals("unsent")){
+                btn_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "取消订单", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                btn_urge.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mModel.updateOrder(itemData.id, "unrecieved", new OrderActModel.ResponseListener() {
+                            @Override
+                            public void onResponse(OrderBean[] orders) {
+                                mView.updata();
+                            }
+                            @Override
+                            public void onError() {
+                                Toast.makeText(mContext, "网络错误，请稍后再试", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+            }
+            else if(status.equals("unreceived")){
+                btn_checkSending.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(mContext, "查看物流", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                btn_receive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mModel.updateOrder(itemData.id, "uncomment", new OrderActModel.ResponseListener() {
+                            @Override
+                            public void onResponse(OrderBean[] orders) {
+                                mView.updata();
+                            }
+                            @Override
+                            public void onError() {
+                                Toast.makeText(mContext, "网络错误，请稍后再试", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+            }
+            else if(status.equals("uncomment")){
+                btn_comment.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(mContext, "评价", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                btn_delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(mContext, "删除", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
     }
 }

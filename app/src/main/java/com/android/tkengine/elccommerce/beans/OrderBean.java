@@ -1,11 +1,12 @@
 package com.android.tkengine.elccommerce.beans;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * 储存订单信息
  */
-public class OrderBean {
+public class OrderBean implements Serializable{
     /**
      * 购买时间
      */
@@ -39,7 +40,7 @@ public class OrderBean {
      */
     public List<ProItemsBean> proItems;
 
-    public static class BoughtDateBean {
+    public static class BoughtDateBean implements Serializable{
         public int date;
         public int day;
         public int hours;
@@ -52,12 +53,12 @@ public class OrderBean {
         public int year;
     }
 
-    public static class ProItemsBean {
+    public static class ProItemsBean implements Serializable{
         public String id;
         public int num;
         public ProductBean product;
 
-        public static class ProductBean {
+        public static class ProductBean implements Serializable{
             public String id;
             public String name;
             public String type;

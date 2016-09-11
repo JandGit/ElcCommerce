@@ -3,6 +3,7 @@
     package="com.android.tkengine.elccommerce">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -15,7 +16,7 @@
         <activity
             android:name=".UI.MainActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,23 +26,24 @@
         <activity android:name=".UI.DisplayActivity" />
         <activity android:name=".UI.UserLoginActivity" />
         <activity android:name=".UI.PayActivity" />
-        <activity android:name=".UI.SearchActivity"
+        <activity
+            android:name=".UI.SearchActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".UI.CommentsActivity" />
         <activity android:name=".UI.StoreDetailsActivity" />
         <activity android:name=".UI.OrderActivity" />
         <activity android:name=".UI.PersonalinfoActivity" />
         <activity android:name=".UI.SignupActivity" />
-        <activity android:name=".UI.CategoryActivity"></activity>
-        <activity android:name=".UI.AddressActivity"/>
+        <activity android:name=".UI.CategoryActivity" />
+        <activity android:name=".UI.AddressActivity" />
         <activity android:name=".UI.NewAddressActivity" />
-        <activity android:name=".UI.ProvinceInfoActivity"/>
-        <activity android:name=".UI.CityInfoActivity"/>
-        <activity android:name=".UI.CountyInfoActivity"/>
-        <activity android:name=".UI.WalletActivity"/>
-        <activity android:name=".UI.AddWalletActivity"/>
-        <activity android:name=".UI.MyCommentsActivity"/>
-
+        <activity android:name=".UI.ProvinceInfoActivity" />
+        <activity android:name=".UI.CityInfoActivity" />
+        <activity android:name=".UI.CountyInfoActivity" />
+        <activity android:name=".UI.WalletActivity" />
+        <activity android:name=".UI.AddWalletActivity" />
+        <activity android:name=".UI.MyCommentsActivity" />
+        <activity android:name=".UI.OrderDetailActivity"></activity>
     </application>
 
 </manifest>

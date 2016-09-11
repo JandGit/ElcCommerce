@@ -1,10 +1,8 @@
 package com.android.tkengine.elccommerce.UI;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,18 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.beans.Constants;
-import com.android.tkengine.elccommerce.beans.UserInfoBean;
-import com.android.tkengine.elccommerce.model.ElcModel;
 import com.android.tkengine.elccommerce.model.MeFrgModel;
-import com.android.tkengine.elccommerce.utils.BadgeView;
 import com.squareup.picasso.Picasso;
-
-import java.util.HashSet;
-import java.util.Set;
-
 
 public class MeFragment extends Fragment {
 
@@ -34,6 +24,7 @@ public class MeFragment extends Fragment {
     View mView;
     TextView tv_userName;
     ImageView iv_userIcon;
+    Toast mToast;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,6 +50,10 @@ public class MeFragment extends Fragment {
             int i;
             @Override
             public void onClick(View view) {
+                if (!isUserLogined()) {
+                    showToast("请先登录");
+                }
+
                 switch (view.getId()) {
                     case R.id.showMyOrders:
                         i = 0;
@@ -89,7 +84,12 @@ public class MeFragment extends Fragment {
         mView.findViewById(R.id.rl_myAddress).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), AddressActivity.class));
+                if (isUserLogined()) {
+                    startActivity(new Intent(getActivity(), AddressActivity.class));
+                }
+                else{
+                    showToast("请先登录");
+                }
             }
         });
 
@@ -97,21 +97,36 @@ public class MeFragment extends Fragment {
         mView.findViewById(R.id.rl_myWallet).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), WalletActivity.class));
+                if (isUserLogined()) {
+                    startActivity(new Intent(getActivity(), WalletActivity.class));
+                }
+                else{
+                    showToast("请先登录");
+                }
             }
         });
 
         mView.findViewById(R.id.rl_myComment).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), MyCommentsActivity.class));
+                if (isUserLogined()) {
+                    startActivity(new Intent(getActivity(), MyCommentsActivity.class));
+                }
+                else{
+                    showToast("请先登录");
+                }
             }
         });
 
         mView.findViewById(R.id.rl_myInfo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), PersonalinfoActivity.class));
+                if (isUserLogined()) {
+                    startActivity(new Intent(getActivity(), PersonalinfoActivity.class));
+                }
+                else{
+                    showToast("请先登录");
+                }
             }
         });
 
@@ -148,5 +163,14 @@ public class MeFragment extends Fragment {
             iv_userIcon.setImageResource(R.drawable.frgme_userunlogin);
         }
         super.onResume();
+    }
+
+    private void showToast(String str){
+        if(null == mToast){
+            mToast = Toast.makeText(getContext(), str, Toast.LENGTH_SHORT);
+        }else{
+            mToast.setText(str);
+        }
+        mToast.show();
     }
 }

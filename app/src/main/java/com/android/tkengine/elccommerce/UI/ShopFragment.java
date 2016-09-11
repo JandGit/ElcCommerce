@@ -1,5 +1,8 @@
 package com.android.tkengine.elccommerce.UI;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.tkengine.elccommerce.R;
@@ -22,6 +26,7 @@ public class ShopFragment extends Fragment {
     StoreFrgPresenter presenter;
     StoreFrgPresenter.MyRecycleViewAdapter adapter;
     String type = "";
+    LinearLayout noNet;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +35,13 @@ public class ShopFragment extends Fragment {
         all = (TextView) mView.findViewById(R.id.store_list_add_all);
         grade = (TextView) mView.findViewById(R.id.store_list_by_grade);
         sales = (TextView) mView.findViewById(R.id.store_list_by_sales);
+        noNet = (LinearLayout) mView.findViewById(R.id.shop_nonet);
+        if(isNetWorkConnected(getContext())){
+            noNet.setVisibility(View.INVISIBLE);
+        }else {
+            noNet.setVisibility(View.VISIBLE);
+        }
+
         presenter = new StoreFrgPresenter();
         adapter = presenter.new MyRecycleViewAdapter(getContext(), type);
 
@@ -88,5 +100,16 @@ public class ShopFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(linearLayoutManager);
         return mView;
+    }
+
+    public boolean isNetWorkConnected(Context context){
+        if(context != null){
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if(networkInfo != null){
+                return networkInfo.isAvailable();
+            }
+        }
+        return false;
     }
 }
