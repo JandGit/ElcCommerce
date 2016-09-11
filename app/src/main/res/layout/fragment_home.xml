@@ -40,32 +40,36 @@
                     android:layout_marginTop="2dp"
                     android:src="@drawable/next" />
 
+                <RelativeLayout
+                    android:gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="20dp"
+                    android:layout_height="32dp">
+
+                    <TextView
+                        android:id="@+id/et_toolbarSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="15dp"
+                        android:background="@drawable/text_shape"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="25dp"
+                        android:text="@string/search"
+                        android:textColor="@color/colorGray"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20dp"
+                        android:src="@drawable/search" />
+                </RelativeLayout>
+
             </LinearLayout>
 
-            <RelativeLayout
-                android:gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp">
 
-                <TextView
-                    android:id="@+id/et_toolbarSearch"
-                    android:layout_width="250dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:background="@drawable/text_shape"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="25dp"
-                    android:text="@string/search"
-                    android:textColor="@color/colorGray"
-                    android:textSize="14sp" />
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:src="@drawable/search" />
-            </RelativeLayout>
 
             <ImageView
                 android:visibility="gone"
