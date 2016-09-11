@@ -67,6 +67,7 @@
             android:text="@string/receiver_tel"/>
 
         <EditText
+            android:inputType="phone"
             android:id="@+id/et_receiver_tel"
             android:layout_width="0dp"
             android:layout_height="match_parent"
