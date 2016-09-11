@@ -3,12 +3,16 @@ package com.android.tkengine.elccommerce.presenter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,152 +29,152 @@ import com.android.tkengine.elccommerce.utils.MultiItemAdapter;
 import com.android.tkengine.elccommerce.utils.MyIndicator;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 
 
 public class HomeFrgPresenter {
+
+    static final String TAG = "HomeFrgPresenter";
 
     CallbackOfHomefrg mView;
     //ElcModel mModel;
     HomeFrgModel mModel;
     Context mContext;
 
-    //首页RecyclerView的数据源
-    List<HomePageItemBean> mHomepageData;
-    //首页Adapter
+    //与RecyclerView绑定的adapter
     HomeAdapter mHomepageAdapter;
-    //首页标记
+    //首页的RecyclerView
+    RecyclerView mRv;
+    //首页标记,用于上拉加载
     int nowType;
-
-    private HomeFrgHandler mHandler;
-
-    //消息处理Handler
-    public static class HomeFrgHandler extends Handler {
-        public final int MSG_NETWORK_ERROR = 0;
-        public final int MSG_SETADAPTER = 1;
-        public final int MSG_SHOW_LOADING_FAILED = 2;
-        public final int MSG_SHOW_NOMORE_DATA = 3;
-        public final int MSG_ADD_MORE_DATA = 4;
-
-        private CallbackOfHomefrg mView;
-
-        public HomeFrgHandler(CallbackOfHomefrg mView) {
-            this.mView = mView;
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_SETADAPTER:
-                    HomeAdapter adapter = (HomeAdapter) msg.obj;
-                    mView.setRvAdapter(adapter);
-                    mView.showLoadingHomeCompleted();
-                    break;
-                case MSG_SHOW_LOADING_FAILED:
-                    mView.showLoadingfailed();
-                    break;
-                case MSG_ADD_MORE_DATA:
-                    List<HomePageItemBean> data = (List<HomePageItemBean>) msg.obj;
-                    mView.addMoreItem(data);
-                    mView.showLoadingMoreCompleted();
-                    break;
-                case MSG_SHOW_NOMORE_DATA:
-                    mView.showLoadingMoreCompleted();
-                    break;
-                case MSG_NETWORK_ERROR:
-                    mView.showNetworkError();
-                    break;
-            }
-
-            super.handleMessage(msg);
-        }
-    }
+    //RecyclerView是否正在加载
+    boolean isLoading;
 
     public interface CallbackOfHomefrg {
-        //设置HomeFragment的RecyclerView的Adapter
-        void setRvAdapter(RecyclerView.Adapter adapter);
+
+        //提示正在加载刷新圈
+        void showLoading();
+        //停止加载，停止显示刷新圈
+        void stopLoading();
 
         //提示首页正在加载
-        void showLoadingHomePage();
+        void showLoadingHome();
+        //提示首页加载失败,点击重新加载
+        void showLoadingHomeFailed();
+        //隐藏首页加载提示
+        void hideHomeLoading();
 
-        //提示首页加载失败
-        void showLoadingfailed();
-
-        //提示正在加载更多数据
-        void showLoadingMore();
-
-        //添加数据到首页末尾
-        void addMoreItem(List<HomePageItemBean> data);
-
-        //提示首页加载成功
-        void showLoadingHomeCompleted();
-
-        //提示更多数据加载成功
-        void showLoadingMoreCompleted();
-
-        //提示网络连接错误
-        void showNetworkError();
+        void showToast(String str);
     }
 
     public HomeFrgPresenter(CallbackOfHomefrg mView, Context context) {
         this.mView = mView;
         this.mContext = context;
-        //this.mModel = new ElcModel(context);
         this.mModel = new HomeFrgModel(mContext);
-        mHandler = new HomeFrgHandler(mView);
     }
 
-    //加载首页
-    public void initHomePage() {
-        mView.showLoadingHomePage();
-        nowType = 0;
-        mHomepageData = mModel.getHomePageData();
-        if (null == mHomepageData) {
-            mHandler.sendEmptyMessage(mHandler.MSG_SHOW_LOADING_FAILED);
-        } else {
-            Message msg = mHandler.obtainMessage(mHandler.MSG_SETADAPTER);
-            mHomepageAdapter = new HomeAdapter(mHomepageData, mContext);
-            msg.obj = mHomepageAdapter;
-            mHandler.sendMessage(msg);
+    /**
+     * 控制RecyclerView的显示逻辑
+     * Presenter完成RecyclerView的数据显示
+     */
+    public void controlRecyclerView(RecyclerView view){
+        mRv = view;
+        if (null == mRv.getLayoutManager()) {
+            mRv.setLayoutManager(new LinearLayoutManager(mContext));
+            mRv.setItemAnimator(new DefaultItemAnimator());
+            //设置RecyclerView滚动到底部自动加载数据
+            mRv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                int lastVisibleItem = 0;
+                LinearLayoutManager llManager = (LinearLayoutManager) mRv.getLayoutManager();
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    lastVisibleItem = llManager.findLastVisibleItemPosition();
+                }
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    if(mHomepageAdapter.getItemCount() - 1 == lastVisibleItem && !isLoading){
+
+                        loadMoreOnHomePage();
+                        isLoading = true;
+                    }
+                }
+            });
         }
-        loadMoreOnHomePage();
+        //开始加载首页
+        nowType = 0;
+        mView.showLoadingHome();
+        List<HomePageItemBean> data = mModel.getHomePageData();
+        if (null == data) {
+            mView.showLoadingHomeFailed();
+        } else {
+            mView.hideHomeLoading();
+            mHomepageAdapter = new HomeAdapter(data, mContext);
+            mRv.setAdapter(mHomepageAdapter);
+            loadMoreOnHomePage();
+        }
     }
 
-    //加载首页更多数据
+    //上拉加载的实现，根据RecyclerView最后一个Item获取数据
     public void loadMoreOnHomePage() {
+        Log.i(TAG, "加载第" + nowType);
         if(nowType > 4){
+            HomePageItemBean item = new HomePageItemBean();
+            item.type = HomePageItemBean.TYPE_TIPS;
+            item.data = new HashMap<>(1);
+            item.data.put("tips", "没有更多数据了...");
+            mHomepageAdapter.addItem(item);
             return;
         }
-        mView.showLoadingMore();
+        //显示加载提示
+        isLoading = true;
+        mView.showLoading();
+        HomePageItemBean item = new HomePageItemBean();
+        item.type = HomePageItemBean.TYPE_TIPS;
+        item.data = new HashMap<>(1);
+        item.data.put("tips", "正在加载数据...");
+        mHomepageAdapter.addItem(item);
+        Log.i(TAG, "添加提示");
+
         mModel.getGoods(nowType++, new HomeFrgModel.ResponseListener(){
             @Override
             public void onResponse(List<HomePageItemBean> result) {
+                Log.i(TAG, "添加数据");
                 if (null != result) {
-                    Message msg = mHandler.obtainMessage(mHandler.MSG_ADD_MORE_DATA);
-                    msg.obj = result;
-                    mHandler.sendMessage(msg);
+                    mHomepageAdapter.removeLastItem();
+                    mHomepageAdapter.addItem(result);
+                    mView.stopLoading();
                 }
-                else {
-                    mHandler.sendEmptyMessage(mHandler.MSG_SHOW_NOMORE_DATA);
-                    nowType--;
-                }
+                isLoading = false;
             }
             @Override
             public void onError() {
-                mHandler.sendEmptyMessage(mHandler.MSG_NETWORK_ERROR);
+                mHomepageAdapter.removeLastItem();
+                mView.showToast("网络访问失败，请重试");
+                isLoading = false;
+                nowType--;
             }
         });
     }
 
-    public static class HomeAdapter extends MultiItemAdapter<HomePageItemBean> {
-
-        Context mContext;
-        List<HomePageItemBean> mData;
+    //RecyclerView绑定的Adapter
+    private class HomeAdapter extends MultiItemAdapter<HomePageItemBean> {
 
         public void addItem(List<HomePageItemBean> data){
             for(HomePageItemBean temp : data){
                 mData.add(temp);
-                notifyItemInserted(mData.size() - 1);
+            }
+            notifyDataSetChanged();
+        }
+        public void addItem(HomePageItemBean item){
+            mData.add(item);
+            //notifyItemInserted(mData.size() - 1); 不知什么原因这句话会导致异常
+            notifyDataSetChanged();
+        }
+        public void removeLastItem(){
+            if (mData.size() > 0) {
+                mData.remove(mData.size() - 1);
+                notifyItemRemoved(mData.size());
             }
         }
 
@@ -190,15 +194,13 @@ public class HomeFrgPresenter {
                             return R.layout.fragment_home_goodgroup;
                         case HomePageItemBean.TYPE_GOODS:
                             return R.layout.fragment_home_gooditem;
+                        case HomePageItemBean.TYPE_TIPS:
+                            return R.layout.fragment_home_tips;
                         default:
-                            Log.e("homepresenter:", "在getViewItemLayoutId处发生错误，未知viewType!");
+                            throw new RuntimeException("在getViewItemLayoutId处发生错误，未知viewType!");
                     }
-                    return 0;
                 }
             });
-
-            this.mContext = mContext;
-            this.mData = mData;
         }
 
         @Override
@@ -330,8 +332,13 @@ public class HomeFrgPresenter {
 
                     break;
 
+                case HomePageItemBean.TYPE_TIPS:
+                    TextView tv_tips = holder.getView(R.id.tv_tips);
+                    tv_tips.setText((CharSequence) itemData.data.get("tips"));
+                    break;
+
                 default:
-                    Log.e("HomePresenter:", "在viewHolder的convertView方法出现错误！");
+                    Log.e(TAG, "在viewHolder的convertView方法出现错误！");
             }
         }
     }
