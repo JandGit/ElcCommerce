@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.android.tkengine.elccommerce.R;
 import com.android.tkengine.elccommerce.UI.DisplayActivity;
 import com.android.tkengine.elccommerce.UI.OrderDetailActivity;
+import com.android.tkengine.elccommerce.UI.PostEvaluationActivity;
 import com.android.tkengine.elccommerce.UI.StoreDetailsActivity;
 import com.android.tkengine.elccommerce.beans.Constants;
 import com.android.tkengine.elccommerce.beans.OrderBean;
@@ -306,7 +307,9 @@ public class OrderActPresenter {
                 btn_comment.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(mContext, "评价", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(mContext, PostEvaluationActivity.class);
+                        //intent.putExtra("data", itemData);
+                        mContext.startActivity(intent);
                     }
                 });
                 btn_delete.setOnClickListener(new View.OnClickListener() {

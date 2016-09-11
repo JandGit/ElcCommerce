@@ -44,6 +44,7 @@
         <activity android:name=".UI.AddWalletActivity" />
         <activity android:name=".UI.MyCommentsActivity" />
         <activity android:name=".UI.OrderDetailActivity"></activity>
+        <activity android:name=".UI.PostEvaluationActivity" />
     </application>
 
 </manifest>

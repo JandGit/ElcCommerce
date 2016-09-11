@@ -146,6 +146,12 @@ public class MeFragment extends Fragment {
     public void onResume() {
         final SharedPreferences sp = getActivity().getSharedPreferences(Constants.SP_LOGIN_USERINFO, Context.MODE_PRIVATE);
         if (isUserLogined()) {
+            tv_userName.setText(sp.getString("UserName", "null"));
+            Picasso.with(getContext()).load(sp.getString("UserIcon", null)).fit()
+                    .placeholder(R.drawable.frgme_userunlogin)
+                    .into(iv_userIcon);
+            TextView tv_money = (TextView) mView.findViewById(R.id.tv_money);
+            tv_money.setText("余额" + sp.getFloat("UserMoney", 0));
             //更新用户信息
             mModel.loadUserInfo(sp.getString("UserId", null), new MeFrgModel.ResponseListener(){
                 @Override
