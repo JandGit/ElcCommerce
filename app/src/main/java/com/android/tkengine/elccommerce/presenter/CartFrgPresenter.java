@@ -45,9 +45,7 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final int POST_FAIL = 5;
     public String userId;    //用户id，用于网络请求
 
-    private Handler handler = new Handler(){
-
-        @Override
+    private class MyHandler extends Handler{
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case GET_SUCCESS:
@@ -59,7 +57,9 @@ public class CartFrgPresenter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     break;
             }
         }
-    };
+    }
+
+    private MyHandler handler = new MyHandler();
 
     public CartFrgPresenter(Context context) {
         this.context = context;

@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -57,6 +58,8 @@ public class CartFragment extends Fragment implements OnRecyclerViewItemClickLis
     RelativeLayout deleteLayout;
     //删除
     Button cartDelete;
+    //网络状态不好时加载
+    ViewStub network;
 
 
     CartFrgPresenter cartFrgPresenter;
